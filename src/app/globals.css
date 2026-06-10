@@ -1,49 +1,146 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-html {
-  height: 100%;
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
+*{
+  padding:0;
+  margin:0;
   box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+  letter-spacing: 0;
+}
+/* =========================fonts-download========================= */
+/* ---------inter-------------- */
+@font-face {
+  font-family: "intersemibold";
+  src: url("/fonts/inter/static/Inter_18pt-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "interregular";
+  src: url("/fonts/inter/static/Inter_18pt-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+/* -------inria-serif-------- */
+/* Regular */
+@font-face {
+  font-family: "inriaregular";
+  src: url("/fonts/inria-serif/InriaSerif-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+/* Italic */
+@font-face {
+  font-family: "inriaitalic";
+  src: url("/fonts/inria-serif/InriaSerif-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+/* Light */
+@font-face {
+  font-family: "inrialight";
+  src: url("/fonts/inria-serif/InriaSerif-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Light Italic */
+@font-face {
+  font-family: "inrialightitalic";
+  src: url("/fonts/inria-serif/InriaSerif-LightItalic.ttf") format("truetype");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Bold */
+@font-face {
+  font-family: "inriabold";
+  src: url("/fonts/inria-serif/InriaSerif-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Bold Italic */
+@font-face {
+  font-family: "inriabolditalic";
+  src: url("/fonts/inria-serif/InriaSerif-BoldItalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+/* -------inria-sans-------- */
+/* Regular */
+@font-face {
+  font-family: "inriasansregular";
+  src: url("/fonts/inria-sans/InriaSans-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Italic */
+@font-face {
+  font-family: "inriasansitalic";
+  src: url("/fonts/inria-sans/InriaSans-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Light */
+@font-face {
+  font-family: "inriasanslight";
+  src: url("/fonts/inria-sans/InriaSans-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Light Italic */
+@font-face {
+  font-family: "inriasanslightitalic";
+  src: url("/fonts/inria-sans/InriaSans-LightItalic.ttf") format("truetype");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Bold */
+@font-face {
+  font-family: "inriasansbold";
+  src: url("/fonts/inria-sans/InriaSans-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Bold Italic */
+@font-face {
+  font-family: "inriasansbolditalic";
+  src: url("/fonts/inria-sans/InriaSans-BoldItalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+/* -----------------------------boldonse-------------------------------- */
+@font-face {
+    font-family: "boldonse";
+    src: url("/fonts/boldonse/Boldonse-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+/* ---------------anton--------------- */
+@font-face {
+  font-family: "anton";
+  src: url("/fonts/anton/Anton-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }

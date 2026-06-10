@@ -1,0 +1,99 @@
+/* ═══════════════════════════════════════════════
+   LOADER — full screen overlay with logo animation
+   ═══════════════════════════════════════════════ */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(196, 0, 83, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: overlayIn 0.3s ease forwards;
+}
+
+.overlayOut {
+  animation: overlayOut 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes overlayOut {
+  from { opacity: 1; transform: scale(1);    }
+  to   { opacity: 0; transform: scale(1.04); }
+}
+
+/* ── LOGO WRAPPER ── */
+.logoWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  overflow: hidden;
+}
+
+.svgTop,
+.svgBottom {
+  width: clamp(200px, 40vw, 360px);
+  height: auto;
+  overflow: visible;
+}
+
+/* ════════════════════════════════════════════════
+   LETTER BASE
+   ════════════════════════════════════════════════ */
+.letter {
+  opacity: 0;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-delay: 0.1s;
+}
+
+/* ── DIRECTION CLASSES ── */
+.fromLeft   { animation-name: flyLeft;   animation-duration: 1.6s; }
+.fromRight  { animation-name: flyRight;  animation-duration: 1.6s; }
+.fromTop    { animation-name: flyTop;    animation-duration: 1.6s; }
+.fromBottom { animation-name: flyBottom; animation-duration: 1.6s; }
+
+/* ── STAGGER DELAYS ── */
+.delay1 { animation-delay: 0.22s; }
+.delay2 { animation-delay: 0.34s; }
+
+/* ════════════════════════════════════════════════
+   KEYFRAMES
+   in (0→30%)  : fly in from direction
+   hold (30→70%): sit still
+   out (70→100%): fly back out same direction
+   ════════════════════════════════════════════════ */
+
+@keyframes flyLeft {
+  0%   { opacity: 0; transform: translateX(-70px); }
+  30%  { opacity: 1; transform: translateX(0);     }
+  70%  { opacity: 1; transform: translateX(0);     }
+  100% { opacity: 0; transform: translateX(-70px); }
+}
+
+@keyframes flyRight {
+  0%   { opacity: 0; transform: translateX(70px);  }
+  30%  { opacity: 1; transform: translateX(0);     }
+  70%  { opacity: 1; transform: translateX(0);     }
+  100% { opacity: 0; transform: translateX(70px);  }
+}
+
+@keyframes flyTop {
+  0%   { opacity: 0; transform: translateY(-70px); }
+  30%  { opacity: 1; transform: translateY(0);     }
+  70%  { opacity: 1; transform: translateY(0);     }
+  100% { opacity: 0; transform: translateY(-70px); }
+}
+
+@keyframes flyBottom {
+  0%   { opacity: 0; transform: translateY(70px);  }
+  30%  { opacity: 1; transform: translateY(0);     }
+  70%  { opacity: 1; transform: translateY(0);     }
+  100% { opacity: 0; transform: translateY(70px);  }
+}

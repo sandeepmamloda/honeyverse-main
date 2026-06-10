@@ -1,0 +1,43 @@
+.header-main {
+  inline-size: 100%;
+  block-size: fit-content;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
+.header-wrapper {
+  inline-size: 100%;
+  block-size: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 10rem;
+  padding-block: 4rem;
+}
+
+.header-left a,
+.header-right a {
+  color: #000;
+  text-decoration: none;
+  font-family: "anton";
+  font-size: 1.5rem;
+  letter-spacing: 0.05rem;
+}
+
+.header-logo a {
+  text-decoration: none;
+  display: block;
+}
+
+.header-logo-img {
+  width: 10rem;
+  height: auto;
+}
+
+.header-left a:hover,
+.header-right a:hover {
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
