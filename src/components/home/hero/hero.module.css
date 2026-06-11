@@ -1,7 +1,5 @@
 /* ═══════════════════════════════════════════════
-   HERO — butter-smooth 3D flip
-   All animation is driven by JS/rAF.
-   CSS only handles layout + static styles.
+   HERO  —  coin-flip single screen transition
    ═══════════════════════════════════════════════ */
 
 .wrapper {
@@ -10,25 +8,19 @@
   position: relative;
   overflow: hidden;
   background: #000;
+  perspective: 2400px;
+  perspective-origin: 50% 50%;
 }
 
-/* Stage: no perspective here — perspective is inlined
-   per-frame by JS so it never resets between frames */
-.stage {
-  position: absolute;
-  inset: 0;
-  /* perspective-origin nudged up for cinematic angle */
-  perspective-origin: 50% 38%;
-}
-
+/* ── THE ONE SCREEN ── */
 .screen {
   position: absolute;
   inset: 0;
-  /* resting state — JS overrides this every frame during flip */
-  transform: perspective(900px) rotateY(0deg) rotateX(0deg) translateZ(0px) scaleX(1);
-  filter: brightness(1);
+  transform-origin: center center;
+  backface-visibility: hidden;
   will-change: transform, filter;
-  /* NO transition here — rAF handles every frame, transition would fight it */
+  transform: rotateY(0deg);
+  filter: brightness(1);
 }
 
 .bg {
@@ -43,13 +35,30 @@
 .vignette {
   position: absolute;
   inset: 0;
-  pointer-events: none;
   background: linear-gradient(
     180deg,
     rgba(0,0,0,0.06) 0%,
     rgba(0,0,0,0.00) 38%,
-    rgba(0,0,0,0.62) 100%
+    rgba(0,0,0,0.60) 100%
   );
+}
+
+.flipFirstHalf {
+  animation: firstHalf 450ms cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+.flipSecondHalf {
+  animation: secondHalf 450ms cubic-bezier(0, 0, 0.6, 1) forwards;
+}
+
+@keyframes firstHalf {
+  0%   { transform: rotateY(0deg);  filter: brightness(1);   }
+  100% { transform: rotateY(90deg); filter: brightness(0.0); }
+}
+
+@keyframes secondHalf {
+  0%   { transform: rotateY(-90deg); filter: brightness(0.0); }
+  100% { transform: rotateY(0deg);   filter: brightness(1);   }
 }
 
 /* ════════════════════════════════════════════════
@@ -121,6 +130,7 @@
 }
 .stripWrap::-webkit-scrollbar { display: none; }
 
+/* dashed lines — on stripWrap, 100vw wide so they never break on scroll */
 .stripWrap::before,
 .stripWrap::after {
   content: "";
@@ -154,6 +164,7 @@
   display: flex;
   column-gap: 0.75rem;
   flex-shrink: 0;
+  /* align-items: center; */
   cursor: pointer;
   border-radius: 0.6rem;
   padding: 0.4rem 0.6rem 0.4rem 0.4rem;
@@ -164,6 +175,8 @@
 .card:not(.cardActive) { opacity: 0.4; }
 .card:hover:not(.cardActive) { opacity: 0.72; }
 
+.cardActive {}
+
 /* ── thumb ── */
 .thumb {
   block-size: clamp(4.5rem, 8vw, 8rem);
@@ -172,15 +185,20 @@
   overflow: hidden;
   position: relative;
   flex-shrink: 0;
-  transition: transform 0.5s cubic-bezier(0.33,1,0.68,1);
+  transition: transform 0.5s cubic-bezier(0.33,1,0.68,1),
+              box-shadow 0.5s ease;
 }
-.cardActive .thumb { transform: scale(1.04); }
+
+.cardActive .thumb {
+  transform: scale(1.04);
+}
 
 .thumbVid {
   width: 100%; height: 100%;
   object-fit: cover; display: block;
 }
 
+/* timeline color-wash — sweeps across the whole card background left→right */
 .sweep {
   position: absolute;
   inset: 0;
@@ -188,9 +206,9 @@
   pointer-events: none;
   background: linear-gradient(
     90deg,
-    rgba(217,24,106,0.70) 0%,
-    rgba(217,24,106,0.35) 40%,
-    rgba(217,24,106,0.08) 100%
+    rgba(217, 24, 106, 0.70) 0%,
+    rgba(217, 24, 106, 0.35) 40%,
+    rgba(217, 24, 106, 0.08) 100%
   );
   transform-origin: left center;
   transform: scaleX(0);
@@ -247,26 +265,42 @@
 /* ════════════════════════════════════════════════
    RESPONSIVE
    ════════════════════════════════════════════════ */
+
+/* ── Tablet (max 1024px) ── */
 @media (max-width: 1024px) {
-  .h1 { font-size: clamp(2rem, 5.5vw, 4.5rem); letter-spacing: 0.2rem; }
-  .thumb { block-size: 5.5rem; inline-size: 10rem; }
+  .h1 {
+    font-size: clamp(2rem, 5.5vw, 4.5rem);
+    letter-spacing: 0.2rem;
+  }
+  .thumb {
+    block-size: 5.5rem;
+    inline-size: 10rem;
+  }
   .cardTitle { font-size: 1.3rem; }
   .cardSub   { font-size: 1.1rem; }
 }
 
+/* ── Mobile (max 600px) ── */
 @media (max-width: 600px) {
   .h1 {
     font-size: clamp(1.6rem, 8vw, 2.8rem);
     letter-spacing: 0.1rem;
     white-space: normal;
+    text-align: center;
   }
-  .sub { font-size: 0.9rem; margin-block-start: 0.8rem; }
+  .sub {
+    font-size: 0.9rem;
+    margin-block-start: 0.8rem;
+  }
+
   .strip {
     column-gap: 0.5rem;
     padding-inline: 0.75rem;
     padding-block: 0.5rem;
+    /* each card takes roughly 40vw so 3 cards = scrollable */
     inline-size: max-content;
   }
+
   .card {
     flex-direction: column;
     align-items: flex-start;
@@ -275,8 +309,16 @@
     row-gap: 0.35rem;
     width: 38vw;
   }
-  .thumb { block-size: 5.5rem; inline-size: 100%; }
-  .labels { padding-inline: 0.1rem; }
+
+  .thumb {
+    block-size: 5.5rem;
+    inline-size: 100%;
+  }
+
+  .labels {
+    padding-inline: 0.1rem;
+  }
+
   .cardTitle {
     font-size: 0.82rem;
     letter-spacing: 0;
@@ -284,8 +326,14 @@
     white-space: normal;
     line-height: 1.2;
   }
-  .cardSub { font-size: 0.75rem; margin-block-start: 0.15rem; white-space: normal; }
-  .logoRow { margin-block: 0.6rem; }
-  .logoBox { block-size: 1rem; inline-size: 1rem; }
-  .year    { font-size: 0.95rem; }
+
+  .cardSub {
+    font-size: 0.75rem;
+    margin-block-start: 0.15rem;
+    white-space: normal;
+  }
+
+  .logoRow  { margin-block: 0.6rem; }
+  .logoBox  { block-size: 1rem; inline-size: 1rem; }
+  .year     { font-size: 0.95rem; }
 }
