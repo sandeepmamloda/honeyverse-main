@@ -1,5 +1,232 @@
-.heroawards-main{
-    height:100svh;
-    width:100%;
-    background-color:lightblue;
+/* ══════════════════════════════
+   BASE
+══════════════════════════════ */
+.heroawards-main {
+  height: 100svh;
+  width: 100%;
+  position: relative;
+}
+
+.heroawards-video-wrapper {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.awards-video {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.textual-content {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 99;
+  top: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  padding-block-start: 16rem;
+  padding-inline-start: 8rem;
+  /* padding-inline-end: 2rem; */
+  padding-block-end: 2rem;
+}
+
+/* ── TOP BADGE ── */
+.top {
+  height: fit-content;
+  width: fit-content;
+  padding: 0.4rem 0.5rem;
+  border: solid 0.01rem rgba(217, 24, 106, 1);
+}
+
+.top h3 {
+  color: rgba(217, 24, 106, 1);
+  font-family: "consola";
+  font-size: clamp(0.65rem, 1.2vw, 1rem);
+  line-height: 100%;
+  letter-spacing: 0.2rem;
+  font-weight: 100;
+  text-transform: uppercase;
+}
+
+/* ── HEADINGS ── */
+.textual-content .middle {
+  height: fit-content;
+  width: fit-content;
+  margin-block-start: 3rem;
+}
+
+.textual-content .middle h1 {
+  font-family: "boldonse";
+  font-size: clamp(3rem, 9vw, 10rem);
+  line-height: 140%;
+  letter-spacing: 0.01rem;
+  color: #fff;
+}
+
+.textual-content .bottom {
+  height: fit-content;
+  width: fit-content;
+}
+
+.textual-content .bottom h1 {
+  font-family: "boldonse";
+  font-size: clamp(3rem, 9vw, 10rem);
+  line-height: 140%;
+  letter-spacing: 0.3rem;
+  color: transparent;
+  -webkit-text-stroke: 0.2px #e0195a;
+}
+
+/* ── DESCRIPTION BOX ── */
+.bottom-last {
+  height: fit-content;
+  width: fit-content;
+  max-width: 40rem;
+  margin-inline-start: auto;
+  background: rgba(255, 255, 255, 0.3);
+  border-left: solid 0.3rem rgba(217, 24, 106, 1);
+  padding-inline-start: 1rem;
+  padding-inline-end: 3rem;
+  padding-block: 1rem;
+  margin-block-start: 1rem;
+}
+
+.bottom-last h2 {
+  color: rgba(255, 255, 255, 1);
+  line-height: 120%;
+  font-family: "interbold";
+  font-size: clamp(0.85rem, 1.5vw, 1.6rem);
+  font-weight: normal;
+}
+
+/* ══════════════════════════════
+   TABLET  (≤ 1024px)
+══════════════════════════════ */
+@media (max-width: 1024px) {
+  .textual-content {
+    padding-inline-start: 4rem;
+    padding-inline-end: 2rem;
+  }
+
+  .textual-content .middle {
+    margin-block-start: 2rem;
+  }
+
+  .bottom-last {
+    margin-inline-start: 0;
+    max-width: 100%;
+    padding-inline-end: 2rem;
+    margin-block-start: auto;
+  }
+}
+
+/* ══════════════════════════════
+   MOBILE  (≤ 640px)
+══════════════════════════════ */
+@media (max-width: 640px) {
+  .textual-content {
+    padding-inline-start: 1.5rem;
+    padding-inline-end: 1.5rem;
+    padding-block-end: 1.5rem;
+  }
+
+  .top h3 {
+    letter-spacing: 0.1rem;
+  }
+
+  .textual-content .middle {
+    margin-block-start: clamp(1rem, 3vh, 2rem);
+  }
+
+  .textual-content .middle h1 {
+    /* line-height: 110%; */
+  }
+
+  .textual-content .bottom h1 {
+    line-height: 110%;
+    -webkit-text-stroke-width: 0.5px;
+  }
+
+  .bottom-last {
+    margin-inline-start: 0;
+    max-width: 100%;
+    padding-inline-end: 1rem;
+    margin-block-start: auto;
+  }
+
+  .bottom-last h2 {
+    font-size: clamp(0.8rem, 3.5vw, 1rem);
+  }
+}
+
+/* ══════════════════════════════
+   VERY SMALL  (≤ 375px)
+══════════════════════════════ */
+@media (max-width: 375px) {
+  .textual-content {
+    padding-inline-start: 1rem;
+    padding-inline-end: 1rem;
+  }
+
+  .textual-content .middle h1,
+  .textual-content .bottom h1 {
+    font-size: clamp(2.4rem, 11vw, 3.5rem);
+  }
+}
+
+/* ══════════════════════════════
+   HEIGHT-BASED (short screens)
+══════════════════════════════ */
+
+/* starts compressing just before layout breaks */
+@media (max-height: 944px) {
+  .textual-content {
+    padding-block-start: 12rem;
+  }
+
+  .textual-content .middle {
+    margin-block-start: clamp(1rem, 2vh, 3rem);
+  }
+}
+
+@media (max-height: 700px) {
+  .textual-content {
+    padding-block-start: clamp(3.5rem, 12vh, 8rem);
+  }
+
+  .textual-content .middle {
+    margin-block-start: 1rem;
+  }
+
+  .textual-content .middle h1,
+  .textual-content .bottom h1 {
+    font-size: clamp(2.5rem, 8vw, 8rem);
+    /* line-height: 120%; */
+  }
+}
+
+@media (max-height: 500px) {
+  .textual-content {
+    padding-block-start: clamp(2.5rem, 8vh, 5rem);
+  }
+
+  .textual-content .middle {
+    margin-block-start: 0.5rem;
+  }
+
+  .textual-content .middle h1,
+  .textual-content .bottom h1 {
+    font-size: clamp(2rem, 7vw, 6rem);
+    /* line-height: 110%; */
+  }
+
+  .bottom-last {
+    display: none;
+  }
 }

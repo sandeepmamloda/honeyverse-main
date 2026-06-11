@@ -1,0 +1,244 @@
+/* ══════════════════════════════
+   SECTION
+══════════════════════════════ */
+.aws-section {
+  width: 100%;
+  background-color: transparent;
+  padding-block: 3rem;
+  padding-inline: 4rem;
+  font-family: "interbold", sans-serif;
+  line-height: 100%;
+  max-width:110rem;
+  padding-inline:2rem;
+  margin-inline:auto;
+}
+
+/* ══════════════════════════════
+   HEADER
+══════════════════════════════ */
+.aws-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-block-end: 3rem;
+}
+
+.aws-header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.aws-icon {
+  flex-shrink: 0;
+}
+
+.aws-title {
+  font-family: "interblack";
+  font-size: 3rem;
+  color: #f5c200;
+  font-weight: 900;
+  letter-spacing: 0rem;
+  line-height: 100%;
+  text-transform: uppercase;
+}
+
+.aws-tag {
+  font-family: "consola", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08rem;
+  color: #000;
+  text-transform: uppercase;
+  line-height: 100%;
+}
+
+/* ══════════════════════════════
+   LIST
+══════════════════════════════ */
+.aws-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.aws-row {
+  display: flex;
+  align-items: center;
+  column-gap: 6rem;
+  padding-block: 3rem;
+  border-bottom: 0.5px solid rgba(217, 24, 106, 0.2);
+  cursor: pointer;
+  transition: background 0.2s ease;
+  padding-inline-end:2rem;
+}
+
+.aws-row:first-child {
+  /* border-top: 0.5px solid rgba(217, 24, 106, 0.2); */
+}
+
+.aws-row:hover {
+  background: rgba(217, 24, 106, 0.03);
+}
+
+/* ══════════════════════════════
+   YEAR — default black, hover pink
+══════════════════════════════ */
+.aws-year {
+  font-family: "consola";
+  font-size: 1.1rem;
+  color: #111;
+  min-width: 3.5rem;
+  letter-spacing: 0.02rem;
+  line-height: 100%;
+  transition: color 0.2s ease;
+}
+
+.aws-row:hover .aws-year {
+  color: rgba(217, 24, 106, 1);
+}
+
+/* ══════════════════════════════
+   CENTER — festival + award
+══════════════════════════════ */
+.aws-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.aws-festival {
+  font-family: "interblack";
+  font-size: 2rem;
+  color: #f5c200;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0rem;
+  line-height: 100%;
+  transition: color 0.2s ease;
+}
+
+.aws-row:hover .aws-festival {
+  color: rgba(217, 24, 106, 1);
+}
+
+.aws-award {
+  font-family: "consola", monospace;
+  font-size: clamp(0.6rem, 1vw, 0.75rem);
+  color: #888;
+  letter-spacing: 0.09rem;
+  text-transform: uppercase;
+  line-height: 100%;
+  transition: color 0.2s ease;
+}
+
+.aws-row:hover .aws-award {
+  color: #111;
+}
+
+/* ══════════════════════════════
+   RIGHT — project + arrow
+══════════════════════════════ */
+.aws-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 14rem;
+  justify-content: flex-end;
+}
+
+.aws-project-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.2rem;
+}
+
+.aws-project-label {
+  font-family: "consola";
+  font-size: 0.73rem;
+  letter-spacing: 0.05rem;
+  color: rgba(0, 0, 0, 1);
+  text-transform: uppercase;
+  line-height: 100%;
+}
+
+.aws-project-name {
+  font-family: "interbold";
+  font-size: clamp(0.75rem, 1.2vw, 0.95rem);
+  color: #f5c200;
+  text-transform: uppercase;
+  letter-spacing: 0rem;
+  text-align: right;
+  line-height: 100%;
+}
+
+/* ══════════════════════════════
+   ARROW — default black, hover pink
+══════════════════════════════ */
+.aws-arrow {
+  color: #111;
+  flex-shrink: 0;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.aws-row:hover .aws-arrow {
+  color: rgba(217, 24, 106, 1);
+  transform: translateX(4px);
+}
+
+/* ══════════════════════════════
+   TABLET  (≤ 1024px)
+══════════════════════════════ */
+@media (max-width: 1024px) {
+  .aws-section {
+    padding-inline: 2.5rem;
+  }
+
+  .aws-right {
+    min-width: 10rem;
+  }
+}
+
+/* ══════════════════════════════
+   MOBILE  (≤ 640px)
+══════════════════════════════ */
+@media (max-width: 640px) {
+  .aws-section {
+    padding-inline: 1.25rem;
+    padding-block: 2rem;
+  }
+
+  .aws-row {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding-block: 1.2rem;
+  }
+
+  .aws-year {
+    min-width: 2.5rem;
+  }
+
+  .aws-center {
+    flex: 1 1 60%;
+  }
+
+  .aws-right {
+    width: 100%;
+    min-width: unset;
+    justify-content: flex-start;
+    padding-inline-start: calc(2.5rem + 1rem);
+  }
+
+  .aws-project-wrap {
+    align-items: flex-start;
+  }
+
+  .aws-project-name {
+    text-align: left;
+  }
+
+  .aws-tag {
+    display: none;
+  }
+}

@@ -1,7 +1,7 @@
 .header-main {
   inline-size: 100%;
   block-size: fit-content;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   z-index: 100;
@@ -14,7 +14,7 @@
   align-items: center;
   justify-content: space-between;
   padding-inline: 10rem;
-  padding-block: 4rem;
+  padding-block-start: 4rem;
 }
 
 .header-left a,

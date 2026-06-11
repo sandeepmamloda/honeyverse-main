@@ -20,6 +20,20 @@
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: "interblack";
+  src: url("/fonts/inter/static/Inter_18pt-Black.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "interbold";
+  src: url("/fonts/inter/static/Inter_18pt-Bold.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 /* -------inria-serif-------- */
 /* Regular */
 @font-face {
@@ -142,5 +156,45 @@
   src: url("/fonts/anton/Anton-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
+}
+/* ---------------consolas--------------- */
+@font-face {
+  font-family: "consola";
+  src: url("/fonts/consolas/CONSOLA.TTF") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "consolab";
+  src: url("/fonts/consolas/CONSOLAB.TTF") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "consolai";
+  src: url("/fonts/consolas/consolai.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "consolas";
+  src: url("/fonts/consolas/Consolas.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "consolaz";
+  src: url("/fonts/consolas/consolaz.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
   font-display: swap;
 }
