@@ -1,0 +1,275 @@
+/* ══════════════════════════════
+   SECTION
+══════════════════════════════ */
+.labs-section {
+  width: 100%;
+  background-color: transparent;
+  padding-block: 4rem;
+  padding-inline: 4rem;
+  max-width: 110rem;
+  margin-inline: auto;
+}
+
+/* ══════════════════════════════
+   HEADER
+══════════════════════════════ */
+.labs-header {
+  margin-block-end: 3rem;
+}
+
+.labs-eyebrow {
+  display: inline-flex;
+  border: 0.5px solid rgba(217, 24, 106, 1);
+  padding: 0.3rem 1rem;
+  margin-block-end: 1.5rem;
+}
+
+.labs-eyebrow span {
+  font-family: "consola", monospace;
+  font-size: 1rem;
+  letter-spacing: 0.15rem;
+  color: rgba(217, 24, 106, 1);
+  text-transform: uppercase;
+  line-height: 100%;
+}
+
+.labs-title {
+  font-size: clamp(3rem, 8vw, 7rem);
+  line-height: 100%;
+  letter-spacing: -0.01rem;
+}
+
+.labs-title-solid {
+  font-family: "interblack", sans-serif;
+  color: #f5c200;
+  font-weight: 900;
+}
+
+.labs-title-outline {
+  font-family: "interblack", sans-serif;
+  font-weight: 900;
+  line-height: 100%;
+  color: #fdf5f7;
+  text-shadow:
+    0 0 0 rgba(217, 24, 106, 1),
+    1px 1px 0 rgba(217, 24, 106, 1),
+    -1px -1px 0 rgba(217, 24, 106, 1),
+    1px -1px 0 rgba(217, 24, 106, 1),
+    -1px 1px 0 rgba(217, 24, 106, 1),
+    0 1px 0 rgba(217, 24, 106, 1),
+    0 -1px 0 rgba(217, 24, 106, 1),
+    1px 0 0 rgba(217, 24, 106, 1),
+    -1px 0 0 rgba(217, 24, 106, 1);
+}
+
+/* ══════════════════════════════
+   GRID
+══════════════════════════════ */
+.labs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+/* ══════════════════════════════
+   CARD
+══════════════════════════════ */
+.labs-card {
+  background: #fff;
+  border-radius: 2rem;
+  padding: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 22rem;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition:
+    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background 0.35s ease;
+  box-shadow: 0 2px 16px rgba(217, 24, 106, 0.1);
+  
+}
+
+.labs-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  background: rgba(217, 24, 106, 1);
+  box-shadow:
+    0 20px 60px rgba(217, 24, 106, 0.4),
+    0 8px 24px rgba(217, 24, 106, 0.3);
+}
+
+/* ── Shimmer layer ── */
+.labs-card-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 100%
+  );
+  background-size: 200% 200%;
+  background-position: -100% -100%;
+  transition: background-position 0.6s ease;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 1.2rem;
+}
+
+.labs-card:hover .labs-card-shimmer {
+  background-position: 100% 100%;
+}
+
+/* ── Top row ── */
+.labs-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-block-end: 1.2rem;
+  position: relative;
+}
+
+.labs-card-years {
+  font-family: "consola", monospace;
+  font-weight:700;
+  font-size: 0.8rem;
+  letter-spacing: 0.05rem;
+  line-height: 100%;
+  color: rgba(217, 24, 106, 1);
+  transition: letter-spacing 0.3s ease, color 0.3s ease;
+}
+
+.labs-card:hover .labs-card-years {
+  letter-spacing: 0.12rem;
+  color: #fff;
+}
+
+/* ── Icon ── */
+.labs-card-icon {
+  color: rgba(217, 24, 106, 0.15);
+  width: 5rem;
+  height: 5rem;
+  flex-shrink: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transition:
+    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+    color 0.3s ease;
+}
+
+.labs-card:hover .labs-card-icon {
+  transform: rotate(15deg) scale(1.15);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* ── Name ── */
+.labs-card-name {
+  font-family: "interblack", sans-serif;
+  font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+  color: #f5c200;
+  text-transform: uppercase;
+  line-height: 120%;
+  letter-spacing: 0rem;
+  font-weight: 900;
+  flex: 1;
+  position: relative;
+  z-index: 1;
+  transition:
+    color 0.3s ease,
+    letter-spacing 0.3s ease;
+}
+
+.labs-card:hover .labs-card-name {
+  letter-spacing: 0.03rem;
+  color: #f5c200;
+}
+
+/* ── Divider ── */
+.labs-card-divider {
+  height: 1px;
+  background: rgba(217, 24, 106, 0.6);
+  margin-block: 1.2rem;
+  margin-block-end:1.7rem;
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s ease;
+  transform: scaleX(1);
+  position: relative;
+  z-index: 1;
+}
+
+.labs-card:hover .labs-card-divider {
+  transform: scaleX(1.03);
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* ── Description ── */
+.labs-card-desc {
+  font-family: "consola", monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  color: #aaa;
+  line-height: 100%;
+  position: relative;
+  z-index: 1;
+  transition: color 0.3s ease, letter-spacing 0.3s ease;
+}
+
+.labs-card:hover .labs-card-desc {
+  color: rgba(255, 255, 255, 1);
+  letter-spacing: 0.15rem;
+}
+
+/* ══════════════════════════════
+   TABLET  (≤ 1024px)
+══════════════════════════════ */
+@media (max-width: 1024px) {
+  .labs-section {
+    padding-inline: 2.5rem;
+  }
+
+  .labs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ══════════════════════════════
+   MOBILE  (≤ 640px)
+══════════════════════════════ */
+@media (max-width: 640px) {
+  .labs-section {
+    padding-inline: 1.25rem;
+    padding-block: 2.5rem;
+  }
+
+  .labs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .labs-card {
+    min-height: 14rem;
+  }
+
+  .labs-title {
+    font-size: clamp(2.5rem, 10vw, 4rem);
+  }
+}
+
+/* ══════════════════════════════
+   REDUCED MOTION
+══════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .labs-card,
+  .labs-card-icon,
+  .labs-card-name,
+  .labs-card-years,
+  .labs-card-divider,
+  .labs-card-desc,
+  .labs-card-shimmer {
+    transition: none;
+  }
+}

@@ -19,18 +19,18 @@ import "./globals.css";
 import { usePathname } from "next/navigation";
 import Navbar from "@/components/navbar/navbar";
 import Loader from "@/components/loader/loader";
-// import Footer from "@/components/footer/Footer";
+import Footer from "@/components/footer/footer";
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
 
   return (
     <html lang="en">
-      <body>
+      <body style={{backgroundColor:"rgba(255, 249, 255, 1)"}}>
         <Loader />
         <Navbar/>
         {children}
-        {/* {pathname !== "/" && <Footer />} */}
+        {pathname !== "/" && <Footer />}
       </body>
     </html>
   );

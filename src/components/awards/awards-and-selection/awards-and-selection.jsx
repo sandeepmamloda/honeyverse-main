@@ -31,6 +31,7 @@ const awardsData = [
     award: "GOLDEN BEAR NOMINEE",
     project: "STEEL & GLASS",
   },
+  
 ];
 
 /* ── Inline SVG Icons ── */
