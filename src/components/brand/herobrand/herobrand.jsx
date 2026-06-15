@@ -1,8 +1,9 @@
-import styles from "./heroawards.module.css";
+import styles from "./herobrand.module.css";
 
 const headings = [
-  { text: "CRITICAL", style: "solid" },
-  { text: "ACCLAIM", style: "outline" },
+  { text: "VISUAL", style: "solid" },
+  { text: "STORY", style: "outline" },
+  { text: "TELLING", style: "outline" },
 ];
 
 const Heroawards = () => {

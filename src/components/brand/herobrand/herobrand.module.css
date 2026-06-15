@@ -63,7 +63,7 @@
 
 .textual-content .middle h1 {
   font-family: "boldonse";
-  font-size: clamp(3rem, 9vw, 10rem);
+  font-size: clamp(3rem, 9vw, 9rem);
   line-height: 140%;
   letter-spacing: 0.01rem;
   color: #fff;
@@ -76,7 +76,7 @@
 
 .textual-content .bottom h1 {
   font-family: "boldonse";
-  font-size: clamp(3rem, 9vw, 10rem);
+  font-size: clamp(3rem, 9vw, 9rem);
   line-height: 140%;
   letter-spacing: 0.3rem;
   color: transparent;
@@ -91,11 +91,13 @@
   margin-inline-start: auto;
   background: rgba(255, 255, 255, 0.3);
   border-left: solid 0.3rem rgba(217, 24, 106, 1);
-  border-right:solid 0.3rem rgba(217, 24, 106, 1);
   padding-inline-start: 1rem;
   padding-inline-end: 3rem;
   padding-block: 1rem;
   margin-block-start: 1rem;
+  position: absolute;
+    right: 0;
+    bottom: 2rem;
 }
 
 .bottom-last h2 {
@@ -176,6 +178,9 @@
     -webkit-text-stroke-width: 0.5px;
     text-align: center;
   }
+  .textual-content .bottom:last-child h1{
+    color:rgba(196, 0, 83, 1);
+  }
 
   .bottom-last {
     margin-inline-start: 0;
@@ -183,6 +188,7 @@
     padding-inline-end: 1rem;
     margin-block-start: 0;
     align-self: stretch;
+    border-right:solid 0.3rem rgba(217, 24, 106, 1);
   }
 
   .bottom-last h2 {

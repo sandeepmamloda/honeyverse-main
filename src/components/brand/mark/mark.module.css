@@ -1,0 +1,339 @@
+/* ══════════════════════════════
+   BRAND SECTION MAIN
+══════════════════════════════ */
+.brand-main {
+  width: 100%;
+  background-color: #f7f2f7;
+  display: flex;
+  flex-direction: column;
+  padding-block: 5rem;
+  padding-inline: 6rem;
+  gap: 4rem;
+}
+
+/* ══════════════════════════════
+   PART 1 — THE MARK
+══════════════════════════════ */
+.brand-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4rem;
+}
+
+.brand-top-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  flex-shrink: 0;
+}
+
+.badge {
+  border: .01rem solid rgba(255, 119, 34, 0.5);
+  width: fit-content;
+  height: fit-content;
+  padding: .4rem .5rem;
+}
+
+.badge span {
+  color: rgba(255, 119, 34, 1);
+  letter-spacing: .2rem;
+  text-transform: uppercase;
+  font-family: consola;
+  font-size: clamp(.65rem, 1.2vw, 1rem);
+  font-weight: 100;
+  line-height: 100%;
+}
+
+.mark-heading h1 {
+  font-family: "boldonse", sans-serif;
+  font-size: clamp(3.5rem, 7.5vw, 5rem);  /* ← kam kiya */
+  line-height: 95%;
+  white-space: nowrap;
+  margin-top:2rem;
+}
+.mark-heading h1 span{
+  letter-spacing: 0.7rem;
+  line-height:150%;
+}
+.the {
+  color: rgba(255, 202, 26, 1);
+}
+
+.mark {
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(217, 24, 106, 1);
+}
+
+.brand-top-right {
+  max-width: 32rem;
+  flex-shrink: 0;
+}
+
+.brand-top-right p {
+  font-family: "consola", monospace;
+  font-size: 1.6rem;  /* ← kam kiya */
+  font-weight:400;
+  letter-spacing: 0.07rem;
+  color: rgba(0, 0, 0, 1);
+  text-transform: uppercase;
+  line-height: 130%;
+}
+
+/* ══════════════════════════════
+   DIVIDER
+══════════════════════════════ */
+.divider {
+  width: 100%;
+  height: 0.5px;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+/* ══════════════════════════════
+   PART 2 — CARDS
+══════════════════════════════ */
+.brand-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.card-visual {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-visual--logo {
+  background: #111;
+  background-image:
+    linear-gradient(rgba(0,200,100,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,200,100,0.08) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.card-visual--typo {
+  background: #f0e8d8;
+}
+
+.card-visual--palette {
+  background: #111;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.fig-label {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  font-family: "consola", monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.08rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+}
+
+.logo-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-text {
+  font-family: "boldonse", sans-serif;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  color: rgba(255, 202, 26, 1);
+  text-align: center;
+  line-height: 110%;
+  letter-spacing: 0.05rem;
+}
+
+.typo-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.typo-big {
+  font-family: "boldonse", sans-serif;
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  color: #111;
+  letter-spacing: -0.02rem;
+  line-height: 1;
+}
+
+.typo-small {
+  font-family: "consola", monospace;
+  font-size: 0.7rem;
+  color: rgba(217, 24, 106, 0.7);
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+}
+
+.palette-preview {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.swatch-dark {
+  flex: 1;
+  background: #323232;
+  display: flex;
+  align-items: flex-end;
+  padding: 0.5rem 0.7rem;
+}
+
+.swatch-pink {
+  flex: 1;
+  background: rgba(217, 24, 106, 1);
+  display: flex;
+  align-items: flex-end;
+  padding: 0.5rem 0.7rem;
+}
+
+.swatch-dark span,
+.swatch-pink span {
+  font-family: "consola", monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.05rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+}
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.card-info h3 {
+  font-family: "consola", monospace;
+  font-size: clamp(0.7rem, 1vw, 0.85rem);
+  letter-spacing: 0.08rem;
+  color: rgba(217, 24, 106, 1);
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.card-info p {
+  font-family: "consola", monospace;
+  font-size: clamp(0.6rem, 0.9vw, 0.72rem);
+  letter-spacing: 0.04rem;
+  color: rgba(0, 0, 0, 0.6);
+  text-transform: uppercase;
+  line-height: 160%;
+}
+
+/* ══════════════════════════════
+   PART 3 — MANIFESTO
+══════════════════════════════ */
+.brand-manifesto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding-block-start: 2rem;
+}
+
+.manifesto-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+  max-width: 28rem;
+}
+
+.manifesto-intro p {
+  font-family: "interbold", sans-serif;
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  color: rgba(0, 0, 0, 0.7);
+  line-height: 150%;
+  text-align: center;
+}
+
+.manifesto-quote {
+  font-family: "interbold", sans-serif;
+  font-size: clamp(1.8rem, 4.5vw, 4rem);
+  color: rgba(217, 24, 106, 0.35);
+  line-height: 120%;
+  text-align: center;
+  font-style: italic;
+  max-width: 90%;
+  margin: 0;
+  border: none;
+  padding: 0;
+}
+
+/* ══════════════════════════════
+   TABLET  (≤ 1024px)
+══════════════════════════════ */
+@media (max-width: 1024px) {
+  .brand-main {
+    padding-inline: 3rem;
+    gap: 3rem;
+  }
+
+  .brand-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+
+  .brand-top-right {
+    max-width: 100%;
+  }
+
+  .mark-heading h1 {
+    font-size: clamp(3rem, 9vw, 7rem);
+    white-space: normal;
+  }
+
+  .brand-cards {
+    gap: 1.5rem;
+  }
+}
+
+/* ══════════════════════════════
+   MOBILE  (≤ 640px)
+══════════════════════════════ */
+@media (max-width: 640px) {
+  .brand-main {
+    padding-inline: 1.5rem;
+    padding-block: 3rem;
+    gap: 2.5rem;
+  }
+
+  .mark-heading h1 {
+    font-size: clamp(2.8rem, 13vw, 5rem);
+    white-space: normal;
+  }
+
+  .brand-cards {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .manifesto-quote {
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+    max-width: 100%;
+  }
+
+  .brand-manifesto {
+    gap: 1.5rem;
+  }
+}
