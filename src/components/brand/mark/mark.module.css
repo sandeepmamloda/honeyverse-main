@@ -3,11 +3,12 @@
 ══════════════════════════════ */
 .brand-main {
   width: 100%;
-  background-color: #f7f2f7;
   display: flex;
   flex-direction: column;
   padding-block: 5rem;
-  padding-inline: 6rem;
+  padding-inline: 2rem;
+  max-width:110rem;
+  margin-inline:auto;
   gap: 4rem;
 }
 
@@ -29,14 +30,14 @@
 }
 
 .badge {
-  border: .01rem solid rgba(255, 119, 34, 0.5);
+  border: .01rem solid rgba(196, 0, 83, 1);
   width: fit-content;
   height: fit-content;
   padding: .4rem .5rem;
 }
 
 .badge span {
-  color: rgba(255, 119, 34, 1);
+  color: rgba(196, 0, 83, 1);
   letter-spacing: .2rem;
   text-transform: uppercase;
   font-family: consola;
@@ -47,15 +48,17 @@
 
 .mark-heading h1 {
   font-family: "boldonse", sans-serif;
-  font-size: clamp(3.5rem, 7.5vw, 5rem);  /* ← kam kiya */
+  font-size: clamp(3.5rem, 7.5vw, 5rem);
   line-height: 95%;
   white-space: nowrap;
-  margin-top:2rem;
+  margin-top: 2rem;
 }
-.mark-heading h1 span{
+
+.mark-heading h1 span {
   letter-spacing: 0.7rem;
-  line-height:150%;
+  line-height: 150%;
 }
+
 .the {
   color: rgba(255, 202, 26, 1);
 }
@@ -72,8 +75,8 @@
 
 .brand-top-right p {
   font-family: "consola", monospace;
-  font-size: 1.6rem;  /* ← kam kiya */
-  font-weight:400;
+  font-size: 1.6rem;
+  font-weight: 400;
   letter-spacing: 0.07rem;
   color: rgba(0, 0, 0, 1);
   text-transform: uppercase;
@@ -83,10 +86,15 @@
 /* ══════════════════════════════
    DIVIDER
 ══════════════════════════════ */
+.divider-wrapper {
+  width: calc(100% + 12rem);
+  margin-inline: -6rem;
+}
+
 .divider {
   width: 100%;
-  height: 0.5px;
-  background: rgba(0, 0, 0, 0.12);
+  height: 1px;
+  background: rgba(0, 0, 0, 0.85);
 }
 
 /* ══════════════════════════════
@@ -95,7 +103,7 @@
 .brand-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  gap: 1.3rem;
 }
 
 .card {
@@ -115,17 +123,24 @@
 }
 
 .card-visual--logo {
-  background: #111;
+  background: #000;
   background-image:
-    linear-gradient(rgba(0,200,100,0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,200,100,0.08) 1px, transparent 1px);
-  background-size: 20px 20px;
+    linear-gradient(rgba(179, 179, 179, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(179, 179, 179, 0.1) 1px, transparent 1px);
+  background-size: 20px 10px;
 }
 
 .card-visual--typo {
-  background: #f0e8d8;
+  background: rgba(217, 24, 106, 1);
+  position:relative;
 }
-
+.card-visual--typo::after{
+  position:absolute;
+  height:100%;
+  width:100%;
+  background:rgba(217, 24, 106, 1);
+  z-index: 9999;
+}
 .card-visual--palette {
   background: #111;
   flex-direction: column;
@@ -135,19 +150,27 @@
 
 .fig-label {
   position: absolute;
-  top: 0.6rem;
-  left: 0.6rem;
-  font-family: "consola", monospace;
-  font-size: 0.6rem;
+  top: 1.8rem;
+  left: 1rem;
+  font-family: "interregular";
+  font-size: 1rem;
   letter-spacing: 0.08rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 1);
   text-transform: uppercase;
+  z-index: 9999;
 }
-
+.card-visual--typo .fig-label:nth-child(2){
+  color: #121212;
+}
 .logo-preview {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.logo-svg {
+  width: 100%;
+  height: auto;
 }
 
 .logo-text {
@@ -193,7 +216,8 @@
   flex: 1;
   background: #323232;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
   padding: 0.5rem 0.7rem;
 }
 
@@ -201,16 +225,21 @@
   flex: 1;
   background: rgba(217, 24, 106, 1);
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
   padding: 0.5rem 0.7rem;
 }
 
-.swatch-dark span,
+.swatch-dark span{
+  color: rgba(82, 82, 82, 1);
+  font-family: "consola", monospace;
+  font-size:1rem;
+}
 .swatch-pink span {
   font-family: "consola", monospace;
-  font-size: 0.6rem;
+  font-size: 0.8rem;
   letter-spacing: 0.05rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(0, 0, 0, 1);
   text-transform: uppercase;
 }
 
@@ -221,16 +250,17 @@
 }
 
 .card-info h3 {
-  font-family: "consola", monospace;
-  font-size: clamp(0.7rem, 1vw, 0.85rem);
-  letter-spacing: 0.08rem;
-  color: rgba(217, 24, 106, 1);
+  font-family: "interblack";
+  font-size: 1.6rem;
+  letter-spacing: 0.02rem;
+  color: rgba(255, 202, 26, 1);
   text-transform: uppercase;
   line-height: 1;
 }
 
 .card-info p {
-  font-family: "consola", monospace;
+  font-family: "consola";
+  font-weight: 600;
   font-size: clamp(0.6rem, 0.9vw, 0.72rem);
   letter-spacing: 0.04rem;
   color: rgba(0, 0, 0, 0.6);
@@ -259,20 +289,21 @@
 }
 
 .manifesto-intro p {
-  font-family: "interbold", sans-serif;
-  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  font-family: "intersemibold";
+  font-size: 1.6rem;
   color: rgba(0, 0, 0, 0.7);
-  line-height: 150%;
+  letter-spacing: -0.08rem;
+  line-height: 120%;
   text-align: center;
 }
 
 .manifesto-quote {
-  font-family: "interbold", sans-serif;
-  font-size: clamp(1.8rem, 4.5vw, 4rem);
+  font-family: "intersemibold";
+  font-size:5.5rem;
+  letter-spacing:-0.09rem;
   color: rgba(217, 24, 106, 0.35);
   line-height: 120%;
   text-align: center;
-  font-style: italic;
   max-width: 90%;
   margin: 0;
   border: none;
@@ -306,6 +337,11 @@
   .brand-cards {
     gap: 1.5rem;
   }
+
+  .divider-wrapper {
+    width: calc(100% + 6rem);
+    margin-inline: -3rem;
+  }
 }
 
 /* ══════════════════════════════
@@ -335,5 +371,10 @@
 
   .brand-manifesto {
     gap: 1.5rem;
+  }
+
+  .divider-wrapper {
+    width: calc(100% + 3rem);
+    margin-inline: -1.5rem;
   }
 }
