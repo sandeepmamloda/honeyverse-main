@@ -1,20 +1,20 @@
 /* ══════════════════════════════
-   BASE & DESKTOP (Your Exact Layout)
+   BASE & DESKTOP (Team Layout)
 ══════════════════════════════ */
-.heroawards-main {
+.team-main {
   height: 100svh;
   width: 100%;
   position: relative;
-  overflow: hidden; /* Added to keep 100svh intact on all devices */
+  overflow: hidden;
 }
 
-.heroawards-video-wrapper {
+.team-video-wrapper {
   height: 100%;
   width: 100%;
   position: relative;
 }
 
-.awards-video {
+.team-video {
   height: 100%;
   width: 100%;
   object-fit: cover;
@@ -30,23 +30,23 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between; /* Vertically pushes description box downwards naturally */
+  justify-content: space-between;
 
-  padding-block-start: 16rem;
+  padding-block-start: 13rem;
   padding-inline-start: 8rem;
-  padding-block-end: 4rem; /* Safe padding at bottom */
+  padding-block-end: 4rem;
   box-sizing: border-box;
 }
 
 /* ── TOP BADGE ── */
-.top {
+.top-badge {
   height: fit-content;
   width: fit-content;
   padding: 0.4rem 0.5rem;
   border: solid 0.01rem rgba(217, 24, 106, 1);
 }
 
-.top h3 {
+.top-badge h3 {
   color: rgba(217, 24, 106, 1);
   font-family: "consola";
   font-size: clamp(0.65rem, 1.2vw, 1rem);
@@ -56,14 +56,17 @@
   text-transform: uppercase;
 }
 
-/* ── HEADINGS ── */
-.textual-content .middle {
+/* ── HEADINGS TYPOGRAPHY ── */
+.row-solid, .row-outline, .row-pink {
   height: fit-content;
   width: fit-content;
-  margin-block-start: 3rem;
 }
 
-.textual-content .middle h1 {
+.row-solid {
+  margin-block-start: 3rem; /* Dynamic gap after badge on desktop */
+}
+
+.row-solid h1 {
   font-family: "boldonse";
   font-size: clamp(3rem, 9vw, 9rem);
   line-height: 140%;
@@ -71,12 +74,7 @@
   color: #fff;
 }
 
-.textual-content .bottom {
-  height: fit-content;
-  width: fit-content;
-}
-
-.textual-content .bottom h1 {
+.row-outline h1 {
   font-family: "boldonse";
   font-size: clamp(3rem, 9vw, 9rem);
   line-height: 140%;
@@ -85,13 +83,7 @@
   -webkit-text-stroke: 0.2px #e0195a;
 }
 
-/* Global Pink Styling for "TELLING" across Desktop, Tab, & Mobile */
-.textual-content .bottom-pink {
-  height: fit-content;
-  width: fit-content;
-}
-
-.textual-content .bottom-pink h1 {
+.row-pink h1 {
   font-family: "boldonse";
   font-size: clamp(3rem, 9vw, 9rem);
   line-height: 140%;
@@ -100,7 +92,7 @@
 }
 
 /* ── DESCRIPTION BOX ── */
-.bottom-last {
+.description-box {
   height: fit-content;
   width: fit-content;
   max-width: 40rem;
@@ -118,7 +110,7 @@
   bottom: 4rem;
 }
 
-.bottom-last h2 {
+.description-box h2 {
   color: rgba(255, 255, 255, 1);
   line-height: 120%;
   font-family: "interbold";
@@ -135,11 +127,11 @@
     padding-inline-end: 2rem;
   }
 
-  .textual-content .middle {
+  .row-solid {
     margin-block-start: 2rem;
   }
 
-  .bottom-last {
+  .description-box {
     margin-inline-start: 0;
     max-width: 100%;
     padding-inline-end: 2rem;
@@ -152,64 +144,51 @@
 @media (max-width: 640px) {
   .textual-content {
     padding-inline: 1.5rem;
-    padding-block-start: 2rem; /* Reduced to give flex-1 complete centering freedom */
+    padding-block-start: 2rem;
     padding-block-end: 2.5rem;
     align-items: center;
     justify-content: space-between;
     row-gap: 0;
   }
 
-  /* badge + headings exact viewport vertical center alignment */
   .headings-group {
     display: flex;
-    row-gap:0.5rem;
+    row-gap: 0.5rem;
     flex-direction: column;
     align-items: center;
     flex: 1;
-    justify-content: center; /* Centers the whole cluster vertically within 100svh space */
+    justify-content: center; /* Exactly centers headings vertically in 100svh space */
   }
 
-  .top {
+  .top-badge {
     align-self: center;
-    margin-bottom: 2rem; /* Cleaned oversized spacing */
+    margin-bottom: 2rem;
   }
 
-  .top h3 {
+  .top-badge h3 {
     letter-spacing: 0.1rem;
   }
 
-  .textual-content .middle {
+  .row-solid {
     margin-block-start: 0;
     margin-inline: auto;
   }
 
-  .textual-content .middle h1 {
-    line-height: 140%;
+  .row-solid h1, .row-outline h1, .row-pink h1 {
+    line-height: 130%;
     text-align: center;
   }
 
-  .textual-content .bottom {
-    margin-inline: auto;
-  }
-
-  .textual-content .bottom h1 {
-    line-height: 140%;
+  .row-outline h1 {
     -webkit-text-stroke-width: 0.5px;
-    text-align: center;
   }
 
-  /* Target both standard and pink variant text headers in mobile view */
-  .textual-content .bottom-pink {
+  .row-pink {
     margin-inline: auto;
   }
-  
-  .textual-content .bottom-pink h1 {
-    line-height: 140%;
-    text-align: center;
-  }
 
-  .bottom-last {
-    position: relative; /* Removes absolute floating overlay conflict over headings */
+  .description-box {
+    position: relative;
     right: auto;
     bottom: auto;
     margin-inline-start: 0;
@@ -217,10 +196,11 @@
     padding-inline-end: 1rem;
     margin-block-start: 0;
     align-self: stretch;
+    border-left: none;
     border-right: solid 0.3rem rgba(217, 24, 106, 1);
   }
 
-  .bottom-last h2 {
+  .description-box h2 {
     font-size: clamp(0.8rem, 3.5vw, 1rem);
     text-align: center;
   }
@@ -235,22 +215,20 @@
     padding-inline-end: 1rem;
   }
 
-  .textual-content .middle h1,
-  .textual-content .bottom h1,
-  .textual-content .bottom-pink h1 {
+  .row-solid h1, .row-outline h1, .row-pink h1 {
     font-size: clamp(2.4rem, 11vw, 3.5rem);
   }
 }
 
 /* ══════════════════════════════
-   HEIGHT-BASED — only desktop/tablet
+   HEIGHT-BASED — Desktop/Tablet optimization
 ══════════════════════════════ */
 @media (max-height: 944px) and (min-width: 641px) {
   .textual-content {
     padding-block-start: 12rem;
   }
 
-  .textual-content .middle {
+  .row-solid {
     margin-block-start: clamp(1rem, 2vh, 3rem);
   }
 }

@@ -1,0 +1,333 @@
+/* ══════════════════════════════
+   BASE & DESKTOP (Brutalist Pink Table)
+══════════════════════════════ */
+.slate-main {
+  width: 100%;
+  min-height: 100vh;
+  background-color: rgba(217, 24, 106, 1); /* Your exact Pink background color */
+  padding-inline: 8rem;
+  padding-block: 6rem 4rem;
+  box-sizing: border-box;
+  position: relative;
+  overflow-x: hidden;
+  font-family: sans-serif;
+}
+
+/* ── WATERMARK OVERLAY IMAGE ── */
+.watermark-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  opacity: 0.15; /* Keeps watermark sublte inside pink space */
+}
+
+.watermark-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── HEADER LAYOUT ── */
+.slate-header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+  padding-bottom: 2.5rem;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.badge {
+  width: fit-content;
+  padding: 0.3rem 0.5rem;
+  border: solid 0.01rem #FFDC00; /* Yellow accent line for top slate */
+}
+
+.badge h3 {
+  color: #FFDC00;
+  font-family: "consola", monospace;
+  font-size: clamp(0.65rem, 1.1vw, 0.9rem);
+  line-height: 100%;
+  letter-spacing: 0.15rem;
+  font-weight: normal;
+  margin: 0;
+}
+
+.main-title {
+  font-family: "boldonse", "Arial Black", Arial, sans-serif;
+  font-size: clamp(4rem, 8.5vw, 8.5rem);
+  line-height: 85%;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.text-yellow {
+  color: #FFDC00;
+  margin-left: 0.2rem;
+}
+
+.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+  max-width: 25rem;
+  text-align: right;
+}
+
+.icon-wrapper {
+  margin-bottom: -0.5rem;
+}
+
+.tracking-notice {
+  font-family: "consola", monospace;
+  font-size: clamp(0.65rem, 0.9vw, 0.95rem);
+  line-height: 140%;
+  color: #111; /* Dark contrast notice */
+  font-weight: bold;
+  letter-spacing: 0.05rem;
+  margin: 0;
+}
+
+/* ── DIVIDER CALCULATION ── */
+.divider-line {
+  width: calc(100% + 16rem);
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.4);
+  position: relative;
+  left: -8rem;
+  z-index: 2;
+  margin-bottom: 2rem;
+}
+
+/* ── TABLE ROW GRID ARRANGEMENT ── */
+.slate-table {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  width: calc(100% + 16rem); /* Bleed horizontal lines matching structure */
+  position: relative;
+  left: -8rem;
+}
+
+.table-row {
+  display: flex;
+  width: 100%;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  padding-inline: 8rem;
+  padding-block: 3.5rem;
+  box-sizing: border-box;
+  color: #fff;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Active Row Inversion Properties (Neon Horizons look) */
+.row-active {
+  background-color: #fff;
+  color: #000;
+}
+
+/* Grid Columns Dimensions */
+.col-status {
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.col-main {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-inline-end: 2rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  padding-left: 2rem;
+}
+
+/* Dynamic line color switch if the row goes active white */
+.row-active .col-main {
+  border-left-color: rgba(0, 0, 0, 0.15);
+}
+
+.col-logline {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  padding-left: 2rem;
+}
+
+.row-active .col-logline {
+  border-left-color: rgba(0, 0, 0, 0.15);
+}
+
+/* ── COLUMN INNER CONTENT STYLES ── */
+.label {
+  font-family: "consola", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.1rem;
+  color: #FFDC00;
+}
+
+.row-active .label {
+  color: #e0195a; /* Pink labels inside inverted white block */
+}
+
+.status-text {
+  font-family: "interbold", sans-serif;
+  font-size: clamp(1.1rem, 1.5vw, 1.6rem);
+  font-weight: bold;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.project-title {
+  font-family: "boldonse", "Arial Black", Arial, sans-serif;
+  font-size: clamp(1.8rem, 2.8vw, 3.2rem);
+  line-height: 100%;
+  letter-spacing: -0.04em;
+  margin: 0;
+}
+
+.credits-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.tag-pill {
+  font-family: "consola", monospace;
+  font-size: 0.75rem;
+  border: 1px solid #fff;
+  padding: 0.25rem 0.6rem;
+  letter-spacing: 0.05rem;
+}
+
+.row-active .tag-pill {
+  border-color: #000;
+}
+
+.director-text {
+  font-family: "consola", monospace;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+}
+
+.logline-text {
+  font-family: "inter", sans-serif;
+  font-size: clamp(0.9rem, 1.1vw, 1.15rem);
+  line-height: 145%;
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* ══════════════════════════════
+   TABLET  (≤ 1024px)
+══════════════════════════════ */
+@media (max-width: 1024px) {
+  .slate-main {
+    padding-inline: 4rem;
+  }
+
+  .divider-line, .slate-table {
+    width: calc(100% + 8rem);
+    left: -4rem;
+  }
+
+  .table-row {
+    padding-inline: 4rem;
+    padding-block: 2.5rem;
+  }
+
+  .col-status { width: 30%; }
+  .col-main { width: 70%; border-right: none; padding-inline-end: 0; }
+  .col-logline { 
+    width: 100%; 
+    border-left: none; 
+    padding-left: 0; 
+    margin-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 1.5rem;
+  }
+  
+  .row-active .col-logline {
+    border-top-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .slate-table {
+    flex-wrap: wrap;
+  }
+  
+  .table-row {
+    flex-wrap: wrap;
+  }
+}
+
+/* ══════════════════════════════
+   MOBILE  (≤ 768px) - Collapse Grid into Stack
+══════════════════════════════ */
+@media (max-width: 768px) {
+  .slate-main {
+    padding-inline: 1.5rem;
+    padding-block: 4rem 3rem;
+  }
+
+  .slate-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+
+  .header-right {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .divider-line, .slate-table {
+    width: calc(100% + 3rem);
+    left: -1.5rem;
+  }
+
+  .table-row {
+    padding-inline: 1.5rem;
+    flex-direction: column;
+    gap: 1.8rem;
+    padding-block: 3rem;
+  }
+
+  .col-status, .col-main, .col-logline {
+    width: 100%;
+    border-left: none;
+    padding-left: 0;
+  }
+
+  .col-logline {
+    margin-top: 0;
+    border-top: none;
+    padding-top: 0;
+  }
+
+  .credits-row {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}

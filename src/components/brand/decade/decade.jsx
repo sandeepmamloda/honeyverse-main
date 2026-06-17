@@ -45,7 +45,16 @@ const Decade = () => {
         <div className={styles["themes-card"]}>
           <div className={styles["themes-card-top"]}>
             <span className={styles["themes-label"]}>THEMES</span>
-            <span className={styles["themes-arrow"]}>↘</span>
+            <svg
+              className={styles["themes-arrow"]}
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <path d="M7 7L17 17" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M17 7V17H7" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </div>
           <h2 className={styles["themes-title"]}>THE SPACES BETWEEN</h2>
           <p className={styles["themes-desc"]}>

@@ -3,7 +3,7 @@ import styles from "./herobrand.module.css";
 const headings = [
   { text: "VISUAL", style: "solid" },
   { text: "STORY", style: "outline" },
-  { text: "TELLING", style: "outline" },
+  { text: "TELLING", style: "outline" }, // Base structure remains same
 ];
 
 const Heroawards = () => {
@@ -33,7 +33,9 @@ const Heroawards = () => {
             <div
               key={index}
               className={
-                heading.style === "outline"
+                index === 2
+                  ? styles["bottom-pink"] // "TELLING" ko har screen size par pink karne ke liye explicit class
+                  : heading.style === "outline"
                   ? styles["bottom"]
                   : styles["middle"]
               }

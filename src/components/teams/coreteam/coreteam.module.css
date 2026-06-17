@@ -1,0 +1,266 @@
+/* ══════════════════════════════
+   BASE & DESKTOP (Brutalist Grid Layout)
+══════════════════════════════ */
+.core-main {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #fff;
+  padding-inline: 8rem;
+  padding-block: 6rem 4rem;
+  box-sizing: border-box;
+  font-family: sans-serif;
+  overflow-x: hidden; /* Prevent any minor bleeding issues on window resizes */
+}
+
+/* ── HEADER LAYOUT ── */
+.core-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+  padding-bottom: 1.5rem;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.badge {
+  width: fit-content;
+  padding: 0.3rem 0.5rem;
+  border: solid 0.01rem rgba(217, 24, 106, 1);
+}
+
+.badge h3 {
+  color: rgba(217, 24, 106, 1);
+  font-family: "consola", monospace;
+  font-size: clamp(0.65rem, 1.1vw, 0.9rem);
+  line-height: 100%;
+  letter-spacing: 0.15rem;
+  font-weight: normal;
+  margin: 0;
+}
+
+.main-title {
+  font-family: "boldonse", "Arial Black", Arial, sans-serif;
+  font-size: clamp(4rem, 9.5vw, 6.8rem);
+  height:fit-content;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+.main-title span{
+    line-height:100%;
+    letter-spacing: 0.05em;
+}
+.text-yellow {
+  color: #FFDC00; 
+}
+
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.8px #e0195a;
+  letter-spacing: -0.02em;
+}
+
+.header-right {
+  max-width: 25rem;
+  padding-bottom: 0.2rem;
+  align-self:center;
+}
+
+.header-right p {
+  font-family: "consola", monospace;
+  font-size: clamp(0.7rem, 1.05vw, 2.05rem);
+  line-height: 135%;
+  color: #111;
+  text-transform: uppercase;
+  margin: 0;
+  letter-spacing: 0.01rem;
+}
+
+/* ── HORIZONTAL ACCENT DIVIDER (100% Bleed Fix) ── */
+.divider-line {
+  /* Padding-inline is 8rem on both sides (Total 16rem margin overflow) */
+  width: calc(100% + 16rem);
+  height: 1px;
+  background-color: #ccc;
+  position: relative;
+  left: -8rem; /* Pull back matching left gutter padding precisely */
+  margin-bottom: 4rem;
+}
+
+/* ── TEAM GRID LAYOUT ── */
+.team-grid {
+  display: flex;
+  gap: 3.5rem;
+  width: 100%;
+}
+
+.member-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: calc(50% - 1.75rem);
+}
+
+.image-wrapper {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  position: relative;
+  overflow: hidden;
+  background-color: #b0b0b0;
+}
+
+.profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%);
+  transition: filter 0.4s ease;
+}
+
+.member-card:hover .profile-img {
+  filter: grayscale(0%);
+}
+
+.placeholder-img {
+  width: 100%;
+  height: 100%;
+  background-color: #b3b3b3;
+}
+
+.image-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 2rem;
+  box-sizing: border-box;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 20%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.member-role {
+  font-family: "consola", monospace;
+  font-size: clamp(0.65rem, 1vw, 0.85rem);
+  color: #ccc;
+  letter-spacing: 0.1rem;
+}
+
+.member-name {
+  font-family: "interbold", sans-serif;
+  font-size: clamp(1.2rem, 2.2vw, 2.2rem);
+  color: #fff;
+  font-weight: bold;
+  margin: 0;
+}
+
+.member-bio {
+  border-left: solid 2px rgba(217, 24, 106, 1);
+  padding-left: 1.2rem;
+  max-width: 90%;
+}
+
+.member-bio p {
+  font-family: "inter", sans-serif;
+  font-size: clamp(0.85rem, 1.2vw, 1.1rem);
+  line-height: 145%;
+  color: #444;
+  margin: 0;
+}
+
+/* ── ACTION ROW ── */
+.action-row {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 5rem;
+}
+
+.load-more-btn {
+  background-color: #e0195a;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 0.8rem 2rem;
+  font-family: "interbold", sans-serif;
+  font-size: clamp(0.85rem, 1.1vw, 1.1rem);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.load-more-btn:hover {
+  background-color: rgba(196, 0, 83, 1);
+  transform: scale(1.03);
+}
+
+/* ══════════════════════════════
+   TABLET  (≤ 1024px)
+══════════════════════════════ */
+@media (max-width: 1024px) {
+  .core-main {
+    padding-inline: 4rem;
+  }
+
+  /* Padding update ke sath line dimension update metrics */
+  .divider-line {
+    width: calc(100% + 8rem);
+    left: -4rem;
+  }
+
+  .team-grid {
+    gap: 2rem;
+  }
+}
+
+/* ══════════════════════════════
+   MOBILE  (≤ 768px)
+══════════════════════════════ */
+@media (max-width: 768px) {
+  .core-main {
+    padding-inline: 1.5rem;
+    padding-block: 4rem 3rem;
+  }
+
+  .core-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .main-title {
+    line-height: 100%;
+  }
+
+  .header-right {
+    max-width: 100%;
+  }
+
+  /* Mobile standard padding 1.5rem ke mutabik alignment */
+  .divider-line {
+    width: calc(100% + 3rem);
+    left: -1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .team-grid {
+    flex-direction: column;
+    gap: 4rem;
+  }
+
+  .member-card {
+    max-width: 100%;
+  }
+
+  .member-bio {
+    max-width: 100%;
+  }
+}
