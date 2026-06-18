@@ -4,13 +4,20 @@
 .slate-main {
   width: 100%;
   min-height: 100vh;
-  background-color: rgba(217, 24, 106, 1); /* Your exact Pink background color */
-  padding-inline: 8rem;
-  padding-block: 6rem 4rem;
+  background-color: #d9186a; /* Premium exact brutalist pink background */
   box-sizing: border-box;
   position: relative;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   overflow-x: hidden;
-  font-family: sans-serif;
+  scrollbar-width: none;
+}
+
+/* New Content wrapper container which holds max-width limitations cleanly */
+.slate-content-container {
+  width: 100%;
+  max-width: 110rem;
+  margin-inline: auto;
+  box-sizing: border-box;
 }
 
 /* ── WATERMARK OVERLAY IMAGE ── */
@@ -23,7 +30,7 @@
   z-index: 1;
   pointer-events: none;
   mix-blend-mode: overlay;
-  opacity: 0.15; /* Keeps watermark sublte inside pink space */
+  opacity: 0.15;
 }
 
 .watermark-img {
@@ -40,7 +47,10 @@
   justify-content: space-between;
   align-items: flex-end;
   width: 100%;
-  padding-bottom: 2.5rem;
+  padding-inline: 4rem;
+  padding-top: 5rem;
+  padding-bottom: 2rem;
+  box-sizing: border-box;
 }
 
 .header-left {
@@ -51,68 +61,79 @@
 
 .badge {
   width: fit-content;
-  padding: 0.3rem 0.5rem;
-  border: solid 0.01rem #FFDC00; /* Yellow accent line for top slate */
+  padding: 0.5rem 1rem;
+  border: 0.1px solid rgba(255, 202, 26, 1);
 }
 
 .badge h3 {
-  color: #FFDC00;
-  font-family: "consola", monospace;
-  font-size: clamp(0.65rem, 1.1vw, 0.9rem);
+  color: rgba(255, 202, 26, 1);
+  font-family: "consola";
+  font-weight: 400;
+  font-size: 0.9rem;
   line-height: 100%;
   letter-spacing: 0.15rem;
-  font-weight: normal;
   margin: 0;
 }
 
 .main-title {
-  font-family: "boldonse", "Arial Black", Arial, sans-serif;
-  font-size: clamp(4rem, 8.5vw, 8.5rem);
-  line-height: 85%;
+  font-family: "interblack";
+  font-size: clamp(3rem, 6.5vw, 6rem);
+  line-height: 90%;
   font-weight: 900;
   color: #fff;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.03em;
   text-transform: uppercase;
   margin: 0;
 }
 
 .text-yellow {
   color: #FFDC00;
-  margin-left: 0.2rem;
 }
 
 .header-right {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: flex-end;
   gap: 1rem;
-  max-width: 25rem;
+  max-width: 22rem;
   text-align: right;
+  padding-bottom: 0.3rem;
 }
 
 .icon-wrapper {
-  margin-bottom: -0.5rem;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .tracking-notice {
-  font-family: "consola", monospace;
-  font-size: clamp(0.65rem, 0.9vw, 0.95rem);
-  line-height: 140%;
-  color: #111; /* Dark contrast notice */
-  font-weight: bold;
-  letter-spacing: 0.05rem;
+  font-family: "consola";
+  font-size: 0.7rem;
+  line-height: 130%;
+  color: #000;
+  letter-spacing: 0.06rem;
+  text-transform: uppercase;
   margin: 0;
 }
 
-/* ── DIVIDER CALCULATION ── */
+/* ── DOUBLE HORIZONTAL DIVIDER FIX ── */
 .divider-line {
-  width: calc(100% + 16rem);
-  height: 1px;
-  background-color: rgba(255, 255, 255, 0.4);
   position: relative;
-  left: -8rem;
   z-index: 2;
-  margin-bottom: 2rem;
+  width: calc(100% - 8rem);
+  margin-inline: auto;
+  height: 60px; /* Perfectly replicates space control between exact two lines */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.divider-line::before,
+.divider-line::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 1);
 }
 
 /* ── TABLE ROW GRID ARRANGEMENT ── */
@@ -121,213 +142,213 @@
   z-index: 2;
   display: flex;
   flex-direction: column;
-  width: calc(100% + 16rem); /* Bleed horizontal lines matching structure */
-  position: relative;
-  left: -8rem;
+  width: 100%;
 }
 
 .table-row {
-  display: flex;
-  width: 100%;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-  padding-inline: 8rem;
-  padding-block: 3.5rem;
+  display: grid;
+  grid-template-columns: 22% 53% 25%;
+  
+  /* FIX 1: Width limit restricted to exactly match the double-line divider */
+  width: calc(100% - 8rem);
+  margin-inline: auto;
+  
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   box-sizing: border-box;
   color: #fff;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  
+  /* FIX 2: align-items changed to stretch so borders fill the vertical space */
+  align-items: stretch; 
+  padding-block: 2.5rem;
+  padding-inline: 3rem; /* Slightly reduced padding to balance the new restricted width */
+  
+  /* ADDED: Smooth transition for hover effect */
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
 }
 
-/* Active Row Inversion Properties (Neon Horizons look) */
-.row-active {
+/* Hover Inversion properties */
+.table-row:hover {
   background-color: #fff;
   color: #000;
+  border-bottom-color: rgba(0, 0, 0, 0.1);
 }
 
-/* Grid Columns Dimensions */
+/* ── COLUMNS AND THE FIXED SHORT VERTICAL LINES ── */
 .col-status {
-  width: 25%;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  justify-content: center; /* FIX 3: Re-centers content vertically after stretching */
+  gap: 0.6rem;
+  padding-right: 2rem;
 }
 
 .col-main {
-  width: 45%;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  padding-inline-end: 2rem;
-  border-left: 1px solid rgba(255, 255, 255, 0.3);
-  padding-left: 2rem;
+  justify-content: center; /* FIX 3 */
+  gap: 1rem;
+  padding-inline: 2.5rem;
+  
+  /* Short dynamic precise border implementation */
+  border-left: 1px solid rgba(255, 255, 255, 1);
+  transition: border-color 0.2s ease-in-out;
 }
 
-/* Dynamic line color switch if the row goes active white */
-.row-active .col-main {
+.table-row:hover .col-main {
   border-left-color: rgba(0, 0, 0, 0.15);
 }
 
 .col-logline {
-  width: 30%;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  border-left: 1px solid rgba(255, 255, 255, 0.3);
-  padding-left: 2rem;
+  justify-content: center; /* FIX 3 */
+  gap: 0.6rem;
+  padding-left: 2.5rem;
+  
+  /* ADDED: Slightly increased height of the second vertical line */
+  margin-top: -1rem;
+  margin-bottom: -1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  
+  /* Short dynamic precise border implementation */
+  border-left: 1px solid rgba(255, 255, 255, 1);
+  transition: border-color 0.2s ease-in-out;
 }
 
-.row-active .col-logline {
+.table-row:hover .col-logline {
   border-left-color: rgba(0, 0, 0, 0.15);
 }
 
 /* ── COLUMN INNER CONTENT STYLES ── */
 .label {
-  font-family: "consola", monospace;
-  font-size: 0.75rem;
-  letter-spacing: 0.1rem;
+  font-family: "consola"; 
+  font-size: 0.65rem;
+  /* font-weight: bold; */
+  letter-spacing: 0.05rem;
+  color: #FFDC00;
+  transition: color 0.2s ease-in-out;
+}
+
+.table-row:hover .col-status .label,
+.table-row:hover .col-logline .label {
+  color: #000;
+  opacity: 0.5;
+}
+
+.table-row:hover .col-main .label {
   color: #FFDC00;
 }
 
-.row-active .label {
-  color: #e0195a; /* Pink labels inside inverted white block */
-}
-
 .status-text {
-  font-family: "interbold", sans-serif;
-  font-size: clamp(1.1rem, 1.5vw, 1.6rem);
-  font-weight: bold;
+  font-family: "interbold";
+  font-size: 1.25rem;
+  /* font-weight: 800; */
   margin: 0;
-  letter-spacing: -0.02em;
 }
 
 .project-title {
-  font-family: "boldonse", "Arial Black", Arial, sans-serif;
-  font-size: clamp(1.8rem, 2.8vw, 3.2rem);
-  line-height: 100%;
-  letter-spacing: -0.04em;
+  font-family: "interblack";
+  font-size: clamp(1.6rem, 2.4vw, 2.4rem);
+  line-height: 105%;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
   margin: 0;
+  font-weight: 900;
 }
 
 .credits-row {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
+  margin-top: 0.2rem;
 }
 
 .tag-pill {
-  font-family: "consola", monospace;
-  font-size: 0.75rem;
-  border: 1px solid #fff;
-  padding: 0.25rem 0.6rem;
-  letter-spacing: 0.05rem;
+  font-family: "consola";
+  font-size: 0.8rem;
+  /* font-weight: bold; */
+  border: 1px solid rgba(0, 0, 0, 1);
+  background-color: transparent;
+  padding: 0.4rem 0.6rem;
+  color:rgba(0, 0, 0, 1);
+  line-height:100%;
+  letter-spacing:0.08rem;
+  transition: border-color 0.2s ease-in-out;
 }
 
-.row-active .tag-pill {
+.table-row:hover .tag-pill {
   border-color: #000;
 }
 
 .director-text {
-  font-family: "consola", monospace;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05rem;
+  font-family: monospace;
+  font-family: "consola";
+  font-size: 0.7rem;
+  color:#000;
+  /* font-weight: bold; */
+  letter-spacing: 0.02rem;
 }
 
 .logline-text {
-  font-family: "inter", sans-serif;
-  font-size: clamp(0.9rem, 1.1vw, 1.15rem);
-  line-height: 145%;
+  font-family: Arial, sans-serif;
+  font-size: 0.95rem;
+  line-height: 140%;
   margin: 0;
-  opacity: 0.9;
 }
 
 /* ══════════════════════════════
-   TABLET  (≤ 1024px)
+   TABLET & RESPONSIVE BREAKPOINTS
 ══════════════════════════════ */
 @media (max-width: 1024px) {
-  .slate-main {
-    padding-inline: 4rem;
+  .slate-header { padding-inline: 2rem; }
+  .divider-line { width: calc(100% - 4rem); }
+  
+  .table-row { 
+    width: calc(100% - 4rem); /* Fix: Match row width with new divider width */
+    padding-inline: 2rem; 
+    grid-template-columns: 25% 75%; 
+    align-items: stretch; /* Maintain stretch for borders */
   }
-
-  .divider-line, .slate-table {
-    width: calc(100% + 8rem);
-    left: -4rem;
-  }
-
-  .table-row {
-    padding-inline: 4rem;
-    padding-block: 2.5rem;
-  }
-
-  .col-status { width: 30%; }
-  .col-main { width: 70%; border-right: none; padding-inline-end: 0; }
-  .col-logline { 
-    width: 100%; 
-    border-left: none; 
-    padding-left: 0; 
-    margin-top: 1.5rem;
+  .col-logline {
+    grid-column: span 2;
+    border-left: none;
     border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-left: 0;
+    margin-top: 1.5rem;
+    margin-bottom: 0; /* ADDED: Reset the margin logic for tablet */
     padding-top: 1.5rem;
+    padding-bottom: 0; /* ADDED: Reset the padding logic for tablet */
   }
-  
-  .row-active .col-logline {
+  .table-row:hover .col-logline {
     border-top-color: rgba(0, 0, 0, 0.1);
-  }
-
-  .slate-table {
-    flex-wrap: wrap;
-  }
-  
-  .table-row {
-    flex-wrap: wrap;
   }
 }
 
-/* ══════════════════════════════
-   MOBILE  (≤ 768px) - Collapse Grid into Stack
-══════════════════════════════ */
 @media (max-width: 768px) {
-  .slate-main {
+  .slate-header { 
+    flex-direction: column; 
+    align-items: flex-start; 
+    gap: 1.5rem; 
     padding-inline: 1.5rem;
-    padding-block: 4rem 3rem;
   }
-
-  .slate-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2rem;
-  }
-
-  .header-right {
-    align-items: flex-start;
-    text-align: left;
-  }
-
-  .divider-line, .slate-table {
-    width: calc(100% + 3rem);
-    left: -1.5rem;
-  }
-
-  .table-row {
+  .header-right { align-items: flex-start; text-align: left; }
+  .divider-line { width: calc(100% - 3rem); }
+  
+  .table-row { 
+    width: calc(100% - 3rem); /* Fix: Match row width for mobile */
+    display: flex; 
+    flex-direction: column; 
     padding-inline: 1.5rem;
-    flex-direction: column;
-    gap: 1.8rem;
-    padding-block: 3rem;
   }
-
-  .col-status, .col-main, .col-logline {
-    width: 100%;
-    border-left: none;
-    padding-left: 0;
+  .col-status, .col-main, .col-logline { 
+    width: 100%; 
+    border-left: none; 
+    padding: 1rem 0; 
   }
-
-  .col-logline {
-    margin-top: 0;
-    border-top: none;
-    padding-top: 0;
-  }
-
-  .credits-row {
-    flex-wrap: wrap;
-    gap: 1rem;
+  .col-logline { 
+    border-top: 1px solid rgba(255, 255, 255, 0.2); 
+    margin-top: 0; 
   }
 }
