@@ -167,7 +167,7 @@
 }
 /* ---------------consolas--------------- */
 @font-face {
-  font-family: "consola";
+  font-family: "consola"; 
   src: url("/fonts/consolas/CONSOLA.TTF") format("truetype");
   font-weight: 400;
   font-style: normal;

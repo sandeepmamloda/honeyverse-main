@@ -5,11 +5,19 @@
   width: 100%;
   min-height: 100vh;
   background-color: #fff;
-  padding-inline: 8rem;
   padding-block: 6rem 4rem;
   box-sizing: border-box;
   font-family: sans-serif;
-  overflow-x: hidden; /* Prevent any minor bleeding issues on window resizes */
+  overflow-x: hidden; /* Horizon bleed safety lock */
+}
+
+/* ── INNER CONTAINER WRAPPER (Max-width Core Logic) ── */
+.core-container {
+  width: 100%;
+  max-width: 110rem;      /* Content lock boundary */
+  margin-inline: auto;    /* Big screens par automatically center hone ke liye */
+  padding-inline: 3rem;   /* Main side margins padding */
+  box-sizing: border-box;
 }
 
 /* ── HEADER LAYOUT ── */
@@ -18,7 +26,7 @@
   justify-content: space-between;
   align-items: flex-end;
   width: 100%;
-  padding-bottom: 1.5rem;
+  padding-bottom: 4rem;
 }
 
 .header-left {
@@ -29,14 +37,14 @@
 
 .badge {
   width: fit-content;
-  padding: 0.3rem 0.5rem;
-  border: solid 0.01rem rgba(217, 24, 106, 1);
+  padding: 0.4rem 1rem;
+  border: solid 0.01rem rgba(255, 119, 34, 0.5);
 }
 
 .badge h3 {
   color: rgba(217, 24, 106, 1);
   font-family: "consola", monospace;
-  font-size: clamp(0.65rem, 1.1vw, 0.9rem);
+  font-size: 1rem;
   line-height: 100%;
   letter-spacing: 0.15rem;
   font-weight: normal;
@@ -45,13 +53,13 @@
 
 .main-title {
   font-family: "boldonse", "Arial Black", Arial, sans-serif;
-  font-size: clamp(4rem, 9.5vw, 6.8rem);
-  height:fit-content;
+  font-size: 6.5rem;
+  height: fit-content;
   font-weight: 900;
   text-transform: uppercase;
 }
 .main-title span{
-    line-height:100%;
+    line-height: 100%;
     letter-spacing: 0.05em;
 }
 .text-yellow {
@@ -65,14 +73,14 @@
 }
 
 .header-right {
-  max-width: 25rem;
+  max-width: 30rem;
   padding-bottom: 0.2rem;
-  align-self:center;
+  align-self: center;
 }
 
 .header-right p {
   font-family: "consola", monospace;
-  font-size: clamp(0.7rem, 1.05vw, 2.05rem);
+  font-size: 1.6rem;
   line-height: 135%;
   color: #111;
   text-transform: uppercase;
@@ -80,30 +88,28 @@
   letter-spacing: 0.01rem;
 }
 
-/* ── HORIZONTAL ACCENT DIVIDER (100% Bleed Fix) ── */
+/* ── HORIZONTAL ACCENT DIVIDER (100% True Full-Width Viewport Bleed) ── */
 .divider-line {
-  /* Padding-inline is 8rem on both sides (Total 16rem margin overflow) */
-  width: calc(100% + 16rem);
+  width: 100%;            /* Viewport window ki poori width touch karega */
   height: 1px;
-  background-color: #ccc;
-  position: relative;
-  left: -8rem; /* Pull back matching left gutter padding precisely */
+  background-color: rgba(0, 0, 0, 1);
   margin-bottom: 4rem;
 }
 
 /* ── TEAM GRID LAYOUT ── */
 .team-grid {
   display: flex;
+  flex-wrap: wrap;       /* Naye dynamic cards row wise split karne ke liye */
   gap: 3.5rem;
   width: 100%;
 }
 
 .member-card {
-  flex: 1;
+  flex: 0 0 calc(50% - 1.75rem);
+  max-width: calc(50% - 1.75rem);
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  max-width: calc(50% - 1.75rem);
 }
 
 .image-wrapper {
@@ -112,6 +118,7 @@
   position: relative;
   overflow: hidden;
   background-color: #b0b0b0;
+  border: solid 0.1rem #000;
 }
 
 .profile-img {
@@ -139,38 +146,37 @@
   width: 100%;
   padding: 2rem;
   box-sizing: border-box;
-  background: linear-gradient(to top, rgba(0,0,0,0.7) 20%, transparent 100%);
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
 }
 
 .member-role {
-  font-family: "consola", monospace;
-  font-size: clamp(0.65rem, 1vw, 0.85rem);
-  color: #ccc;
-  letter-spacing: 0.1rem;
+  font-family: "consola";
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.24rem;
 }
 
 .member-name {
-  font-family: "interbold", sans-serif;
-  font-size: clamp(1.2rem, 2.2vw, 2.2rem);
+  font-family: "interblack";
+  font-size: 2.2rem;
   color: #fff;
   font-weight: bold;
   margin: 0;
 }
 
 .member-bio {
-  border-left: solid 2px rgba(217, 24, 106, 1);
+  border-left: solid 0.6px rgba(217, 24, 106, 1);
   padding-left: 1.2rem;
   max-width: 90%;
 }
 
 .member-bio p {
-  font-family: "inter", sans-serif;
-  font-size: clamp(0.85rem, 1.2vw, 1.1rem);
+  font-family: "intermedium";
+  font-size: 1.1rem;
   line-height: 145%;
-  color: #444;
+  color: rgba(0, 0, 0, 1);
   margin: 0;
 }
 
@@ -184,12 +190,14 @@
 
 .load-more-btn {
   background-color: #e0195a;
+  box-shadow: 0px 0px 5.15px 0px rgba(196, 0, 83, 1) inset; 
+  box-shadow: 0px 4.49px 5.15px 0px rgba(72, 0, 31, 0.36) inset;
   color: #fff;
   border: none;
-  border-radius: 50px;
-  padding: 0.8rem 2rem;
-  font-family: "interbold", sans-serif;
-  font-size: clamp(0.85rem, 1.1vw, 1.1rem);
+  border-radius: 24px;
+  padding: 0.8rem 1rem;
+  font-family: "intersemibold";
+  font-size: 1.1rem;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -197,27 +205,57 @@
   transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
+.load-more-btn svg {
+  transition: transform 0.3s ease;
+}
+
 .load-more-btn:hover {
-  background-color: rgba(196, 0, 83, 1);
+  background-color: rgba(138, 56, 245, 1); 
   transform: scale(1.03);
+}
+
+.load-more-btn:hover svg {
+  transform: rotate(180deg);
 }
 
 /* ══════════════════════════════
    TABLET  (≤ 1024px)
 ══════════════════════════════ */
 @media (max-width: 1024px) {
-  .core-main {
+  .core-container {
     padding-inline: 4rem;
-  }
-
-  /* Padding update ke sath line dimension update metrics */
-  .divider-line {
-    width: calc(100% + 8rem);
-    left: -4rem;
   }
 
   .team-grid {
     gap: 2rem;
+  }
+
+  .member-card {
+    flex: 0 0 calc(50% - 1rem);
+    max-width: calc(50% - 1rem);
+  }
+
+  /* --- Responsive Fixed Fonts for Tablet --- */
+  .badge h3 {
+    font-size: 0.8rem;
+  }
+  .main-title {
+    font-size: 4.8rem;
+  }
+  .header-right p {
+    font-size: 1.15rem;
+  }
+  .member-role {
+    font-size: 0.8rem;
+  }
+  .member-name {
+    font-size: 1.8rem;
+  }
+  .member-bio p {
+    font-size: 1rem;
+  }
+  .load-more-btn {
+    font-size: 1rem;
   }
 }
 
@@ -226,8 +264,11 @@
 ══════════════════════════════ */
 @media (max-width: 768px) {
   .core-main {
-    padding-inline: 1.5rem;
     padding-block: 4rem 3rem;
+  }
+
+  .core-container {
+    padding-inline: 1.5rem;
   }
 
   .core-header {
@@ -244,23 +285,40 @@
     max-width: 100%;
   }
 
-  /* Mobile standard padding 1.5rem ke mutabik alignment */
-  .divider-line {
-    width: calc(100% + 3rem);
-    left: -1.5rem;
-    margin-bottom: 3rem;
-  }
-
   .team-grid {
     flex-direction: column;
     gap: 4rem;
   }
 
   .member-card {
+    flex: 0 0 100%;
     max-width: 100%;
   }
 
   .member-bio {
     max-width: 100%;
+  }
+
+  /* --- Responsive Fixed Fonts for Mobile --- */
+  .badge h3 {
+    font-size: 0.7rem;
+  }
+  .main-title {
+    font-size: 3.2rem;
+  }
+  .header-right p {
+    font-size: 1rem;
+  }
+  .member-role {
+    font-size: 0.75rem;
+  }
+  .member-name {
+    font-size: 1.5rem;
+  }
+  .member-bio p {
+    font-size: 0.95rem;
+  }
+  .load-more-btn {
+    font-size: 0.95rem;
   }
 }

@@ -164,7 +164,7 @@
   
   /* ADDED: Smooth transition for hover effect */
   transition: all 0.2s ease-in-out;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 /* Hover Inversion properties */
