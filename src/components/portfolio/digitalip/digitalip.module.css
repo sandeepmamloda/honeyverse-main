@@ -1,0 +1,150 @@
+.digital-main {
+  position: relative;
+  width: 100%;
+  background-color: #FAFAFA;
+  padding-block: 6rem 8rem;
+  border-bottom: 1px solid rgba(217, 24, 106, 0.3);
+  overflow: hidden;
+  box-sizing: border-box;
+  margin-bottom: 3rem;
+  padding-inline:15rem;
+}
+
+.icon-wrapper {
+  position: relative; 
+  margin-block: 1rem; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2; 
+}
+
+/* Line top tip se start hogi aur SVG ke peeche chhip jayegi */
+.vertical-axis {
+  position: absolute;
+  top: 0; 
+  left: 50%;
+  width: 1px;
+  height: 3000px;
+  background-color: rgba(217, 24, 106, 0.4); 
+  transform: translateX(-50%);
+  z-index: -1; 
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 5rem;
+}
+
+.badge {
+  padding: 0.5rem 1.5rem;
+  margin-block: 1rem 1.5rem;
+}
+
+.badge span {
+  font-family: "consola";
+  font-size: 0.8rem;
+  letter-spacing: 0.15rem;
+  color: #111;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.main-title {
+  font-family: "interblack";
+  font-size: clamp(3rem, 6.5vw, 4rem); 
+  color: rgba(217, 24, 106, 1);
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 100%;
+  text-align: center;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8rem;
+  width: 100%;
+}
+
+.ip-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  background-color: #FAFAFA;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.ip-card:hover {
+  transform: translateY(-10px);
+}
+
+.card-image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background-color: #111;
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%) contrast(1.2);
+  transition: filter 0.4s ease, transform 0.6s ease;
+}
+
+.ip-card:hover .card-img {
+  filter: grayscale(0%) contrast(1);
+  transform: scale(1.03);
+}
+
+.platform-badge {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  border: 1px solid #FFDC00;
+  color: #FFDC00;
+  font-family: "consola", monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1rem;
+  padding: 0.4rem 1rem;
+  border-radius: 40px;
+  text-transform: uppercase;
+}
+
+.card-content {
+  background-color: rgba(217, 24, 106, 1);
+  border-top: 3px solid #FFDC00;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.content-type {
+  font-family: "consola", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.1rem;
+  color: #111;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.content-title {
+  font-family: "interblack", "Arial Black", sans-serif;
+  font-size: clamp(2rem, 3vw, 2.5rem);
+  color: #fff;
+  margin: 0;
+  line-height: 110%;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+@media (max-width: 768px) {
+  .vertical-axis { display: none; }
+  .cards-grid { grid-template-columns: 1fr; }
+}

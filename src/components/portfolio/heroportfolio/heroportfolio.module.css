@@ -1,0 +1,258 @@
+/* ══════════════════════════════
+   BASE & DESKTOP (Your Exact Layout)
+══════════════════════════════ */
+.heroawards-main {
+  height: 100svh;
+  width: 100%;
+  position: relative;
+  overflow: hidden; /* Added to keep 100svh intact on all devices */
+}
+
+.heroawards-video-wrapper {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.awards-video {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.textual-content {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 99;
+  top: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between; /* Vertically pushes description box downwards naturally */
+
+  padding-block-start: 16rem;
+  padding-inline-start: 8rem;
+  padding-block-end: 4rem; /* Safe padding at bottom */
+  box-sizing: border-box;
+}
+
+/* ── TOP BADGE ── */
+.top {
+  height: fit-content;
+  width: fit-content;
+  padding: 0.4rem 0.5rem;
+  border: solid 0.01rem rgba(217, 24, 106, 1);
+}
+
+.top h3 {
+  color: rgba(217, 24, 106, 1);
+  font-family: "consola";
+  font-size: clamp(0.65rem, 1.2vw, 1rem);
+  line-height: 100%;
+  letter-spacing: 0.2rem;
+  font-weight: 100;
+  text-transform: uppercase;
+}
+
+/* ── HEADINGS ── */
+.textual-content .middle {
+  height: fit-content;
+  width: fit-content;
+  margin-block-start: 3rem;
+}
+
+.textual-content .middle h1 {
+  font-family: "boldonse";
+  font-size: clamp(3rem, 9vw, 9rem);
+  font-weight:400;
+  line-height: 140%;
+  letter-spacing: 0.01rem;
+  color: #fff;
+}
+
+.textual-content .bottom {
+  height: fit-content;
+  width: fit-content;
+}
+
+.textual-content .bottom h1 {
+  font-family: "boldonse";
+  font-size: clamp(3rem, 9vw, 9rem);
+  font-weight:400;
+  line-height: 140%;
+  letter-spacing: 0.3rem;
+  color: transparent;
+  -webkit-text-stroke: 3px #e0195a;
+}
+
+/* Global Pink Styling for "TELLING" across Desktop, Tab, & Mobile */
+.textual-content .bottom-pink {
+  height: fit-content;
+  width: fit-content;
+}
+
+.textual-content .bottom-pink h1 {
+  font-family: "boldonse";
+  font-size: clamp(3rem, 9vw, 9rem);
+  line-height: 140%;
+  letter-spacing: 0.01rem;
+  color: rgba(196, 0, 83, 1);
+}
+
+/* ── DESCRIPTION BOX ── */
+.bottom-last {
+  height: fit-content;
+  width: fit-content;
+  max-width: 40rem;
+  margin-inline-start: auto;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-left: solid 0.3rem rgba(217, 24, 106, 1);
+  padding-inline-start: 1rem;
+  padding-inline-end: 3rem;
+  padding-block: 1rem;
+  margin-block-start: 1rem;
+  position: absolute;
+  right: 0;
+  bottom: 4rem;
+}
+
+.bottom-last h2 {
+  color: rgba(255, 255, 255, 1);
+  line-height: 120%;
+  font-family: "interbold";
+  font-size: clamp(0.85rem, 1.5vw, 1.6rem);
+  font-weight: normal;
+}
+
+/* ══════════════════════════════
+   TABLET  (≤ 1024px)
+══════════════════════════════ */
+@media (max-width: 1024px) {
+  .textual-content {
+    padding-inline-start: 4rem;
+    padding-inline-end: 2rem;
+  }
+
+  .textual-content .middle {
+    margin-block-start: 2rem;
+  }
+
+  .bottom-last {
+    margin-inline-start: 0;
+    max-width: 100%;
+    padding-inline-end: 2rem;
+  }
+}
+
+/* ══════════════════════════════
+   MOBILE  (≤ 640px)
+══════════════════════════════ */
+@media (max-width: 640px) {
+  .textual-content {
+    padding-inline: 1.5rem;
+    padding-block-start: 2rem; /* Reduced to give flex-1 complete centering freedom */
+    padding-block-end: 2.5rem;
+    align-items: center;
+    justify-content: space-between;
+    row-gap: 0;
+  }
+
+  /* badge + headings exact viewport vertical center alignment */
+  .headings-group {
+    display: flex;
+    row-gap:0.5rem;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    justify-content: center; /* Centers the whole cluster vertically within 100svh space */
+  }
+
+  .top {
+    align-self: center;
+    margin-bottom: 2rem; /* Cleaned oversized spacing */
+  }
+
+  .top h3 {
+    letter-spacing: 0.1rem;
+  }
+
+  .textual-content .middle {
+    margin-block-start: 0;
+    margin-inline: auto;
+  }
+
+  .textual-content .middle h1 {
+    line-height: 140%;
+    text-align: center;
+  }
+
+  .textual-content .bottom {
+    margin-inline: auto;
+  }
+
+  .textual-content .bottom h1 {
+    line-height: 140%;
+    -webkit-text-stroke-width: 0.5px;
+    text-align: center;
+  }
+
+  /* Target both standard and pink variant text headers in mobile view */
+  .textual-content .bottom-pink {
+    margin-inline: auto;
+  }
+  
+  .textual-content .bottom-pink h1 {
+    line-height: 140%;
+    text-align: center;
+  }
+
+  .bottom-last {
+    position: relative; /* Removes absolute floating overlay conflict over headings */
+    right: auto;
+    bottom: auto;
+    margin-inline-start: 0;
+    max-width: 100%;
+    padding-inline-end: 1rem;
+    margin-block-start: 0;
+    align-self: stretch;
+    border-right: solid 0.3rem rgba(217, 24, 106, 1);
+  }
+
+  .bottom-last h2 {
+    font-size: clamp(0.8rem, 3.5vw, 1rem);
+    text-align: center;
+  }
+}
+
+/* ══════════════════════════════
+   VERY SMALL  (≤ 375px)
+══════════════════════════════ */
+@media (max-width: 375px) {
+  .textual-content {
+    padding-inline-start: 1rem;
+    padding-inline-end: 1rem;
+  }
+
+  .textual-content .middle h1,
+  .textual-content .bottom h1,
+  .textual-content .bottom-pink h1 {
+    font-size: clamp(2.4rem, 11vw, 3.5rem);
+  }
+}
+
+/* ══════════════════════════════
+   HEIGHT-BASED — only desktop/tablet
+══════════════════════════════ */
+@media (max-height: 944px) and (min-width: 641px) {
+  .textual-content {
+    padding-block-start: 12rem;
+  }
+
+  .textual-content .middle {
+    margin-block-start: clamp(1rem, 2vh, 3rem);
+  }
+}
