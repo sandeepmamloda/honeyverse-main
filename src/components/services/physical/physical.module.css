@@ -1,0 +1,214 @@
+/* ══════════════════════════════
+   BASE & DESKTOP (Brutalist Style)
+══════════════════════════════ */
+.physical-main {
+  width: 100%;
+  max-width: 110rem;
+  margin-inline: auto;
+  padding-block: 5rem;
+  padding-inline: 4rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.header-top {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 3rem;
+  text-align: left; /* Header left alignment */
+}
+
+.badge-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.badge-icon {
+  color: #E60067;
+}
+
+.badge-text {
+  border: 1px solid #E60067;
+  padding: 0.5rem 1rem;
+}
+
+.badge-text h3 {
+  color: #E60067;
+  font-family: "consola";
+  font-size: 1rem;
+  letter-spacing: 0.15rem;
+  line-height:100%;
+  font-weight: 400;
+  margin: 0;
+}
+
+/* NEW: thin underline below the badge */
+.header-line {
+  display: block;
+  width: 26rem;
+  height: 1px;
+  background-color: rgba(230, 0, 103, 0.3);
+}
+
+.title-wrapper {
+  width: fit-content;
+}
+
+.main-title {
+  font-family: "boldonse";
+  font-size: clamp(5rem, 10vw, 6rem);
+  font-weight: 400;
+  line-height: 1.8;
+  text-transform: uppercase;
+  margin: 0;
+  color: #FCD116;
+  letter-spacing: 0.06em;
+}
+
+.main-grid {
+  display: flex;
+  column-gap: 4rem;
+  align-items: center;
+}
+
+.image-showcase-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.yellow-frame {
+  background-color: #FCD116;
+  padding: 1rem;
+  position: relative;
+}
+
+.hero-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.sys-badge {
+  position: absolute;
+  bottom: 0;
+  right: -1.4rem;
+  transform: translateY(50%);
+  background-color: rgba(217, 24, 106, 1);
+  color: #000;
+  font-family: "consola";
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1rem;
+  padding: 1.4rem 1.8rem;
+  z-index: 2;
+}
+
+/* Right Side Column (Perfect Left Align Rules) */
+.content-details {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+  text-align: left; /* Ensures all child elements adhere to the left wall */
+}
+
+.intro-text {
+  font-family: "intermedium";
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  font-weight: 500;
+  line-height: 1.5;
+  color: #000;
+  margin: 0;
+  padding: 0; /* Clear uneven indentations */
+}
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 5rem;
+  margin-left:1.4rem;
+}
+
+.list-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  text-align: left;
+}
+
+.item-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+/* Custom layout code based on image_c93ca0.png custom flower/gear icon */
+.meta-icon {
+  background-color: #E60067;
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  clip-path: polygon(50% 0%, 65% 35%, 100% 50%, 65% 65%, 50% 100%, 35% 65%, 0% 50%, 35% 35%);
+}
+
+/* ZAROORI CHANGE: Aapne jo inline SVG lagaya hai, uski spacing stable rakhne ke liye property mapping */
+.feature-svg {
+  flex-shrink: 0;
+  display: block;
+}
+
+.item-title {
+  font-family: "consola";
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #FCD116;
+  letter-spacing: 0.16rem;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.item-desc {
+  font-family: "interregular";
+  font-size: 0.95rem;
+  line-height: 1.2;
+  color: rgba(0, 0, 0, 1);
+  margin: 0;
+  padding-left: 0; /* FIX: Remoted extra left padding so it matches the line of item-title */
+  max-width: 600px;
+}
+
+/* ══════════════════════════════
+   TABLET & MOBILE RESPONSIVE
+══════════════════════════════ */
+@media (max-width: 1024px) {
+  .physical-main {
+    padding-inline: 2rem;
+  }
+  .main-grid {
+    gap: 3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .physical-main {
+    padding-inline: 1.5rem;
+    padding-block: 3rem;
+  }
+  .main-title {
+    font-size: 4.5rem;
+  }
+  .main-grid {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+  .content-details {
+    gap: 2.5rem;
+  }
+  .sys-badge {
+    right: 1rem; /* Mobile standard padding tweak */
+  }
+}

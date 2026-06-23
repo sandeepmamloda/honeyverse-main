@@ -1,0 +1,205 @@
+/* ══════════════════════════════
+   BASE & DESKTOP (Brutalist Style)
+══════════════════════════════ */
+.collaborate-main {
+  width: 100%;
+  max-width: 110rem;
+  margin-inline: auto;
+  padding-block: 5rem;
+  padding-inline: 4rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header is centered for this section (unlike Physical/Turnkey left-aligned headers) */
+.header-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 1rem;
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.badge-icon-wrapper {
+  width: 6rem;
+  height: 6rem;
+  /* border: 1px solid #E60067; */
+  /* transform: rotate(45deg); */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.6rem;
+}
+
+.badge-icon {
+  transform: rotate(-45deg);
+  color: #E60067;
+}
+
+.badge-text h3 {
+  color: rgba(0, 0, 0, 1);
+  font-family: "consola", monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.15rem;
+  line-height: 100%;
+  font-weight: 400;
+  margin: 0;
+}
+
+.title-wrapper {
+  width: fit-content;
+}
+
+.main-title {
+  font-family: "interblack";
+  font-size: clamp(3rem, 10vw, 4rem);
+  font-weight: 400;
+  line-height: 1;
+  text-transform: uppercase;
+  margin: 0;
+  color: #FCD116;
+  letter-spacing: 0rem;
+}
+
+/* CHANGED: grid -> flex, so child widths can be controlled via flex-basis instead of equal fr columns */
+.main-grid {
+  display: flex;
+  column-gap: 5.8rem;
+  align-items: stretch;
+}
+
+/* Left: Yellow Protocol Card */
+.protocol-card {
+  background-color: #FCD116;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  flex: 0.85; /* narrower than the image side */
+}
+
+.card-title {
+  font-family: "interblack";
+  font-size: clamp(1.6rem, 2.5vw, 1.9rem);
+  font-weight: 400;
+  color: rgba(217, 24, 106, 1);
+  margin: 0 0 1.2rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.card-desc {
+  font-family: "interregular";
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: #000;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.submit-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  margin-top: 1.5rem;
+}
+
+.submit-text {
+  font-family: "consola";
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.12rem;
+  color: rgba(217, 24, 106, 1);
+}
+
+.submit-arrow {
+  color: rgba(217, 24, 106, 1);
+  flex-shrink: 0;
+}
+
+/* Right: Showcase Image with Overlay Caption */
+.image-showcase-wrapper {
+  position: relative;
+  height: 28rem; /* FIXED: explicit height so image size is controlled, no longer stretches with card */
+  overflow: hidden;
+  flex: 1.15; /* wider than the protocol card */
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.image-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.7rem;
+}
+
+.target-tag {
+  font-family: "consola";
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.1rem;
+  color: rgba(255, 202, 26, 1);
+  border: 1px solid rgba(196, 0, 83, 1);
+  padding: 0.3rem 0.7rem;
+  text-transform: uppercase;
+}
+
+.overlay-title {
+  font-family: "interblack";
+  font-size: clamp(1.3rem, 2.2vw, 2.2rem);
+  font-weight: 400;
+  color: #FCD116;
+  margin: 0;
+  text-transform: uppercase;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+}
+
+/* ══════════════════════════════
+   TABLET & MOBILE RESPONSIVE
+══════════════════════════════ */
+@media (max-width: 1024px) {
+  .collaborate-main {
+    padding-inline: 2rem;
+  }
+  .main-grid {
+    column-gap: 2rem;
+  }
+  .image-showcase-wrapper {
+    height: 24rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .collaborate-main {
+    padding-inline: 1.5rem;
+    padding-block: 3rem;
+  }
+  .main-title {
+    font-size: 4.5rem;
+  }
+  .main-grid {
+    flex-direction: column;
+    row-gap: 2rem;
+  }
+  .protocol-card,
+  .image-showcase-wrapper {
+    flex: 1; /* equal/full width when stacked on mobile */
+  }
+  .image-showcase-wrapper {
+    height: 18rem;
+  }
+}

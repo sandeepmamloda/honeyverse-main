@@ -1,0 +1,192 @@
+/* ══════════════════════════════
+   BASE & DESKTOP (Brutalist Style)
+══════════════════════════════ */
+.turnkey-main {
+  width: 100%;
+  max-width: 110rem;
+  margin-inline: auto;
+  padding-block: 5rem;
+  padding-inline: 4rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.header-top {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 3rem;
+  text-align: left;
+}
+
+.badge-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.badge-icon {
+  color: #E60067;
+}
+
+.badge-text {
+  border: 1px solid #E60067;
+  padding: 0.5rem 1rem;
+}
+
+.badge-text h3 {
+  color: #E60067;
+  font-family: "consola", monospace;
+  font-size: 1rem;
+  letter-spacing: 0.15rem;
+  line-height: 100%;
+  font-weight: 400;
+  margin: 0;
+}
+
+.header-line {
+  display: block;
+  width: 26rem;
+  height: 1px;
+  background-color: rgba(230, 0, 103, 0.3);
+}
+
+.title-wrapper {
+  width: fit-content;
+}
+
+.main-title {
+  font-family: "boldonse", sans-serif;
+  font-size: clamp(5rem, 10vw, 6rem);
+  font-weight: 400;
+  line-height: 1.8;
+  text-transform: uppercase;
+  margin: 0;
+  color: #FCD116;
+  letter-spacing: 0.06em;
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 6fr 5fr; /* Content handles larger allocation ratio */
+  column-gap: 5rem;
+  align-items: center;
+}
+
+/* Left Side Content & Lists Custom Layout Rules */
+.content-details {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+  text-align: left;
+}
+
+.sub-title-wrapper {
+  width: fit-content;
+}
+
+.sub-title {
+  font-family: "interblack";
+  font-size: clamp(2rem, 3.5vw, 2rem);
+  font-weight: 400;
+  color: #FCD116;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.intro-text {
+  font-family: "intermedium";
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  font-weight: 500;
+  line-height: 1.5;
+  color: #000;
+  margin: 0;
+  max-width: 50rem;
+}
+
+/* Vertical Pink Border strip block container */
+.list-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 2.2rem;
+  border-left: 2px solid #E60067;
+  padding-left: 1.8rem;
+  margin-top: 1rem;
+}
+
+.list-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+.item-header {
+  display: flex;
+  align-items: center;
+}
+
+.item-title {
+  font-family: "consola";
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: rgba(217, 24, 106, 1); /* Pink titles according to new reference image */
+  letter-spacing: 0.09rem;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.item-desc {
+  font-family: "interregular";
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #000;
+  margin: 0;
+  max-width: 45rem;
+}
+
+/* Right Side Image Box Styles (Cleaned up from physical rules) */
+.image-showcase-wrapper {
+  width: 100%;
+  height:30rem;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* ══════════════════════════════
+   TABLET & MOBILE RESPONSIVE
+══════════════════════════════ */
+@media (max-width: 1024px) {
+  .turnkey-main {
+    padding-inline: 2rem;
+  }
+  .main-grid {
+    column-gap: 3rem;
+    grid-template-columns: 1fr;
+    row-gap: 3.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .turnkey-main {
+    padding-inline: 1.5rem;
+    padding-block: 3rem;
+  }
+  .main-title {
+    font-size: 4.5rem;
+  }
+  .header-line {
+    width: 100%;
+  }
+  .list-container {
+    padding-left: 1.2rem;
+  }
+}
