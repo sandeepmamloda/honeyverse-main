@@ -1,62 +1,3 @@
-// import styles from "./hero.module.css";
-// import Image from "next/image";
-
-// const sections = [
-//   { video: "/videos/home/first.mp4", title: "MOST DAYS OUT", subtitle: "CANERA TRIX" },
-//   { video: "/videos/home/second.mp4", title: "AURORA BEACH", subtitle: "Braided Truce" },
-//   { video: "/videos/home/third.mp4", title: "Brutalist Arch.", subtitle: "Russian River" },
-// ];
-
-// const Hero = () => {
-//   return (
-//     <section className={styles["hero-section-main-wrapper"]}>
-//       <div className={styles["hero-section-main-video"]}>
-//         <video autoPlay muted loop playsInline>
-//           <source src="/videos/home/hero.mp4" type="video/mp4" />
-//         </video>
-//       </div>
-//       <div className={styles["content-wrapper"]}>
-//         <h1>ENTER THE VERSE</h1>
-//         <p>An award winning production company that creates high-impact content that's impossible to ignore.</p>
-//       </div>
-//       <div className={styles["hero-bottom"]}>
-//         <div className={styles["hero-bottom-top-wrapper"]}>
-//           <div className={styles["hero-bottom-top"]}>
-//             {sections.map((section, index) => (
-//               <div key={index} className={styles["section"]}>
-//                 <div className={styles.video}>
-//                   <video autoPlay muted loop playsInline>
-//                     <source src={section.video} type="video/mp4" />
-//                   </video>
-//                 </div>
-//                 <div className={styles.content}>
-//                   <h2>{section.title}</h2>
-//                   <p>{section.subtitle}</p>
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-
-//         <div className={styles["hero-bottom-bottom"]}>
-//           <span>
-//             <Image
-//               className={styles["img"]}
-//               src="/images/home/c.png"
-//               alt="Logo"
-//               fill
-//             />
-//           </span>
-//           <span>2026</span>
-//         </div>
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default Hero;
-
-// -------------------------------------------------------------------------------------
 "use client";
 
 import styles from "./hero.module.css";
@@ -67,23 +8,31 @@ const sections = [
   { video: "/videos/home/first.mp4",  title: "MOST DAYS OUT",   subtitle: "CANERA TRIX"   },
   { video: "/videos/home/second.mp4", title: "AURORA BEACH",    subtitle: "Braided Truce" },
   { video: "/videos/home/third.mp4",  title: "Brutalist Arch.", subtitle: "Russian River" },
+   { video: "/videos/home/third.mp4",  title: "Brutalist Arch.", subtitle: "Russian River" },
+  // 👉 add as many more sections as you like — the desktop strip will
+  // still only ever show 3 at a time, and becomes swipeable.
 ];
 
-const INTERVAL = 3500;
-const FLIP_MS  = 900;
+const INTERVAL    = 3500;
+const FLIP_MS     = 900;
+const WINDOW_SIZE  = 3;      // how many cards are visible at once on desktop
+const SWIPE_THRESHOLD = 40;  // px of horizontal drag before it counts as a swipe
 
 export default function Hero() {
   const [current,     setCurrent]     = useState(0);
   const [next,        setNext]        = useState(null);
   const [flipPhase,   setFlipPhase]   = useState("idle"); // "idle" | "first-half" | "second-half"
   const [progressKey, setProgressKey] = useState(0);
+  const [windowStart, setWindowStart] = useState(0); // index of first visible card in the strip
 
   const currentRef   = useRef(0);
   const flippingRef  = useRef(false);
   const autoTimer    = useRef(null);
   const phaseTimer   = useRef(null);
+  const dragRef      = useRef({ startX: 0, dragging: false });
 
   const total = sections.length;
+  const maxWindowStart = Math.max(0, total - WINDOW_SIZE);
 
   function flipTo(nextIdx) {
     if (flippingRef.current) return;
@@ -126,11 +75,49 @@ export default function Hero() {
     };
   }, []);
 
+  // keep the active card inside the visible 3-card window whenever
+  // `current` changes — whether that change came from autoplay, a
+  // thumbnail click, or a swipe.
+  useEffect(() => {
+    setWindowStart(w => {
+      if (current < w) return current;
+      if (current > w + WINDOW_SIZE - 1) {
+        return Math.min(current - WINDOW_SIZE + 1, maxWindowStart);
+      }
+      return w;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [current]);
+
   function handleThumb(idx) {
     if (flippingRef.current) return;
     clearTimeout(autoTimer.current);
     flipTo(idx);
     scheduleAuto();
+  }
+
+  // ── swipe / drag the strip to move the 3-card window ──
+  function shiftWindow(dir) {
+    setWindowStart(w => {
+      let n = w + dir;
+      if (n < 0) n = 0;
+      if (n > maxWindowStart) n = maxWindowStart;
+      return n;
+    });
+  }
+
+  function handleDragStart(e) {
+    dragRef.current.dragging = true;
+    dragRef.current.startX = e.clientX ?? e.touches?.[0]?.clientX ?? 0;
+  }
+
+  function handleDragEnd(e) {
+    if (!dragRef.current.dragging) return;
+    dragRef.current.dragging = false;
+    const endX = e.clientX ?? e.changedTouches?.[0]?.clientX ?? dragRef.current.startX;
+    const delta = endX - dragRef.current.startX;
+    if (delta <= -SWIPE_THRESHOLD) shiftWindow(1);
+    else if (delta >= SWIPE_THRESHOLD) shiftWindow(-1);
   }
 
   // which video src to show: during second-half show the NEXT video
@@ -172,8 +159,16 @@ export default function Hero() {
 
       {/* ══ BOTTOM STRIP ═══════════════════════════════ */}
       <footer className={styles.bottom}>
-        <div className={styles.stripWrap}>
-          <div className={styles.strip}>
+        <div
+          className={styles.stripWrap}
+          onPointerDown={handleDragStart}
+          onPointerUp={handleDragEnd}
+          onPointerCancel={handleDragEnd}
+        >
+          <div
+            className={styles.strip}
+            style={{ transform: `translateX(-${windowStart * (100 / WINDOW_SIZE)}%)` }}
+          >
             {sections.map((s, i) => (
               <div
                 key={i}

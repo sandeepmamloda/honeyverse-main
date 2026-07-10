@@ -83,7 +83,7 @@
   white-space: nowrap;
   line-height: 1;
   letter-spacing: 0.4rem;
-  text-align: center;
+  text-align:center;
 }
 
 .sub {
@@ -92,9 +92,9 @@
   font-family: "inriasansbold";
   font-size: clamp(0.95rem, 1.8vw, 1.5rem);
   line-height: 1.3;
-  text-align: center;
   text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
   max-inline-size: 55ch;
+  text-align:center;
 }
 
 /* ════════════════════════════════════════════════
@@ -123,12 +123,19 @@
   z-index: 20;
 }
 
+/* the "window" — always crops to exactly WINDOW_SIZE (3) cards on
+   desktop. Swiping/dragging inside here slides the .strip beneath it. */
 .stripWrap {
   position: relative;
-  overflow-x: auto;
-  scrollbar-width: none;
+  overflow: hidden;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  margin-inline: auto;
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
 }
-.stripWrap::-webkit-scrollbar { display: none; }
+.stripWrap:active { cursor: grabbing; }
 
 /* dashed lines — on stripWrap, 100vw wide so they never break on scroll */
 .stripWrap::before,
@@ -150,21 +157,23 @@
 .stripWrap::before { top: 0; }
 .stripWrap::after  { bottom: 0; }
 
+/* the sliding track — holds every card; transform (set inline via JS,
+   based on windowStart) is what actually moves it left/right */
 .strip {
   display: flex;
   column-gap: 0.75rem;
-  inline-size: fit-content;
-  margin-inline: auto;
   padding-inline: 1rem;
   padding-block: 0.6rem;
+  transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+  will-change: transform;
 }
 
 /* ── card ── */
 .card {
   display: flex;
   column-gap: 0.75rem;
-  flex-shrink: 0;
-  /* align-items: center; */
+  flex: 0 0 calc((100% - 1.5rem) / 3);
+  inline-size: calc((100% - 1.5rem) / 3);
   cursor: pointer;
   border-radius: 0.6rem;
   padding: 0.4rem 0.6rem 0.4rem 0.4rem;
@@ -196,6 +205,7 @@
 .thumbVid {
   width: 100%; height: 100%;
   object-fit: cover; display: block;
+  pointer-events: none; /* so drags on the video don't trigger native drag-ghosting */
 }
 
 /* timeline color-wash — sweeps across the whole card background left→right */
@@ -228,6 +238,7 @@
   line-height: 1;
   letter-spacing: -0.05rem;
   margin-block-start: 0.6rem;
+  /* text-align:center; */
 }
 
 .cardSub {
@@ -272,6 +283,9 @@
     font-size: clamp(2rem, 5.5vw, 4.5rem);
     letter-spacing: 0.2rem;
   }
+  .stripWrap {
+    inline-size: 100%;
+  }
   .thumb {
     block-size: 5.5rem;
     inline-size: 10rem;
@@ -286,33 +300,57 @@
     font-size: clamp(1.6rem, 8vw, 2.8rem);
     letter-spacing: 0.1rem;
     white-space: normal;
-    text-align: center;
   }
   .sub {
     font-size: 0.9rem;
     margin-block-start: 0.8rem;
   }
 
+  /* only ONE card is shown at a time — it's driven entirely by
+     `current`/.cardActive from React, so as the video/section auto-
+     rotates, the strip swaps to show that card, full-width.
+     The desktop 3-up sliding window is switched off here. */
+  .stripWrap {
+    overflow-x: hidden;
+    inline-size: 100%;
+  }
+
   .strip {
-    column-gap: 0.5rem;
-    padding-inline: 0.75rem;
-    padding-block: 0.5rem;
-    /* each card takes roughly 40vw so 3 cards = scrollable */
-    inline-size: max-content;
+    column-gap: 0;
+    padding-inline: 1.1rem;
+    padding-block: 0.7rem;
+    inline-size: 100%;
+    margin-inline: 0;
+    transform: none !important; /* desktop windowing doesn't apply on mobile */
   }
 
   .card {
-    flex-direction: column;
-    align-items: flex-start;
+    display: none; /* inactive cards are removed from layout entirely */
+    flex-basis: auto;
+    inline-size: auto;
+  }
+
+  .cardActive {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 0.75rem;
+    inline-size: fit-content;
+    margin-inline: auto;
     padding: 0.4rem 0.4rem 0.5rem 0.4rem;
-    column-gap: 0;
-    row-gap: 0.35rem;
-    width: 38vw;
   }
 
   .thumb {
-    block-size: 5.5rem;
-    inline-size: 100%;
+    inline-size: clamp(8rem, 32vw, 10rem);
+    flex-shrink: 0;
+    /* scales with width but capped so it never grows huge on
+       wider phones (e.g. 600px) and pushes the footer into the headline */
+    block-size: clamp(5rem, 20vw, 7rem);
+  }
+
+  .labels {
+    flex: none;
   }
 
   .labels {
@@ -320,20 +358,47 @@
   }
 
   .cardTitle {
-    font-size: 0.82rem;
-    letter-spacing: 0;
+    font-size: clamp(1rem, 4.5vw, 1.5rem);
+    letter-spacing: -0.02rem;
     margin-block-start: 0;
     white-space: normal;
-    line-height: 1.2;
+    line-height: 1.15;
+    width:fit-content;
   }
 
   .cardSub {
-    font-size: 0.75rem;
+    font-size: clamp(0.8rem, 3vw, 1rem);
     margin-block-start: 0.15rem;
     white-space: normal;
+    /* text-align:center; */
+    width:fit-content;
   }
 
   .logoRow  { margin-block: 0.6rem; }
   .logoBox  { block-size: 1rem; inline-size: 1rem; }
   .year     { font-size: 0.95rem; }
+}
+
+/* ── Small mobile (below 350px): thumb + text stack instead of row ── */
+@media (max-width: 350px) {
+  .cardActive {
+    flex-direction: column;
+    /* align-items: flex-start; */
+    row-gap: 0.4rem;
+    inline-size: 100%;
+    margin-inline: 0;
+  }
+  .thumb {
+    inline-size: 100%;
+    block-size: clamp(6rem, 22vw, 9rem);
+  }
+  .labels {
+    flex: none;
+  }
+  .cardTitle{
+    margin-inline:auto;
+  }
+  .cardSub{
+    margin-inline:auto;
+  }
 }
