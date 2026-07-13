@@ -10,13 +10,20 @@ const sections = [
   { video: "/videos/home/third.mp4",  title: "Brutalist Arch.", subtitle: "Russian River" },
    { video: "/videos/home/third.mp4",  title: "Brutalist Arch.", subtitle: "Russian River" },
   // 👉 add as many more sections as you like — the desktop strip will
-  // still only ever show 3 at a time, and becomes swipeable.
+  // still only ever show 3 at a time (2 on tablet), and becomes swipeable.
 ];
 
 const INTERVAL    = 3500;
 const FLIP_MS     = 900;
-const WINDOW_SIZE  = 3;      // how many cards are visible at once on desktop
 const SWIPE_THRESHOLD = 40;  // px of horizontal drag before it counts as a swipe
+
+// how many cards are visible at once, based on viewport width —
+// 2 on tablet (601px–1024px), 3 on desktop (1025px+). Mobile (≤600px)
+// ignores this entirely since the CSS switches to a single-card view.
+function getWindowSize() {
+  if (typeof window === "undefined") return 3;
+  return window.innerWidth <= 1024 ? 2 : 3;
+}
 
 export default function Hero() {
   const [current,     setCurrent]     = useState(0);
@@ -24,6 +31,7 @@ export default function Hero() {
   const [flipPhase,   setFlipPhase]   = useState("idle"); // "idle" | "first-half" | "second-half"
   const [progressKey, setProgressKey] = useState(0);
   const [windowStart, setWindowStart] = useState(0); // index of first visible card in the strip
+  const [windowSize,  setWindowSize]  = useState(3); // how many cards are visible right now
 
   const currentRef   = useRef(0);
   const flippingRef  = useRef(false);
@@ -32,7 +40,23 @@ export default function Hero() {
   const dragRef      = useRef({ startX: 0, dragging: false });
 
   const total = sections.length;
-  const maxWindowStart = Math.max(0, total - WINDOW_SIZE);
+  const maxWindowStart = Math.max(0, total - windowSize);
+
+  // keep windowSize in sync with viewport (tablet = 2, desktop = 3)
+  useEffect(() => {
+    function update() {
+      setWindowSize(getWindowSize());
+    }
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  // if the window shrinks (e.g. desktop → tablet) and the current
+  // windowStart would now show past the end, clamp it back
+  useEffect(() => {
+    setWindowStart(w => Math.min(w, Math.max(0, total - windowSize)));
+  }, [windowSize, total]);
 
   function flipTo(nextIdx) {
     if (flippingRef.current) return;
@@ -75,19 +99,19 @@ export default function Hero() {
     };
   }, []);
 
-  // keep the active card inside the visible 3-card window whenever
-  // `current` changes — whether that change came from autoplay, a
-  // thumbnail click, or a swipe.
+  // keep the active card inside the visible window whenever `current`
+  // changes — whether that change came from autoplay, a thumbnail
+  // click, or a swipe.
   useEffect(() => {
     setWindowStart(w => {
       if (current < w) return current;
-      if (current > w + WINDOW_SIZE - 1) {
-        return Math.min(current - WINDOW_SIZE + 1, maxWindowStart);
+      if (current > w + windowSize - 1) {
+        return Math.min(current - windowSize + 1, maxWindowStart);
       }
       return w;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [current]);
+  }, [current, windowSize]);
 
   function handleThumb(idx) {
     if (flippingRef.current) return;
@@ -96,7 +120,7 @@ export default function Hero() {
     scheduleAuto();
   }
 
-  // ── swipe / drag the strip to move the 3-card window ──
+  // ── swipe / drag the strip to move the visible window ──
   function shiftWindow(dir) {
     setWindowStart(w => {
       let n = w + dir;
@@ -167,7 +191,10 @@ export default function Hero() {
         >
           <div
             className={styles.strip}
-            style={{ transform: `translateX(-${windowStart * (100 / WINDOW_SIZE)}%)` }}
+            style={{
+              "--window-size": windowSize,
+              transform: `translateX(-${windowStart * (100 / windowSize)}%)`,
+            }}
           >
             {sections.map((s, i) => (
               <div

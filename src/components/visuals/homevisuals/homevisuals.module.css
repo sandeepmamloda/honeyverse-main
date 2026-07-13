@@ -1,20 +1,20 @@
 /* ══════════════════════════════
    BASE
 ══════════════════════════════ */
-.heroawards-main {
+.herovisuals-main {
   height: 100svh;
   width: 100%;
   position: relative;
   min-height: 850px;
 }
 
-.heroawards-video-wrapper {
+.herovisuals-video-wrapper {
   height: 100%;
   width: 100%;
   position: relative;
 }
 
-.awards-video {
+.herovisuals-video {
   height: 100%;
   width: 100%;
   object-fit: cover;
@@ -59,7 +59,7 @@
   height: fit-content;
   margin-block-start: 3rem;
 
-  display: flex;          /* <-- add this */
+  display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: baseline;
@@ -68,6 +68,7 @@
 
   font-family: "boldonse";
   font-size: clamp(3rem, 9vw, 10rem);
+  font-weight:400;
   line-height: 140%;
 }
 
@@ -79,7 +80,7 @@
 .text-outline {
   letter-spacing: 0.3rem;
   color: transparent;
-  -webkit-text-stroke: 0.2px #e0195a;
+  -webkit-text-stroke: 3.5px #e0195a;
 }
 
 /* ── DESCRIPTION BOX ── */
@@ -89,7 +90,7 @@
   max-width: 40rem;
 
   margin-inline-start: auto;
-  margin-block-start: auto; /* <-- ye important hai */
+  margin-block-start: auto;
 
   background: rgba(255, 255, 255, 0.3);
   border-left: solid 0.3rem rgba(217, 24, 106, 1);
@@ -178,7 +179,7 @@
     padding-inline-end: 1rem;
     margin-block-start: 0;
     align-self: stretch;
-    border-right:solid 0.3rem rgba(217, 24, 106, 1);
+    border-right: solid 0.3rem rgba(217, 24, 106, 1);
   }
 
   .bottom-last h2 {

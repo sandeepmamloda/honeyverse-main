@@ -1,22 +1,22 @@
-import styles from "./heroawards.module.css";
+import styles from "./homevisuals.module.css";
 
 const headings = [
-  { text: "CRITICAL", style: "solid" },
-  { text: "ACCLAIM", style: "outline" },
+  { text: "VISUAL", style: "solid" },
+  { text: "IDENTITY", style: "outline" },
 ];
 
-const Heroawards = () => {
+const Herovisuals = () => {
   return (
-    <section className={styles["heroawards-main"]}>
-      <div className={styles["heroawards-video-wrapper"]}>
+    <section className={styles["herovisuals-main"]}>
+      <div className={styles["herovisuals-video-wrapper"]}>
         <video
-          className={styles["awards-video"]}
+          className={styles["herovisuals-video"]}
           autoPlay
           muted
           loop
           playsInline
         >
-          <source src="/videos/awards/awards.mp4" type="video/mp4" />
+          <source src="/videos/visuals/visuals.mp4" type="video/mp4" />
         </video>
       </div>
 
@@ -47,8 +47,7 @@ const Heroawards = () => {
         {/* Description box — bottom pe */}
         <div className={styles["bottom-last"]}>
           <h2>
-            Recognition from the world's most prestigious institutions. A
-            testament to our uncompromising vision and narrative rigor.
+            Defining the optical vocabulary. A meticulous exploration of color science, structural framing, and raw cinematic texture.
           </h2>
         </div>
 
@@ -57,4 +56,4 @@ const Heroawards = () => {
   );
 };
 
-export default Heroawards;
+export default Herovisuals;

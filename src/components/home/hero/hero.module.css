@@ -123,8 +123,9 @@
   z-index: 20;
 }
 
-/* the "window" — always crops to exactly WINDOW_SIZE (3) cards on
-   desktop. Swiping/dragging inside here slides the .strip beneath it. */
+/* the "window" — crops to exactly --window-size cards (set inline by
+   JS: 3 on desktop, 2 on tablet). Swiping/dragging inside here slides
+   the .strip beneath it. */
 .stripWrap {
   position: relative;
   overflow: hidden;
@@ -158,7 +159,8 @@
 .stripWrap::after  { bottom: 0; }
 
 /* the sliding track — holds every card; transform (set inline via JS,
-   based on windowStart) is what actually moves it left/right */
+   based on windowStart) is what actually moves it left/right.
+   --window-size is also set inline by JS (3 desktop / 2 tablet). */
 .strip {
   display: flex;
   column-gap: 0.75rem;
@@ -166,14 +168,18 @@
   padding-block: 0.6rem;
   transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
   will-change: transform;
+  margin-left:5%;
 }
 
 /* ── card ── */
+/* width = container / --window-size, accounting for the gaps between
+   cards — so however many cards JS says should be visible, they
+   always exactly fill the strip with no partial/cut-off card. */
 .card {
   display: flex;
   column-gap: 0.75rem;
-  flex: 0 0 calc((100% - 1.5rem) / 3);
-  inline-size: calc((100% - 1.5rem) / 3);
+  flex: 0 0 calc((100% - 0.75rem * (var(--window-size, 3) - 1)) / var(--window-size, 3));
+  inline-size: calc((100% - 0.75rem * (var(--window-size, 3) - 1)) / var(--window-size, 3));
   cursor: pointer;
   border-radius: 0.6rem;
   padding: 0.4rem 0.6rem 0.4rem 0.4rem;
@@ -272,7 +278,6 @@
   font-size: 1.1rem;
   line-height: 1;
 }
-
 /* ════════════════════════════════════════════════
    RESPONSIVE
    ════════════════════════════════════════════════ */
@@ -282,6 +287,9 @@
   .h1 {
     font-size: clamp(2rem, 5.5vw, 4.5rem);
     letter-spacing: 0.2rem;
+  }
+  .strip{
+    margin-left:8%;
   }
   .stripWrap {
     inline-size: 100%;
@@ -305,11 +313,13 @@
     font-size: 0.9rem;
     margin-block-start: 0.8rem;
   }
-
+  .strip{
+    margin:0!important;
+  }
   /* only ONE card is shown at a time — it's driven entirely by
      `current`/.cardActive from React, so as the video/section auto-
      rotates, the strip swaps to show that card, full-width.
-     The desktop 3-up sliding window is switched off here. */
+     The desktop/tablet sliding window is switched off here. */
   .stripWrap {
     overflow-x: hidden;
     inline-size: 100%;
@@ -321,7 +331,7 @@
     padding-block: 0.7rem;
     inline-size: 100%;
     margin-inline: 0;
-    transform: none !important; /* desktop windowing doesn't apply on mobile */
+    transform: none !important; /* desktop/tablet windowing doesn't apply on mobile */
   }
 
   .card {
