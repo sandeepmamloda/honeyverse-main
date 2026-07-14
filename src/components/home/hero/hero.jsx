@@ -32,12 +32,15 @@ export default function Hero() {
   const [progressKey, setProgressKey] = useState(0);
   const [windowStart, setWindowStart] = useState(0); // index of first visible card in the strip
   const [windowSize,  setWindowSize]  = useState(3); // how many cards are visible right now
+  const [inView,      setInView]      = useState(true); // is the whole hero section on-screen
 
   const currentRef   = useRef(0);
   const flippingRef  = useRef(false);
   const autoTimer    = useRef(null);
   const phaseTimer   = useRef(null);
   const dragRef      = useRef({ startX: 0, dragging: false });
+  const wrapperRef   = useRef(null);
+  const mainVidRef   = useRef(null);
 
   const total = sections.length;
   const maxWindowStart = Math.max(0, total - windowSize);
@@ -57,6 +60,40 @@ export default function Hero() {
   useEffect(() => {
     setWindowStart(w => Math.min(w, Math.max(0, total - windowSize)));
   }, [windowSize, total]);
+
+  // ── pause everything when the hero scrolls out of view ──
+  // saves CPU/GPU + bandwidth once the user has scrolled past it.
+  useEffect(() => {
+    if (!wrapperRef.current) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.1 }
+    );
+    obs.observe(wrapperRef.current);
+    return () => obs.disconnect();
+  }, []);
+
+  // explicitly play/pause the main video based on inView so the
+  // browser actually frees up decode resources when scrolled away
+  useEffect(() => {
+    const vid = mainVidRef.current;
+    if (!vid) return;
+    if (inView) {
+      vid.play().catch(() => {});
+    } else {
+      vid.pause();
+    }
+  }, [inView, current, flipPhase]);
+
+  // pause the autoplay rotation entirely while off-screen
+  useEffect(() => {
+    if (inView) {
+      scheduleAuto();
+    } else {
+      clearTimeout(autoTimer.current);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView]);
 
   function flipTo(nextIdx) {
     if (flippingRef.current) return;
@@ -154,13 +191,15 @@ export default function Hero() {
     "";
 
   return (
-    <section className={styles.wrapper}>
+    <section className={styles.wrapper} ref={wrapperRef}>
 
       {/* ══ SINGLE SCREEN — the one that flips ════════ */}
       <div className={`${styles.screen} ${flipClass}`}>
         <video
           key={displayIdx}          /* re-mount triggers new src */
+          ref={mainVidRef}
           autoPlay muted loop playsInline
+          preload="auto"            /* this is the hero's main video, keep it eager */
           className={styles.bg}
         >
           <source src={sections[displayIdx].video} type="video/mp4" />
@@ -196,32 +235,56 @@ export default function Hero() {
               transform: `translateX(-${windowStart * (100 / windowSize)}%)`,
             }}
           >
-            {sections.map((s, i) => (
-              <div
-                key={i}
-                onClick={() => handleThumb(i)}
-                className={`${styles.card} ${i === current ? styles.cardActive : ""}`}
-              >
-                <div className={styles.thumb}>
-                  <video autoPlay muted loop playsInline className={styles.thumbVid}>
-                    <source src={s.video} type="video/mp4" />
-                  </video>
+            {sections.map((s, i) => {
+              // only decode/play videos for cards currently inside the
+              // visible window (+ the active one, in case it's just
+              // outside due to a mid-shift). everything else stays
+              // un-mounted — massive win since only 2-3 thumbnail
+              // videos are ever downloading/playing at once instead of
+              // every single one in the array.
+              const isVisible =
+                i === current ||
+                (i >= windowStart && i < windowStart + windowSize);
 
-                  {i === current && (
-                    <div
-                      key={progressKey}
-                      className={styles.sweep}
-                      style={{ animationDuration: `${INTERVAL}ms` }}
-                    />
-                  )}
-                </div>
+              return (
+                <div
+                  key={i}
+                  onClick={() => handleThumb(i)}
+                  className={`${styles.card} ${i === current ? styles.cardActive : ""}`}
+                >
+                  <div className={styles.thumb}>
+                    {isVisible ? (
+                      <video
+                        autoPlay={inView}
+                        muted
+                        loop
+                        playsInline
+                        preload="metadata"   /* don't fetch the whole file just to show a thumbnail */
+                        className={styles.thumbVid}
+                      >
+                        <source src={s.video} type="video/mp4" />
+                      </video>
+                    ) : (
+                      // placeholder so layout doesn't jump when it scrolls into view later
+                      <div className={styles.thumbPlaceholder} />
+                    )}
 
-                <div className={styles.labels}>
-                  <h2 className={styles.cardTitle}>{s.title}</h2>
-                  <p  className={styles.cardSub}>{s.subtitle}</p>
+                    {i === current && (
+                      <div
+                        key={progressKey}
+                        className={styles.sweep}
+                        style={{ animationDuration: `${INTERVAL}ms` }}
+                      />
+                    )}
+                  </div>
+
+                  <div className={styles.labels}>
+                    <h2 className={styles.cardTitle}>{s.title}</h2>
+                    <p  className={styles.cardSub}>{s.subtitle}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
