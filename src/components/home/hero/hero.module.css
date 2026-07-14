@@ -168,7 +168,7 @@
   padding-block: 0.6rem;
   transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
   will-change: transform;
-  margin-left:5%;
+  margin-left:13%;
 }
 
 /* ── card ── */
