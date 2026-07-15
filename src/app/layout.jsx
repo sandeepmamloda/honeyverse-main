@@ -52,7 +52,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body style={{ backgroundColor: "rgba(255, 249, 255, 1)" }}>
-        {/* <Saturnbackground /> */}
+        <Saturnbackground />
         <Loader />
         <Navbar />
         {children}
