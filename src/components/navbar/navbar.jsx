@@ -1,12 +1,12 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import styles from "./navbar.module.css";
 import Image from "next/image";
 
 const navLinks = [
   { label: "Home", href: "/" },
-  { label: "Brand", href: "/brand" },
   { label: "Awards", href: "/awards" },
+  { label: "Brand", href: "/brand" },
   { label: "Teams", href: "/teams" },
   { label: "Portfolio", href: "/portfolio" },
   { label: "Services", href: "/services" },
@@ -17,47 +17,30 @@ const navLinks = [
   { label: "Contact Us", href: "/contact" },
 ];
 
-/* Images correspond to the first 5 menu items by index (stack carousel) */
+/* Images correspond 1:1 to the 11 menu items by index (stack carousel) */
 const stackImages = [
-  { src: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop", alt: "Home" },
-  { src: "https://images.unsplash.com/photo-1557683311-eac922347aa1?q=80&w=800&auto=format&fit=crop", alt: "Brand" },
-  { src: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=800&auto=format&fit=crop", alt: "Awards" },
-  { src: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop", alt: "Teams" },
-  { src: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop", alt: "Portfolio" },
+  { src: "/images/header/menu/home.png", alt: "Home" },
+  { src: "/images/header/menu/awards.jpg", alt: "Awards" },
+  { src: "/images/header/menu/Brand.jpg", alt: "Brand" },
+  { src: "/images/header/menu/Teams.jpg", alt: "Teams" },
+  { src: "/images/header/menu/Portfolio.jpg", alt: "Portfolio" },
+  { src: "/images/header/menu/Services.jpg", alt: "Services" },
+  { src: "/images/header/menu/Visual.jpg", alt: "Visual" },
+  { src: "/images/header/menu/Gallery.jpg", alt: "Gallery" },
+  { src: "/images/header/menu/Code.jpg", alt: "Code" },
+  { src: "/images/header/menu/News.jpg", alt: "News" },
+  { src: "/images/header/menu/Contact.jpg", alt: "Contact Us" },
 ];
 
-const AUTOPLAY_DELAY = 2200; // ms between auto-advances
 const total = stackImages.length;
 
 const Navbar = function () {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const autoplayRef = useRef(null);
 
   const goTo = (index) => {
     setActiveIndex(((index % total) + total) % total); // always wraps, never dead-ends
   };
-
-  const startAutoplay = () => {
-    stopAutoplay();
-    autoplayRef.current = setInterval(() => {
-      setActiveIndex((prev) => (((prev + 1) % total) + total) % total);
-    }, AUTOPLAY_DELAY);
-  };
-
-  const stopAutoplay = () => {
-    if (autoplayRef.current) clearInterval(autoplayRef.current);
-    autoplayRef.current = null;
-  };
-
-  useEffect(() => {
-    if (isMenuOpen) {
-      startAutoplay();
-    } else {
-      stopAutoplay();
-    }
-    return () => stopAutoplay();
-  }, [isMenuOpen]);
 
   // Lock page scroll while the overlay is open
   useEffect(() => {
@@ -76,6 +59,8 @@ const Navbar = function () {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isMenuOpen]);
 
+  const MAX_VISIBLE = 3; // cards beyond this many steps away simply fade out, keeping the peek within view
+
   const getImageStyle = (index) => {
     let diff = index - activeIndex;
 
@@ -86,14 +71,31 @@ const Navbar = function () {
     const absDiff = Math.abs(diff);
 
     if (diff === 0) {
-      return { transform: "translateY(0) scale(1)", zIndex: 10, opacity: 1 };
+      return {
+        transform: "translateY(0) scale(1)",
+        zIndex: 10,
+        opacity: 1,
+        filter: "blur(0px)",
+      };
+    }
+
+    if (absDiff > MAX_VISIBLE) {
+      const direction = diff > 0 ? 1 : -1;
+      return {
+        transform: `translateY(${direction * MAX_VISIBLE * 40}px) scale(${1 - MAX_VISIBLE * 0.06})`,
+        zIndex: 0,
+        opacity: 1,
+        filter: "blur(6px)",
+        pointerEvents: "none",
+      };
     }
 
     const direction = diff > 0 ? 1 : -1;
     return {
-      transform: `translateY(${direction * absDiff * 60}px) scale(${1 - absDiff * 0.07})`,
+      transform: `translateY(${direction * absDiff * 40}px) scale(${1 - absDiff * 0.06})`,
       zIndex: 10 - absDiff,
-      opacity: Math.max(0, 1 - absDiff * 0.18),
+      opacity: 1,
+      filter: `blur(${Math.min(1 + absDiff * 1.2, 6)}px)`,
     };
   };
 
@@ -155,11 +157,7 @@ const Navbar = function () {
                     <a
                       href={item.href}
                       className={`${styles["nav-item"]} ${index === activeIndex ? styles["active"] : ""}`}
-                      onMouseEnter={() => {
-                        stopAutoplay();
-                        if (index < total) goTo(index);
-                      }}
-                      onMouseLeave={() => startAutoplay()}
+                      onMouseEnter={() => goTo(index)}
                     >
                       {item.label}
                     </a>

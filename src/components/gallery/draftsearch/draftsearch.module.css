@@ -1,0 +1,180 @@
+.container {
+  width: 100%;
+  max-width: 110rem;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+/* Badge Styles - Aligned to Left */
+.badgeWrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.8rem;
+  padding-bottom: 0.8rem;
+  border-bottom: solid 0.1px rgba(217, 24, 106, 0.3);
+  margin-block-end: 3.5rem;
+  width: 26rem;
+}
+
+.badgeIcon {
+  color: #d9186a;
+  flex-shrink: 0;
+}
+
+.badge {
+  padding: 0.4rem 1.2rem;
+  border: solid 0.01rem rgba(217, 24, 106, 1);
+}
+
+.badge h3 {
+  color: #d9186a;
+  font-family: "consola", monospace;
+  font-size: clamp(0.65rem, 1.2vw, 1rem);
+  line-height: 100%;
+  letter-spacing: 0.2rem;
+  margin: 0;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+/* Header - Left Aligned, Two-Tone Title */
+.headerGroup {
+  text-align: left;
+  margin-bottom: 4rem;
+}
+
+.title {
+  font-family: "boldonse";
+  font-size: clamp(2.2rem, 9vw, 5.5rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.3rem;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.titleFilled {
+  color: #ffca1a;
+  letter-spacing:0.3rem;
+}
+
+.titleOutline {
+  color: transparent;
+  -webkit-text-stroke: 2px #d9186a;
+  text-stroke: 2px #d9186a;
+  letter-spacing:0.3rem;
+}
+
+/* Grid Layout */
+.grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  column-gap: 1rem;
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  height:20rem;
+}
+
+.card:nth-child(odd) {
+  width:100%;
+}
+
+.card:nth-child(even) {
+  width:100%;
+}
+
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.card:hover img {
+  transform: scale(1.03);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.75) 0%,
+    rgba(0, 0, 0, 0.15) 45%,
+    rgba(0, 0, 0, 0) 70%
+  );
+  z-index: 1;
+}
+
+.cardContent {
+  position: absolute;
+  left: 1.6rem;
+  right: 1.6rem;
+  bottom: 1.6rem;
+  z-index: 2;
+}
+
+/* Card variant 1: icon box above title */
+.cardIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  background: #d9186a;
+  /* border-radius: 0.4rem; */
+  margin-bottom: 1.2rem;
+}
+
+/* Card variant 2: vertical accent line beside text */
+.cardTextWithLine {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.verticalLine {
+  width: 2px;
+  align-self: stretch;
+  background: #d9186a;
+  flex-shrink: 0;
+}
+
+.cardTitle {
+  font-family: "interblack";
+  font-size: clamp(1.1rem, 2vw, 1.6rem);
+  color: #ffca1a;
+  margin: 0 0 0.6rem 0;
+  letter-spacing: 0.05rem;
+}
+
+.cardDescription {
+  font-family: "consola", monospace;
+  font-size: clamp(0.7rem, 1vw, 0.85rem);
+  line-height: 1.4;
+  letter-spacing: 0.08rem;
+  color: #fff;
+  text-transform: uppercase;
+  margin: 0;
+  max-width: 32rem;
+}
+.cardDescription:nth-child(odd){
+    color:rgba(217, 24, 106, 1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+    row-gap: 2rem;
+  }
+  .title {
+    gap: 0.6rem;
+  }
+}

@@ -1,0 +1,128 @@
+.scenesContainer {
+  width: 100%;
+  max-width: 110rem;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+/* Badge Styles - Aligned to Right */
+.badgeWrapper {
+  display: flex;
+  justify-content: flex-end; /* Right side alignment */
+  align-items: center;
+  gap: 0.8rem;
+  padding-bottom: 0.8rem;
+  border-bottom: solid 0.1px rgba(217, 24, 106, 0.3);
+  margin-block-end: 3.5rem;
+  width:26rem;
+  margin-inline-start:auto;
+}
+
+.badgeIcon {
+  color: #d9186a;
+  flex-shrink: 0;
+}
+
+.badge {
+  padding: 0.4rem 1.2rem;
+  border: solid 0.01rem rgba(217, 24, 106, 1);
+}
+
+.badge h3 {
+  color: #d9186a;
+  font-family: "consola", monospace;
+  font-size: clamp(0.65rem, 1.2vw, 1rem);
+  line-height: 100%;
+  letter-spacing: 0.2rem;
+  margin: 0;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+/* Header & Description - Aligned to Right */
+.headerGroup {
+  text-align: right; /* Right alignment */
+  margin-bottom: 4rem;
+  margin-left:auto;
+  max-width:38rem;
+}
+
+.title {
+  font-family: "boldonse";
+  font-size: clamp(2rem, 10vw, 5rem);
+  font-weight:400;
+  color: #ffca1a;
+  line-height: 1;
+  margin: 0;
+  letter-spacing: 0.5rem;
+}
+
+.description {
+  margin-top: 2.5rem;
+  font-family: "consola", monospace;
+  font-size: clamp(0.8rem, 1vw, 1rem);
+  letter-spacing: 0.01rem;
+  line-height: 1.3;
+  color: #000;
+  text-transform:uppercase;
+}
+
+/* Grid Layout */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* gap: 2rem; */
+  column-gap:4.2rem;
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  /* border-radius: 0.5rem; */
+}
+
+.card:nth-child(even){
+    border-radius:2rem;
+    margin-top:3rem;
+}
+
+.card:nth-child(even) .cardLabel {
+  left: auto;
+  right: 1rem;
+}
+
+.card img {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.card:hover img {
+  transform: scale(1.03);
+}
+
+.cardLabel {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  border-radius:4rem;
+  background: #d9186a;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  font-family: "consola", monospace;
+  font-size: 0.75rem;
+  line-height:100%;
+  letter-spacing:0.08rem;
+  z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .headerGroup {
+    text-align: left; /* Mobile pe left return kar sakte hain agar chahein */
+  }
+}

@@ -1,0 +1,342 @@
+/* ══════════════════════════════
+   SECTION
+══════════════════════════════ */
+.archs-section {
+  width: 100%;
+  max-width: 110rem;
+  margin-inline: auto;
+  padding-block: 3rem;
+  padding-inline: 2rem;
+  overflow-x: hidden;
+}
+
+/* ── TOP BADGE ── */
+.archs-badge-wrapper {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  min-width: 14rem;
+  gap: 0.8rem;
+  padding-bottom: 0.8rem;
+  border-bottom: solid 0.1px rgba(217, 24, 106, 1);
+  margin-block-end: 1.5rem;
+}
+
+.archs-badge-icon {
+  color: rgba(217, 24, 106, 1);
+  flex-shrink: 0;
+}
+
+.archs-badge {
+  height: fit-content;
+  width: fit-content;
+  padding: 0.4rem 1.2rem;
+  border: solid 0.01rem rgba(217, 24, 106, 1);
+}
+
+.archs-badge h3 {
+  color: rgba(217, 24, 106, 1);
+  font-family: "consola";
+  font-size: clamp(0.65rem, 1.2vw, 1rem);
+  line-height: 100%;
+  letter-spacing: 0.2rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ── HEADING ── */
+.archs-heading-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.75rem;
+  row-gap: 0.2rem;
+
+  font-family: "boldonse";
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 400;
+  line-height: 120%;
+  margin-block-end: 2.5rem;
+}
+.archs-heading-row span{
+    letter-spacing:0.4rem;
+}
+.archs-text-solid {
+  letter-spacing: 0.01rem;
+  color: rgba(255, 202, 26, 1);
+}
+
+.archs-text-outline {
+  letter-spacing: 0.15rem;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(217, 24, 106, 1);
+}
+
+/* ══════════════════════════════
+   MEDIA CARD / DRAG-SWIPE TRACK
+══════════════════════════════ */
+.archs-stage {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  height:38rem;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  background: #0a0a0a;
+}
+
+.archs-stage.is-dragging {
+  cursor: grabbing;
+}
+
+.archs-track {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  will-change: transform;
+}
+
+.archs-slide {
+  position: relative;
+  flex: 0 0 100%;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.archs-media {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+  transform: scale(1.06);
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* active slide ka subtle ken-burns zoom-settle */
+.archs-slide.is-active .archs-media {
+  transform: scale(1);
+}
+
+.archs-stage.is-dragging .archs-media {
+  transition: none;
+  transform: scale(1.03);
+}
+
+/* dark gradient overlay for text legibility */
+.archs-media-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(217, 24, 106, 0.4686) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── CAPTION ── */
+.archs-caption {
+  position: absolute;
+  bottom: 1.8rem;
+  left: 2.7rem;
+  right: 2rem;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+  overflow: hidden;
+}
+.archs-caption-tag,
+.archs-caption-title {
+  animation: archsRise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.archs-caption-title {
+  animation-delay: 0.06s;
+}
+
+@keyframes archsRise {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+
+.archs-caption-tag {
+  font-family: "consola";
+  font-size: 1rem;
+  letter-spacing: 0.2rem;
+  color:rgba(255, 202, 26, 1);
+  text-transform: uppercase;
+  line-height: 100%;
+  font-weight:400;
+}
+
+.archs-caption-title {
+  font-family: "interblack";
+  font-size: clamp(1.2rem, 2.5vw, 3rem);
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.02rem;
+  line-height: 100%;
+}
+
+/* ══════════════════════════════
+   DOTS / CAROUSEL INDICATOR
+══════════════════════════════ */
+.archs-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 1rem;
+  width: fit-content;
+  margin-inline: auto;
+  margin-block-start: 2rem;
+
+  background: rgba(217, 24, 106, 0.08);
+  padding: 0.7rem 1.3rem;
+  border-radius: 50rem;
+}
+
+.archs-dot {
+  height: 0.66rem;
+  width: 0.66rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+  border: none;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.archs-dot.active {
+  background: rgba(217, 24, 106, 1);
+  transform: scale(1.15);
+}
+
+.archs-dot:hover {
+  background: rgba(217, 24, 106, 0.5);
+}
+
+/* ══════════════════════════════
+   TABLET (≤ 1024px)
+══════════════════════════════ */
+@media (max-width: 1024px) {
+  .archs-section {
+    padding-inline: 2.5rem;
+  }
+
+  .archs-caption {
+    left: 1.5rem;
+    right: 1.5rem;
+    bottom: 1.2rem;
+  }
+}
+
+/* ══════════════════════════════
+   MOBILE (≤ 640px)
+══════════════════════════════ */
+@media (max-width: 640px) {
+  .archs-section {
+    padding-inline: 1.25rem;
+    padding-block: 2rem;
+  }
+
+  /* ── Badge: screenshot ke hisaab se — icon + plain text
+     (bina border-box ke) + neeche full-width thin line ── */
+  .archs-badge-wrapper {
+    width: 100%;
+    min-width: 0;
+    gap: 0.6rem;
+    padding-bottom: 1rem;
+    border-bottom: solid 0.1px rgba(217, 24, 106, 0.1);
+  }
+
+  .archs-badge-icon {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  .archs-badge {
+    padding: 0;
+    border: none;
+  }
+
+  .archs-badge h3 {
+    font-size: 0.7rem;
+    letter-spacing: 0.15rem;
+  }
+
+  .archs-heading-row {
+    font-size: clamp(2rem, 9vw, 3rem);
+    margin-block-end: 1.5rem;
+    line-height:142%;
+  }
+
+  .archs-heading-row span {
+    letter-spacing: 0.1rem;
+  }
+
+  .archs-stage {
+    aspect-ratio: 4 / 5;
+    height: auto;
+    border-radius: 0.25rem;
+  }
+
+  .archs-caption {
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    row-gap: 0.5rem;
+  }
+
+  .archs-caption-tag {
+    font-size: 0.75rem;
+  }
+
+  .archs-caption-title {
+    font-size: 1.5rem;
+  }
+
+  .archs-dots {
+    margin-block-start: 1.25rem;
+    padding: 0.5rem 0.75rem;
+    gap: 0.4rem;
+  }
+
+  .archs-dot {
+    height: 0.5rem;
+    width: 0.5rem;
+  }
+}
+
+/* ══════════════════════════════
+   VERY SMALL (≤ 375px)
+══════════════════════════════ */
+@media (max-width: 375px) {
+  .archs-stage {
+    aspect-ratio: 3 / 4;
+  }
+
+  .archs-caption-title {
+    font-size: 1.25rem;
+  }
+}
+
+/* reduced motion respect */
+@media (prefers-reduced-motion: reduce) {
+  .archs-media,
+  .archs-caption-tag,
+  .archs-caption-title,
+  .archs-dot {
+    animation: none !important;
+    transition: none !important;
+  }
+}
