@@ -1,38 +1,108 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import styles from "./awards-and-selection.module.css";
 
 const awardsData = [
   {
     year: "2025",
-    festival: "CANNES FILM FESTIVAL",
-    award: "PALME D'OR NOMINEE",
-    project: "THE SPACES BETWEEN",
+    festival: "Cannes Film Festival",
+    award: "Palme d'Or Nominee",
+    project: "The Spaces Between",
   },
   {
     year: "2024",
-    festival: "VENICE BIENNALE",
-    award: "SILVER LION",
-    project: "ECHOES OF RAIN",
+    festival: "Venice Biennale",
+    award: "Silver Lion",
+    project: "Echoes of Rain",
   },
   {
     year: "2024",
-    festival: "SUNDANCE",
-    award: "GRAND JURY PRIZE",
-    project: "MIDNIGHT SUN",
+    festival: "Sundance",
+    award: "Grand Jury Prize",
+    project: "Midnight Sun",
   },
   {
     year: "2023",
     festival: "TIFF",
-    award: "PEOPLE'S CHOICE",
-    project: "NEON HORIZONS",
+    award: "People's Choice",
+    project: "Neon Horizons",
   },
   {
     year: "2022",
-    festival: "BERLINALE",
-    award: "GOLDEN BEAR NOMINEE",
-    project: "STEEL & GLASS",
+    festival: "Berlinale",
+    award: "Golden Bear Nominee",
+    project: "Steel & Glass",
   },
-  
 ];
+
+/* Fades an element into place the first time it scrolls into view.
+   Upgraded with a deeply cinematic, slow, butter-smooth easing and staggered reveal. */
+const Reveal = ({
+  children,
+  className = "",
+  delay = 0,
+  as = "div",
+  direction = "up",
+}) => {
+  const ref = useRef(null);
+  const [phase, setPhase] = useState("hidden");
+  const Tag = as;
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          requestAnimationFrame(() => setPhase("entering"));
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const hiddenTransform =
+    direction === "left"
+      ? "translateX(-70px) scale(0.98)"
+      : direction === "right"
+      ? "translateX(70px) scale(0.98)"
+      : "translateY(70px) scale(0.95)";
+
+  let style;
+  if (phase === "settled") {
+    style = undefined;
+  } else {
+    style = {
+      opacity: phase === "entering" ? 1 : 0,
+      transform: phase === "entering" ? "none" : hiddenTransform,
+      transition:
+        "opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1), transform 1.6s cubic-bezier(0.16, 1, 0.3, 1)",
+      transitionDelay: `${delay}ms`,
+      willChange: "opacity, transform",
+    };
+  }
+
+  return (
+    <Tag
+      ref={ref}
+      className={className}
+      style={style}
+      onTransitionEnd={(e) => {
+        if (phase === "entering" && e.propertyName === "opacity") {
+          setPhase("settled");
+        }
+      }}
+    >
+      {children}
+    </Tag>
+  );
+};
 
 /* ── Inline SVG Icons ── */
 const TrophyIcon = ({ className }) => (
@@ -45,10 +115,10 @@ const TrophyIcon = ({ className }) => (
     className={className}
   >
     <g clipPath="url(#clip0_208_111)">
-      <path d="M5.3335 13.3334H26.6668" stroke="#FE9A00" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M13.3335 3.54663V6.66663C13.3335 7.39996 12.7068 7.9733 12.0402 8.27996C10.4668 8.99996 9.3335 10.9866 9.3335 13.3333" stroke="#FE9A00" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M18.6665 3.54663V6.66663C18.6665 7.39996 19.2932 7.9733 19.9598 8.27996C21.5332 8.99996 22.6665 10.9866 22.6665 13.3333" stroke="#FE9A00" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M24 -13.3334H8V-4.00004C8 -1.87831 8.84286 0.156523 10.3431 1.65681C11.8434 3.1571 13.8783 3.99996 16 3.99996C18.1217 3.99996 20.1566 3.1571 21.6569 1.65681C23.1571 0.156523 24 -1.87831 24 -4.00004V-13.3334Z" stroke="#FE9A00" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M5.3335 13.3334H26.6668" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M13.3335 3.54663V6.66663C13.3335 7.39996 12.7068 7.9733 12.0402 8.27996C10.4668 8.99996 9.3335 10.9866 9.3335 13.3333" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M18.6665 3.54663V6.66663C18.6665 7.39996 19.2932 7.9733 19.9598 8.27996C21.5332 8.99996 22.6665 10.9866 22.6665 13.3333" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M24 -13.3334H8V-4.00004C8 -1.87831 8.84286 0.156523 10.3431 1.65681C11.8434 3.1571 13.8783 3.99996 16 3.99996C18.1217 3.99996 20.1566 3.1571 21.6569 1.65681C23.1571 0.156523 24 -1.87831 24 -4.00004V-13.3334Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     </g>
     <defs>
       <clipPath id="clip0_208_111">
@@ -79,18 +149,25 @@ const AwardsAndSelection = function () {
 
       {/* ── Header ── */}
       <div className={styles["aws-header"]}>
-        <div className={styles["aws-header-left"]}>
+        <Reveal className={styles["aws-header-left"]} direction="left" delay={0}>
           <TrophyIcon className={styles["aws-icon"]} />
           <h2 className={styles["aws-title"]}>AWARDS & SELECTIONS</h2>
-        </div>
-        <span className={styles["aws-tag"]}>[ THE LAURELS ]</span>
+        </Reveal>
+        <Reveal direction="right" delay={200}>
+          <span className={styles["aws-tag"]}>[ THE LAURELS ]</span>
+        </Reveal>
       </div>
 
       {/* ── List ── */}
       <ul className={styles["aws-list"]}>
         {awardsData.map((item, index) => (
-          <li key={index} className={styles["aws-row"]}>
-
+          <Reveal
+            key={index}
+            as="li"
+            className={styles["aws-row"]}
+            direction="up"
+            delay={300 + index * 180}
+          >
             {/* Year */}
             <span className={styles["aws-year"]}>{item.year}</span>
 
@@ -108,8 +185,7 @@ const AwardsAndSelection = function () {
               </div>
               <ArrowIcon className={styles["aws-arrow"]} />
             </div>
-
-          </li>
+          </Reveal>
         ))}
       </ul>
 

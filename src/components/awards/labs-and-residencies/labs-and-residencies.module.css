@@ -225,9 +225,33 @@
 }
 
 /* ══════════════════════════════
+   RESPONSIVE MAX-WIDTH SCALING
+══════════════════════════════ */
+@media screen and (max-width: 1780px) {
+  .labs-section {
+    max-width: 100rem;
+  }
+}
+@media screen and (max-width: 1630px) {
+  .labs-section {
+    max-width: 90rem;
+  }
+}
+@media screen and (max-width: 1460px) {
+  .labs-section {
+    max-width: 85rem;
+  }
+}
+@media screen and (max-width: 1370px) {
+  .labs-section {
+    max-width: 100%;
+  }
+}
+
+/* ══════════════════════════════
    TABLET  (≤ 1024px)
 ══════════════════════════════ */
-@media (max-width: 1024px) {
+@media screen and (max-width: 1024px) {
   .labs-section {
     padding-inline: 2.5rem;
   }
@@ -240,7 +264,7 @@
 /* ══════════════════════════════
    MOBILE  (≤ 640px)
 ══════════════════════════════ */
-@media (max-width: 640px) {
+@media screen and (max-width: 640px) {
   .labs-section {
     padding-inline: 1.25rem;
     padding-block: 2.5rem;
@@ -258,7 +282,7 @@
     font-size: clamp(2.5rem, 10vw, 4rem);
   }
 }
-@media (max-width:452px){
+@media screen and (max-width: 452px) {
   .labs-eyebrow span{
     font-size:0.6rem;
   }

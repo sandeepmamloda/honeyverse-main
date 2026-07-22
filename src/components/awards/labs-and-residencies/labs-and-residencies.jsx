@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import styles from "./labs-and-residencies.module.css";
 
 const labsData = [
@@ -22,6 +25,76 @@ const labsData = [
     description: "ALL ACCESS GRANT & RESIDENCY",
   },
 ];
+
+/* Fades an element into place the first time it scrolls into view.
+   World-class custom inline-style reveal animation with physics spring-like easing. */
+const Reveal = ({
+  children,
+  className = "",
+  delay = 0,
+  as = "div",
+  direction = "up",
+}) => {
+  const ref = useRef(null);
+  const [phase, setPhase] = useState("hidden");
+  const Tag = as;
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          requestAnimationFrame(() => setPhase("entering"));
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -5% 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const hiddenTransform =
+    direction === "pop"
+      ? "translateY(40px) scale(0.75) rotate(-4deg)"
+      : direction === "left"
+      ? "translateX(-60px) translateY(20px)"
+      : "translateY(50px)";
+
+  let style;
+  if (phase === "settled") {
+    style = undefined;
+  } else {
+    style = {
+      opacity: phase === "entering" ? 1 : 0,
+      transform: phase === "entering" ? "none" : hiddenTransform,
+      transition:
+        direction === "pop"
+          ? "opacity 1.0s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1)"
+          : "opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)",
+      transitionDelay: `${delay}ms`,
+      willChange: "opacity, transform",
+    };
+  }
+
+  return (
+    <Tag
+      ref={ref}
+      className={className}
+      style={style}
+      onTransitionEnd={(e) => {
+        if (phase === "entering" && e.propertyName === "opacity") {
+          setPhase("settled");
+        }
+      }}
+    >
+      {children}
+    </Tag>
+  );
+};
 
 const RibbonIcon = ({ className }) => (
   <svg
@@ -53,18 +126,29 @@ const LabsAndResidencies = function () {
   return (
     <section className={styles["labs-section"]}>
       <div className={styles["labs-header"]}>
-        <div className={styles["labs-eyebrow"]}>
-          <span>[ INCUBATION // DEVELOPMENT ]</span>
-        </div>
-        <h2 className={styles["labs-title"]}>
-          <span className={styles["labs-title-solid"]}>LABS & </span>
-          <span className={styles["labs-title-outline"]}>RESIDENCIES</span>
-        </h2>
+        <Reveal direction="up" delay={0}>
+          <div className={styles["labs-eyebrow"]}>
+            <span>[ INCUBATION // DEVELOPMENT ]</span>
+          </div>
+        </Reveal>
+
+        <Reveal direction="up" delay={150}>
+          <h2 className={styles["labs-title"]}>
+            <span className={styles["labs-title-solid"]}>LABS & </span>
+            <span className={styles["labs-title-outline"]}>RESIDENCIES</span>
+          </h2>
+        </Reveal>
       </div>
 
       <div className={styles["labs-grid"]}>
         {labsData.map((item, index) => (
-          <div key={index} className={styles["labs-card"]}>
+          <Reveal
+            key={index}
+            as="div"
+            className={styles["labs-card"]}
+            direction="pop"
+            delay={300 + index * 120}
+          >
             <div className={styles["labs-card-shimmer"]} />
             <div className={styles["labs-card-top"]}>
               <span className={styles["labs-card-years"]}>{item.years}</span>
@@ -73,7 +157,7 @@ const LabsAndResidencies = function () {
             <h3 className={styles["labs-card-name"]}>{item.name}</h3>
             <div className={styles["labs-card-divider"]} />
             <p className={styles["labs-card-desc"]}>{item.description}</p>
-          </div>
+          </Reveal>
         ))}
       </div>
     </section>

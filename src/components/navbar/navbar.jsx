@@ -37,10 +37,19 @@ const total = stackImages.length;
 const Navbar = function () {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
   const goTo = (index) => {
     setActiveIndex(((index % total) + total) % total); // always wraps, never dead-ends
   };
+
+  // Track mobile viewport (for hamburger icon + tap-based preview behaviour)
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // Lock page scroll while the overlay is open
   useEffect(() => {
@@ -59,12 +68,10 @@ const Navbar = function () {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isMenuOpen]);
 
-  const MAX_VISIBLE = 3; // cards beyond this many steps away simply fade out, keeping the peek within view
+  const MAX_VISIBLE = 3;
 
   const getImageStyle = (index) => {
     let diff = index - activeIndex;
-
-    // wrap the difference into the range [-total/2, total/2] so the stack loops
     if (diff > total / 2) diff -= total;
     if (diff < -total / 2) diff += total;
 
@@ -102,6 +109,7 @@ const Navbar = function () {
   return (
     <header className={styles["header-main"]}>
       <div className={styles["header-wrapper"]}>
+        {/* Desktop-only text menu trigger */}
         <nav className={styles["header-left"]}>
           <a
             href="#"
@@ -131,9 +139,23 @@ const Navbar = function () {
         <nav className={styles["header-right"]}>
           <a href="#">CONTACT</a>
         </nav>
+
+        {/* Mobile-only hamburger icon button */}
+        <button
+          type="button"
+          className={styles["hamburger-btn"]}
+          onClick={() => setIsMenuOpen(true)}
+          aria-label="Open menu"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
       </div>
 
-      {/* ── Full-screen Menu Overlay (opens on MENU click) ── */}
+      {/* ── Full-screen Menu Overlay (opens on MENU / hamburger click) ── */}
       {isMenuOpen && (
         <div className={styles["menu-overlay"]}>
           <button
@@ -157,7 +179,13 @@ const Navbar = function () {
                     <a
                       href={item.href}
                       className={`${styles["nav-item"]} ${index === activeIndex ? styles["active"] : ""}`}
-                      onMouseEnter={() => goTo(index)}
+                      onMouseEnter={() => !isMobile && goTo(index)}
+                      onClick={(e) => {
+                        if (isMobile && index !== activeIndex) {
+                          e.preventDefault();
+                          goTo(index);
+                        }
+                      }}
                     >
                       {item.label}
                     </a>

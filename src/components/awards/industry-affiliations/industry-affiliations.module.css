@@ -83,8 +83,9 @@
   box-shadow: 0 2px 16px rgba(217, 24, 106, 0.05);
   transition:
     background 0.35s ease,
-    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-    box-shadow 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.7s ease;
 }
 
 .industry-affiliations-product::before {
@@ -136,9 +137,54 @@
 }
 
 /* ══════════════════════════════
+   SCROLL APPEARANCE ANIMATION
+══════════════════════════════ */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-pop {
+  opacity: 0;
+  transform: translateY(26px) scale(0.82) rotate(-4deg);
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translate(0, 0) scale(1) rotate(0deg);
+}
+
+/* ══════════════════════════════
+   RESPONSIVE MAX-WIDTH SCALING
+══════════════════════════════ */
+@media screen and (max-width: 1780px) {
+  .industry-affiliations-wrapper {
+    max-width: 100rem;
+  }
+}
+@media screen and (max-width: 1630px) {
+  .industry-affiliations-wrapper {
+    max-width: 90rem;
+  }
+}
+@media screen and (max-width: 1460px) {
+  .industry-affiliations-wrapper {
+    max-width: 85rem;
+  }
+}
+@media screen and (max-width: 1370px) {
+  .industry-affiliations-wrapper {
+    max-width: 100%;
+  }
+}
+
+/* ══════════════════════════════
    TABLET  (≤ 1024px)
 ══════════════════════════════ */
-@media (max-width: 1024px) {
+@media screen and (max-width: 1024px) {
   .industry-affiliations-wrapper {
     flex-direction: column;
     padding-inline: 2.5rem;
@@ -159,7 +205,7 @@
 /* ══════════════════════════════
    MOBILE  (≤ 640px)
 ══════════════════════════════ */
-@media (max-width: 640px) {
+@media screen and (max-width: 640px) {
   .industry-affiliations-wrapper {
     padding-inline: 1.25rem;
     padding-block: 2.5rem;
@@ -176,7 +222,11 @@
 @media (prefers-reduced-motion: reduce) {
   .industry-affiliations-product,
   .industry-affiliations-product p,
-  .industry-affiliations-product::before {
+  .industry-affiliations-product::before,
+  .reveal-up,
+  .reveal-pop {
     transition: none;
+    opacity: 1;
+    transform: none;
   }
 }
