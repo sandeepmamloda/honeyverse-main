@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./navbar.module.css";
 import Image from "next/image";
 
@@ -33,14 +33,26 @@ const stackImages = [
 ];
 
 const total = stackImages.length;
+const MAX_VISIBLE = 3;
+const HOVER_DELAY = 45; // ms — fast mouse-move pe intermediate hovers skip karne ke liye
 
 const Navbar = function () {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
+  // Fast mouse-move pe bahut saare mouseenter events fire hote hain —
+  // isse sirf jahan mouse thehra wahi index apply hota hai
+  const hoverTimerRef = useRef(null);
+
   const goTo = (index) => {
     setActiveIndex(((index % total) + total) % total); // always wraps, never dead-ends
+  };
+
+  const handleHover = (index) => {
+    if (isMobile) return;
+    clearTimeout(hoverTimerRef.current);
+    hoverTimerRef.current = setTimeout(() => goTo(index), HOVER_DELAY);
   };
 
   // Track mobile viewport (for hamburger icon + tap-based preview behaviour)
@@ -68,7 +80,10 @@ const Navbar = function () {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isMenuOpen]);
 
-  const MAX_VISIBLE = 3;
+  // Cleanup pending hover timer on unmount
+  useEffect(() => {
+    return () => clearTimeout(hoverTimerRef.current);
+  }, []);
 
   const getImageStyle = (index) => {
     let diff = index - activeIndex;
@@ -79,17 +94,18 @@ const Navbar = function () {
 
     if (diff === 0) {
       return {
-        transform: "translateY(0) scale(1)",
+        transform: "translate3d(0, 0, 0) scale(1)",
         zIndex: 10,
         opacity: 1,
         filter: "blur(0px)",
+        pointerEvents: "auto",
       };
     }
 
     if (absDiff > MAX_VISIBLE) {
       const direction = diff > 0 ? 1 : -1;
       return {
-        transform: `translateY(${direction * MAX_VISIBLE * 40}px) scale(${1 - MAX_VISIBLE * 0.06})`,
+        transform: `translate3d(0, ${direction * MAX_VISIBLE * 40}px, 0) scale(${1 - MAX_VISIBLE * 0.06})`,
         zIndex: 0,
         opacity: 1,
         filter: "blur(6px)",
@@ -99,10 +115,11 @@ const Navbar = function () {
 
     const direction = diff > 0 ? 1 : -1;
     return {
-      transform: `translateY(${direction * absDiff * 40}px) scale(${1 - absDiff * 0.06})`,
+      transform: `translate3d(0, ${direction * absDiff * 40}px, 0) scale(${1 - absDiff * 0.06})`,
       zIndex: 10 - absDiff,
       opacity: 1,
       filter: `blur(${Math.min(1 + absDiff * 1.2, 6)}px)`,
+      pointerEvents: "auto",
     };
   };
 
@@ -179,7 +196,7 @@ const Navbar = function () {
                     <a
                       href={item.href}
                       className={`${styles["nav-item"]} ${index === activeIndex ? styles["active"] : ""}`}
-                      onMouseEnter={() => !isMobile && goTo(index)}
+                      onMouseEnter={() => handleHover(index)}
                       onClick={(e) => {
                         if (isMobile && index !== activeIndex) {
                           e.preventDefault();
