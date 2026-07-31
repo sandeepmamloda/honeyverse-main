@@ -85,6 +85,9 @@
   letter-spacing: -0.03em;
   text-transform: uppercase;
   margin: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
 }
 
 .text-yellow {
@@ -333,6 +336,9 @@
     align-items: flex-start; 
     gap: 1.5rem; 
     padding-inline: 1.5rem;
+  }
+  .main-title{
+    text-wrap:wrap;
   }
   .header-right { align-items: flex-start; text-align: left; }
   .divider-line { width: calc(100% - 3rem); }

@@ -217,11 +217,29 @@
 .load-more-btn:hover svg {
   transform: rotate(180deg);
 }
-
+@media screen and (max-width:1310px){
+  .main-title{
+    font-size:5rem;
+  }
+  .header-right p{
+    font-size:1.3rem;
+  }
+}
+@media screen and (max-width:1134px){
+  .core-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+  .header-right {
+    max-width: 100%;
+    align-self:start;
+  }
+}
 /* ══════════════════════════════
    TABLET  (≤ 1024px)
 ══════════════════════════════ */
-@media (max-width: 1024px) {
+@media screen and (max-width: 1024px) {
   .core-container {
     padding-inline: 4rem;
   }
@@ -262,7 +280,7 @@
 /* ══════════════════════════════
    MOBILE  (≤ 768px)
 ══════════════════════════════ */
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
   .core-main {
     padding-block: 4rem 3rem;
   }
@@ -277,9 +295,9 @@
     gap: 1.5rem;
   }
 
-  .main-title {
+  /* .main-title {
     line-height: 100%;
-  }
+  } */
 
   .header-right {
     max-width: 100%;
@@ -305,6 +323,9 @@
   }
   .main-title {
     font-size: 3.2rem;
+  }
+  .main-title span{
+    line-height:80%;
   }
   .header-right p {
     font-size: 1rem;

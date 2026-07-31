@@ -128,7 +128,7 @@
 /* ══════════════════════════════
    TABLET (≤ 1024px)
 ══════════════════════════════ */
-@media (max-width: 1024px) {
+@media (max-width: 1430px) {
   .attr-row {
     flex-direction: column;
     gap: 1.5rem;
@@ -159,11 +159,15 @@
   .attr-image {
     flex: none;
     width: 100%;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 27 / 9;
     max-height: none;
   }
 }
-
+@media (max-width: 1024px){
+  .attr-image{
+    aspect-ratio:16/8;
+  }
+}
 /* ══════════════════════════════
    MOBILE (≤ 640px)
 ══════════════════════════════ */
@@ -188,7 +192,15 @@
   }
 
   .attr-image {
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 12 / 8;
     max-height: none;
+  }
+  .attr-text p{
+    font-size:1.2rem;
+  }
+}
+@media (max-width: 452px) {
+  .attr-text p{
+    font-size:0.9rem;
   }
 }

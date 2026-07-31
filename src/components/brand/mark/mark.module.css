@@ -34,6 +34,7 @@
   width: fit-content;
   height: fit-content;
   padding: .4rem .5rem;
+  padding-top:0.2rem;
 }
 
 .badge span {
@@ -87,8 +88,8 @@
    DIVIDER
 ══════════════════════════════ */
 .divider-wrapper {
-  width: calc(100% + 12rem);
-  margin-inline: -6rem;
+  width: calc(100% + 13rem);
+  margin-inline: -6.5rem;
 }
 
 .divider {
@@ -347,13 +348,15 @@
 /* ══════════════════════════════
    MOBILE  (≤ 640px)
 ══════════════════════════════ */
-@media (max-width: 640px) {
+@media (max-width: 767px) {
   .brand-main {
     padding-inline: 1.5rem;
     padding-block: 3rem;
     gap: 2.5rem;
   }
-
+  .brand-top-right p{
+    font-size:1.2rem;
+  }
   .mark-heading h1 {
     font-size: clamp(2.8rem, 13vw, 5rem);
     white-space: normal;
@@ -365,7 +368,7 @@
   }
 
   .manifesto-quote {
-    font-size: clamp(1.5rem, 6vw, 2.5rem);
+    font-size:3rem;
     max-width: 100%;
   }
 

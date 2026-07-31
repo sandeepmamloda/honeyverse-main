@@ -1,26 +1,26 @@
 /* ══════════════════════════════
-   BASE & DESKTOP (Team Layout)
+   BASE
 ══════════════════════════════ */
-.team-main {
+.heroteams-main {
   height: 100svh;
   width: 100%;
   position: relative;
-  overflow: hidden;
+  min-height: 850px;
 }
 
-.team-video-wrapper {
+.heroteams-video-wrapper {
   height: 100%;
   width: 100%;
   position: relative;
 }
 
-.team-video {
+.heroteams-video {
   height: 100%;
   width: 100%;
   object-fit: cover;
 }
 
-.textual-content {
+.heroteams-textual-content {
   height: 100%;
   width: 100%;
   position: absolute;
@@ -30,87 +30,82 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between;
 
-  padding-block-start: 13rem;
+  padding-block-start: 16rem;
   padding-inline-start: 8rem;
-  padding-block-end: 4rem;
-  box-sizing: border-box;
+  padding-block-end: 2rem;
 }
 
 /* ── TOP BADGE ── */
-.top-badge {
+.heroteams-top {
   height: fit-content;
   width: fit-content;
-  padding: 0.4rem 0.5rem;
+  padding: 0.5rem 0.7rem;
   border: solid 0.01rem rgba(217, 24, 106, 1);
 }
 
-.top-badge h3 {
+.heroteams-top h3 {
   color: rgba(217, 24, 106, 1);
   font-family: "consola";
   font-size: clamp(0.65rem, 1.2vw, 1rem);
   line-height: 100%;
   letter-spacing: 0.2rem;
-  font-weight: 100;
+  font-weight: 400;
   text-transform: uppercase;
 }
 
-/* ── HEADINGS TYPOGRAPHY ── */
-.row-solid, .row-outline, .row-pink {
+/* ── HEADING ROW ── */
+.heroteams-textual-content .heroteams-heading-row {
   height: fit-content;
-  width: fit-content;
-}
+  margin-block-start: 3rem;
 
-.row-solid {
-  margin-block-start: 3rem; /* Dynamic gap after badge on desktop */
-}
+  display: flex;       
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.75rem;
+  row-gap: 0.2rem;
 
-.row-solid h1 {
   font-family: "boldonse";
-  font-size: clamp(3rem, 9vw, 9rem);
+  font-size: clamp(3rem, 9vw, 10rem);
+  font-weight: 400;
   line-height: 140%;
+}
+
+.heroteams-text-solid {
   letter-spacing: 0.01rem;
   color: #fff;
 }
 
-.row-outline h1 {
-  font-family: "boldonse";
-  font-size: clamp(3rem, 9vw, 9rem);
-  line-height: 140%;
+.heroteams-text-outline {
   letter-spacing: 0.3rem;
   color: transparent;
-  -webkit-text-stroke: 0.2px #e0195a;
+  -webkit-text-stroke: 3px #e0195a;
 }
 
-.row-pink h1 {
-  font-family: "boldonse";
-  font-size: clamp(3rem, 9vw, 9rem);
-  line-height: 140%;
+.heroteams-text-solid-alt {
   letter-spacing: 0.01rem;
   color: rgba(196, 0, 83, 1);
 }
 
 /* ── DESCRIPTION BOX ── */
-.description-box {
+.heroteams-bottom-last {
   height: fit-content;
   width: fit-content;
   max-width: 40rem;
+
   margin-inline-start: auto;
+  margin-block-start: auto; /* <-- ye important hai */
+
   background: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   border-left: solid 0.3rem rgba(217, 24, 106, 1);
+
   padding-inline-start: 1rem;
   padding-inline-end: 3rem;
   padding-block: 1rem;
-  margin-block-start: 1rem;
-  position: absolute;
-  right: 0;
-  bottom: 4rem;
 }
 
-.description-box h2 {
+.heroteams-bottom-last h2 {
   color: rgba(255, 255, 255, 1);
   line-height: 120%;
   font-family: "interbold";
@@ -121,86 +116,79 @@
 /* ══════════════════════════════
    TABLET  (≤ 1024px)
 ══════════════════════════════ */
-@media (max-width: 1024px) {
-  .textual-content {
+@media screen and (max-width: 1024px) {
+  .heroteams-textual-content {
     padding-inline-start: 4rem;
     padding-inline-end: 2rem;
   }
 
-  .row-solid {
+  .heroteams-textual-content .heroteams-heading-row {
     margin-block-start: 2rem;
   }
 
-  .description-box {
-    margin-inline-start: 0;
-    max-width: 100%;
+  .heroteams-bottom-last {
     padding-inline-end: 2rem;
   }
 }
 
 /* ══════════════════════════════
-   MOBILE  (≤ 640px)
+   MOBILE  (≤ 767px)
 ══════════════════════════════ */
-@media (max-width: 640px) {
-  .textual-content {
+@media screen and (max-width: 767px) {
+  .heroteams-textual-content {
     padding-inline: 1.5rem;
-    padding-block-start: 2rem;
+    padding-block-start: 6rem;
     padding-block-end: 2.5rem;
     align-items: center;
     justify-content: space-between;
     row-gap: 0;
   }
 
-  .headings-group {
+  /* badge + headings ek saath center mein */
+  .heroteams-headings-group {
     display: flex;
-    row-gap: 0.5rem;
     flex-direction: column;
     align-items: center;
     flex: 1;
-    justify-content: center; /* Exactly centers headings vertically in 100svh space */
+    justify-content: center;
   }
 
-  .top-badge {
+  .heroteams-top {
     align-self: center;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
   }
 
-  .top-badge h3 {
+  .heroteams-top h3 {
     letter-spacing: 0.1rem;
   }
 
-  .row-solid {
+  .heroteams-textual-content .heroteams-heading-row {
     margin-block-start: 0;
     margin-inline: auto;
-  }
-
-  .row-solid h1, .row-outline h1, .row-pink h1 {
-    line-height: 130%;
+    justify-content: center;
     text-align: center;
   }
 
-  .row-outline h1 {
-    -webkit-text-stroke-width: 0.5px;
+  .heroteams-text-solid,
+  .heroteams-text-outline,
+  .heroteams-text-solid-alt {
+    line-height: 160%;
   }
 
-  .row-pink {
-    margin-inline: auto;
+  .heroteams-text-outline {
+    -webkit-text-stroke-width: 1.5px;
   }
 
-  .description-box {
-    position: relative;
-    right: auto;
-    bottom: auto;
+  .heroteams-bottom-last {
     margin-inline-start: 0;
     max-width: 100%;
     padding-inline-end: 1rem;
     margin-block-start: 0;
     align-self: stretch;
-    border-left: none;
     border-right: solid 0.3rem rgba(217, 24, 106, 1);
   }
 
-  .description-box h2 {
+  .heroteams-bottom-last h2 {
     font-size: clamp(0.8rem, 3.5vw, 1rem);
     text-align: center;
   }
@@ -209,26 +197,26 @@
 /* ══════════════════════════════
    VERY SMALL  (≤ 375px)
 ══════════════════════════════ */
-@media (max-width: 375px) {
-  .textual-content {
+@media screen and (max-width: 430px) {
+  .heroteams-textual-content {
     padding-inline-start: 1rem;
     padding-inline-end: 1rem;
   }
 
-  .row-solid h1, .row-outline h1, .row-pink h1 {
-    font-size: clamp(2.4rem, 11vw, 3.5rem);
+  .heroteams-textual-content .heroteams-heading-row {
+    font-size: clamp(1.8rem, 11vw, 3.5rem);
   }
 }
 
 /* ══════════════════════════════
-   HEIGHT-BASED — Desktop/Tablet optimization
+   HEIGHT-BASED — only desktop/tablet
 ══════════════════════════════ */
-@media (max-height: 944px) and (min-width: 641px) {
-  .textual-content {
+@media screen and (max-height: 944px) and (min-width: 641px) {
+  .heroteams-textual-content {
     padding-block-start: 12rem;
   }
 
-  .row-solid {
+  .heroteams-textual-content .heroteams-heading-row {
     margin-block-start: clamp(1rem, 2vh, 3rem);
   }
 }
