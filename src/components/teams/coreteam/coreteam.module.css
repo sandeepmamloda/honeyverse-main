@@ -4,7 +4,7 @@
 .core-main {
   width: 100%;
   min-height: 100vh;
-  background-color: #fff;
+  /* background-color: #fff; */
   padding-block: 6rem 4rem;
   box-sizing: border-box;
   font-family: sans-serif;
@@ -217,6 +217,41 @@
 .load-more-btn:hover svg {
   transform: rotate(180deg);
 }
+
+/* ══════════════════════════════
+   RESPONSIVE MAX-WIDTH SCALING
+══════════════════════════════ */
+@media screen and (max-width: 1780px) {
+  .core-container {
+    max-width: 100rem;
+  }
+}
+@media screen and (max-width: 1630px) {
+  .core-container {
+    max-width: 90rem;
+  }
+}
+@media screen and (max-width: 1460px) {
+  .core-container {
+    max-width: 85rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1440px) — Large Laptop / Small Desktop
+══════════════════════════════ */
+@media screen and (max-width: 1440px) {
+  .core-container {
+    max-width: 82rem;
+  }
+}
+
+@media screen and (max-width: 1370px) {
+  .core-container {
+    max-width: 100%;
+  }
+}
+
 @media screen and (max-width:1310px){
   .main-title{
     font-size:5rem;
@@ -225,6 +260,20 @@
     font-size:1.3rem;
   }
 }
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1280px) — Laptop
+══════════════════════════════ */
+@media screen and (max-width: 1280px) {
+  .team-grid {
+    gap: 3rem;
+  }
+
+  .member-name {
+    font-size: 2rem;
+  }
+}
+
 @media screen and (max-width:1134px){
   .core-header {
     flex-direction: column;
@@ -236,6 +285,7 @@
     align-self:start;
   }
 }
+
 /* ══════════════════════════════
    TABLET  (≤ 1024px)
 ══════════════════════════════ */
@@ -341,5 +391,54 @@
   }
   .load-more-btn {
     font-size: 0.95rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 480px) — Mobile (small)
+══════════════════════════════ */
+@media screen and (max-width: 480px) {
+  .main-title {
+    font-size: 2.6rem;
+  }
+  .badge h3 {
+    font-size: 0.62rem;
+  }
+  .header-right p {
+    font-size: 0.9rem;
+  }
+  .member-name {
+    font-size: 1.3rem;
+  }
+  .member-role {
+    font-size: 0.68rem;
+  }
+  .member-bio p {
+    font-size: 0.85rem;
+  }
+  .load-more-btn {
+    font-size: 0.85rem;
+    padding: 0.65rem 0.9rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 375px) — Small mobile devices
+══════════════════════════════ */
+@media screen and (max-width: 375px) {
+  .core-container {
+    padding-inline: 1.1rem;
+  }
+  .main-title {
+    font-size: 2.1rem;
+  }
+  .header-right p {
+    font-size: 0.82rem;
+  }
+  .member-name {
+    font-size: 1.15rem;
+  }
+  .member-bio p {
+    font-size: 0.78rem;
   }
 }

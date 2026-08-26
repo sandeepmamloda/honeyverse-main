@@ -190,14 +190,13 @@
   color: rgba(217, 24, 106, 1);
   transform: translateX(4px);
 }
+
+/* ══════════════════════════════
+   CUSTOM CONTAINER BREAKPOINTS
+══════════════════════════════ */
 @media screen and (max-width:1780px){
   .aws-section{
     max-width:100rem;
-  }
-}
-@media screen and (max-width:1630px){
-  .aws-section{
-    max-width:90rem;
   }
 }
 @media screen and (max-width:1630px){
@@ -210,11 +209,34 @@
     max-width:85rem;
   }
 }
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1440px) — Large Laptop / Small Desktop
+══════════════════════════════ */
+@media screen and (max-width: 1440px) {
+  .aws-section {
+    max-width: 82rem;
+  }
+}
+
 @media screen and (max-width:1370px){
   .aws-section{
     max-width:100%;
   }
 }
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1280px) — Laptop
+══════════════════════════════ */
+@media screen and (max-width: 1280px) {
+  .aws-row {
+    column-gap: 4rem;
+  }
+  .aws-right {
+    min-width: 12rem;
+  }
+}
+
 /* ══════════════════════════════
    TABLET  (≤ 1024px)
 ══════════════════════════════ */
@@ -229,9 +251,31 @@
 }
 
 /* ══════════════════════════════
-   MOBILE  (≤ 640px)
+   STANDARD  (≤ 768px) — Tablet (portrait)
 ══════════════════════════════ */
-/* ... baki styles wese hi rahenge ... */
+@media screen and (max-width: 768px) {
+  .aws-section {
+    padding-inline: 1.75rem;
+    padding-block: 2.5rem;
+  }
+
+  .aws-row {
+    column-gap: 2.5rem;
+    padding-block: 2rem;
+  }
+
+  .aws-title {
+    font-size: 2.4rem;
+  }
+
+  .aws-festival {
+    font-size: 1.7rem;
+  }
+
+  .aws-right {
+    min-width: 8rem;
+  }
+}
 
 /* ══════════════════════════════
    MOBILE  (≤ 640px)
@@ -300,8 +344,60 @@
     height: 20px;
   }
 }
+
+/* ══════════════════════════════
+   STANDARD  (≤ 480px) — Mobile (small)
+══════════════════════════════ */
+@media screen and (max-width: 480px) {
+  .aws-title {
+    font-size: 2rem;
+  }
+
+  .aws-festival {
+    font-size: 1.4rem;
+  }
+
+  .aws-tag {
+    font-size: 0.68rem;
+  }
+
+  .aws-project-name {
+    font-size: 0.82rem;
+  }
+
+  .aws-arrow {
+    width: 18px;
+    height: 18px;
+  }
+}
+
 @media screen and (max-width:430px){
   .aws-title{
     font-size:2.3rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 375px) — Small mobile devices
+══════════════════════════════ */
+@media screen and (max-width: 375px) {
+  .aws-title {
+    font-size: 1.9rem;
+  }
+
+  .aws-festival {
+    font-size: 1.3rem;
+  }
+
+  .aws-year {
+    font-size: 0.9rem;
+  }
+
+  .aws-award {
+    font-size: 0.7rem;
+  }
+
+  .aws-project-name {
+    font-size: 0.75rem;
   }
 }

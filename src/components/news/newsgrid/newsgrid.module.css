@@ -1,0 +1,379 @@
+/* ══════════════════════════════
+   WRAPPER
+══════════════════════════════ */
+.newsgrid-main {
+  width: 100%;
+  max-width: 110rem;
+  margin-inline: auto;
+  padding-block: 3rem 5rem;
+  padding-inline: 2rem;
+  box-sizing: border-box;
+}
+
+/* ── SORT ROW ── */
+.sort-row {
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 3rem;
+}
+
+.sort-row span {
+  font-family: "consola", monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12rem;
+  text-transform: uppercase;
+  color: rgba(217, 24, 106, 1);
+}
+
+/* ══════════════════════════════
+   CAROUSEL — native scroll-snap
+   Ab yaha koi JS transform/pixel-math nahi. Browser khud har page ko
+   pixel-perfect align karta hai (scroll-snap-align), isliye card kabhi
+   cut nahi hota, chahe container ki width kuch bhi ho.
+══════════════════════════════ */
+.carousel-viewport {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* JS pura drag control karta hai (chhota swipe bhi kaam kare, aur revert bhi
+     smooth ho) — isliye native scroll/snap ko yaha se hata diya, taaki wo
+     JS ke saath fight na kare */
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+
+  /* scrollbar hide (visual carousel jaisa dikhe, native scrollbar na dikhe) */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.carousel-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-viewport:active {
+  cursor: grabbing;
+}
+
+.cards-track {
+  display: flex;
+  gap: 2rem;
+}
+
+.news-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 0 0 calc((100% - 3.5rem) / 2);
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+/* ── IMAGE ── */
+.card-image-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none; /* drag ke waqt image ghost-drag na ho */
+  transition: filter 0.35s ease, transform 0.35s ease;
+}
+
+.news-card:hover .card-image {
+  filter: brightness(0.7);
+  transform: scale(1.03);
+}
+
+.card-number {
+  position: absolute;
+  top: 1rem;
+  right: 1.2rem;
+  font-family: "consola", monospace;
+  font-weight: 700;
+  font-size: clamp(2rem, 3.4vw, 3.2rem);
+  line-height: 1;
+  color: rgba(217, 24, 106, 1);
+}
+
+/* ── HOVER "GO TO ARTICLE" INDICATOR — sirf image ke andar, baaki kuch affect nahi karta ── */
+.hover-indicator {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  width: 2.6rem;
+  height: 2.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 202, 26, 1);
+  color: #000;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.news-card:hover .hover-indicator {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── META ROW ── */
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.7rem;
+  color: rgba(217, 24, 106, 1);
+}
+
+.meta-icon {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.meta-category {
+  font-family: "consola";
+  /* font-weight: 700; */
+  font-size: 1rem;
+  letter-spacing: 0.14rem;
+  text-transform: uppercase;
+  color: rgba(217, 24, 106, 1);
+}
+
+.meta-sep {
+  color: rgba(0, 0, 0, 0.3);
+  font-size: 0.8rem;
+}
+
+.meta-date {
+  font-family: "consola", monospace;
+  font-weight: 400;
+  font-size: 0.78rem;
+  letter-spacing: 0.12rem;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+/* ── TITLE ── */
+.card-title {
+  font-family: "interblack", sans-serif;
+  font-weight: 900;
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 202, 26, 1);
+  margin: 0 0 0.9rem 0;
+}
+
+/* ── EXCERPT ── */
+.card-excerpt {
+  font-family: "consola", monospace;
+  font-weight: 400;
+  font-size: clamp(0.85rem, 1vw, 1rem);
+  line-height: 1.55;
+  color: rgba(0, 0, 0, 0.85);
+  margin: 0;
+  max-width: 46rem;
+}
+
+/* ── PAGINATION ── */
+.pagination-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 4rem;
+}
+
+.pagination-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  border-radius: 43px;
+  padding: 0.62rem 1.25rem;
+  background: rgba(255, 223, 237, 1);
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  flex-shrink: 0;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.dot:hover {
+  transform: scale(1.15);
+}
+
+.dot-active {
+  background: rgba(217, 24, 106, 1);
+}
+
+/* ══════════════════════════════
+   RESPONSIVE MAX-WIDTH SCALING
+══════════════════════════════ */
+@media screen and (max-width: 1780px) {
+  .newsgrid-main {
+    max-width: 100rem;
+  }
+}
+@media screen and (max-width: 1630px) {
+  .newsgrid-main {
+    max-width: 90rem;
+  }
+}
+@media screen and (max-width: 1460px) {
+  .newsgrid-main {
+    max-width: 85rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1440px)
+══════════════════════════════ */
+@media screen and (max-width: 1440px) {
+  .newsgrid-main {
+    max-width: 82rem;
+  }
+}
+
+@media screen and (max-width: 1370px) {
+  .newsgrid-main {
+    max-width: 100%;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1280px)
+══════════════════════════════ */
+@media screen and (max-width: 1280px) {
+  /* .cards-track {
+    gap: 2.5rem;
+  } */
+
+  .news-card {
+    flex: 0 0 calc((100% - 2.5rem) / 2);
+  }
+}
+
+/* ══════════════════════════════
+   TABLET  (≤ 1024px)
+══════════════════════════════ */
+@media screen and (max-width: 1024px) {
+  .newsgrid-main {
+    padding-inline: 1.5rem;
+  }
+
+  .cards-track {
+    gap: 2rem;
+  }
+
+  .news-card {
+    flex: 0 0 calc((100% - 2rem) / 2);
+  }
+
+  .card-title {
+    font-size: clamp(1.35rem, 2.6vw, 1.7rem);
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 768px) — single card per page (JS switches perPage to 1)
+══════════════════════════════ */
+@media screen and (max-width: 768px) {
+  .newsgrid-main {
+    padding-inline: 1.5rem;
+    padding-block: 2.5rem 3.5rem;
+  }
+
+  .sort-row {
+    margin-bottom: 2rem;
+  }
+
+  .cards-track {
+    gap: 1.5rem;
+  }
+
+  .news-card {
+    flex: 0 0 100%; /* single card, poori width use hoti hai */
+  }
+
+  .card-title {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+  }
+
+  .pagination-wrap {
+    margin-top: 3rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 480px)
+══════════════════════════════ */
+@media screen and (max-width: 480px) {
+  .newsgrid-main {
+    padding-inline: 1.1rem;
+  }
+
+  .sort-row span {
+    font-size: 0.65rem;
+  }
+
+  .card-number {
+    font-size: 1.7rem;
+  }
+
+  .meta-category,
+  .meta-date {
+    font-size: 0.68rem;
+  }
+
+  .card-title {
+    font-size: clamp(1.3rem, 7vw, 1.7rem);
+  }
+
+  .card-excerpt {
+    font-size: 0.82rem;
+  }
+
+  .pagination-pill {
+    padding: 0.55rem 1rem;
+    gap: 0.8rem;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 375px)
+══════════════════════════════ */
+@media screen and (max-width: 375px) {
+  .card-title {
+    font-size: 1.2rem;
+  }
+
+  .card-excerpt {
+    font-size: 0.78rem;
+  }
+}

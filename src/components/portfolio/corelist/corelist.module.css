@@ -10,7 +10,7 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  background-color: #FAFAFA;
+  /* background-color: #FAFAFA; */
 }
 
 .header-top {
@@ -204,6 +204,53 @@
 }
 
 /* ══════════════════════════════
+   RESPONSIVE MAX-WIDTH SCALING
+══════════════════════════════ */
+@media screen and (max-width: 1780px) {
+  .core-list-main {
+    max-width: 100rem;
+  }
+}
+@media screen and (max-width: 1630px) {
+  .core-list-main {
+    max-width: 90rem;
+  }
+}
+@media screen and (max-width: 1460px) {
+  .core-list-main {
+    max-width: 85rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1440px) — Large Laptop / Small Desktop
+══════════════════════════════ */
+@media screen and (max-width: 1440px) {
+  .core-list-main {
+    max-width: 82rem;
+  }
+}
+
+@media screen and (max-width: 1370px) {
+  .core-list-main {
+    max-width: 100%;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1280px) — Laptop
+══════════════════════════════ */
+@media screen and (max-width: 1280px) {
+  .item-title {
+    font-size: clamp(1.8rem, 3.6vw, 3rem);
+  }
+
+  .list-row {
+    padding-inline: 1.5rem;
+  }
+}
+
+/* ══════════════════════════════
    TABLET (≤ 1024px)
 ══════════════════════════════ */
 @media (max-width: 1024px) {
@@ -340,5 +387,64 @@
 
   .list-row {
     border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 480px) — Mobile (small)
+══════════════════════════════ */
+@media screen and (max-width: 480px) {
+  .main-title {
+    font-size: clamp(2.4rem, 12vw, 3.4rem);
+  }
+
+  .badge-text h3 {
+    font-size: 0.65rem;
+  }
+
+  .item-title {
+    font-size: 1.55rem;
+  }
+
+  .item-meta {
+    font-size: 0.6rem;
+  }
+
+  .col-year p {
+    font-size: 0.78rem;
+  }
+
+  .studio-badge {
+    font-size: 0.62rem;
+  }
+
+  .play-icon svg {
+    width: 19px;
+    height: 19px;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 375px) — Small mobile devices
+══════════════════════════════ */
+@media screen and (max-width: 375px) {
+  .core-list-main {
+    padding-inline: 1.1rem;
+  }
+
+  .main-title {
+    font-size: clamp(2rem, 12vw, 2.7rem);
+  }
+
+  .item-title {
+    font-size: 1.3rem;
+  }
+
+  .item-meta {
+    font-size: 0.55rem;
+  }
+
+  .col-year p {
+    font-size: 0.72rem;
   }
 }

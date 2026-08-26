@@ -41,7 +41,7 @@
 .badge-text h3 {
   color: rgba(0, 0, 0, 1);
   font-family: "consola", monospace;
-  font-size: 0.85rem;
+  font-size: clamp(0.72rem, 1vw, 0.85rem);
   letter-spacing: 0.15rem;
   line-height: 100%;
   font-weight: 400;
@@ -54,7 +54,7 @@
 
 .main-title {
   font-family: "interblack";
-  font-size: clamp(3rem, 10vw, 4rem);
+  font-size: clamp(2.4rem, 8vw, 4rem);
   font-weight: 400;
   line-height: 1;
   text-transform: uppercase;
@@ -78,6 +78,7 @@
   flex-direction: column;
   box-sizing: border-box;
   flex: 0.85; /* narrower than the image side */
+  min-width: 0;
 }
 
 .card-title {
@@ -92,7 +93,7 @@
 
 .card-desc {
   font-family: "interregular";
-  font-size: 1.2rem;
+  font-size: clamp(0.95rem, 1.4vw, 1.2rem);
   line-height: 1.6;
   color: #000;
   margin: 0;
@@ -109,7 +110,7 @@
 
 .submit-text {
   font-family: "consola";
-  font-size: 0.85rem;
+  font-size: clamp(0.75rem, 1vw, 0.85rem);
   font-weight: 600;
   letter-spacing: 0.12rem;
   color: rgba(217, 24, 106, 1);
@@ -123,9 +124,10 @@
 /* Right: Showcase Image with Overlay Caption */
 .image-showcase-wrapper {
   position: relative;
-  height: 28rem; /* FIXED: explicit height so image size is controlled, no longer stretches with card */
+  height: clamp(16rem, 26vw, 28rem); /* fixed 28rem ki jagah fluid — beech ke breakpoints pe bhi smooth */
   overflow: hidden;
   flex: 1.15; /* wider than the protocol card */
+  min-width: 0;
 }
 
 .hero-image {
@@ -148,7 +150,7 @@
 
 .target-tag {
   font-family: "consola";
-  font-size: 0.7rem;
+  font-size: clamp(0.62rem, 0.9vw, 0.7rem);
   font-weight: 400;
   letter-spacing: 0.1rem;
   color: rgba(255, 202, 26, 1);
@@ -159,7 +161,7 @@
 
 .overlay-title {
   font-family: "interblack";
-  font-size: clamp(1.3rem, 2.2vw, 2.2rem);
+  font-size: clamp(1.15rem, 2.2vw, 2.2rem);
   font-weight: 400;
   color: #FCD116;
   margin: 0;
@@ -169,7 +171,54 @@
 }
 
 /* ══════════════════════════════
-   TABLET & MOBILE RESPONSIVE
+   RESPONSIVE MAX-WIDTH SCALING
+══════════════════════════════ */
+@media screen and (max-width: 1780px) {
+  .collaborate-main {
+    max-width: 100rem;
+  }
+}
+@media screen and (max-width: 1630px) {
+  .collaborate-main {
+    max-width: 90rem;
+  }
+}
+@media screen and (max-width: 1460px) {
+  .collaborate-main {
+    max-width: 85rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1440px) — Large Laptop / Small Desktop
+══════════════════════════════ */
+@media screen and (max-width: 1440px) {
+  .collaborate-main {
+    max-width: 82rem;
+  }
+}
+
+@media screen and (max-width: 1370px) {
+  .collaborate-main {
+    max-width: 100%;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1280px) — Laptop
+══════════════════════════════ */
+@media screen and (max-width: 1280px) {
+  .main-grid {
+    column-gap: 4rem;
+  }
+
+  .protocol-card {
+    padding: 2rem;
+  }
+}
+
+/* ══════════════════════════════
+   TABLET & MOBILE RESPONSIVE (≤ 1024px)
 ══════════════════════════════ */
 @media (max-width: 1024px) {
   .collaborate-main {
@@ -179,17 +228,20 @@
     column-gap: 2rem;
   }
   .image-showcase-wrapper {
-    height: 24rem;
+    height: clamp(14rem, 34vw, 24rem);
   }
 }
 
+/* ══════════════════════════════
+   STANDARD  (≤ 768px) — Tablet (portrait) / Mobile
+══════════════════════════════ */
 @media (max-width: 768px) {
   .collaborate-main {
     padding-inline: 1.5rem;
     padding-block: 3rem;
   }
   .main-title {
-    font-size: 4.5rem;
+    font-size: clamp(2.4rem, 10vw, 4.5rem);
   }
   .main-grid {
     flex-direction: column;
@@ -200,6 +252,78 @@
     flex: 1; /* equal/full width when stacked on mobile */
   }
   .image-showcase-wrapper {
-    height: 18rem;
+    height: clamp(12rem, 55vw, 18rem);
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 480px) — Mobile (small)
+══════════════════════════════ */
+@media screen and (max-width: 480px) {
+  .collaborate-main {
+    padding-inline: 1.1rem;
+    padding-block: 2.4rem;
+  }
+
+  .badge-icon-wrapper {
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+
+  .badge-text h3 {
+    font-size: 0.65rem;
+  }
+
+  .main-title {
+    font-size: clamp(2rem, 11vw, 2.7rem);
+  }
+
+  .protocol-card {
+    padding: 1.5rem;
+  }
+
+  .card-title {
+    font-size: 1.3rem;
+  }
+
+  .card-desc {
+    font-size: 0.9rem;
+  }
+
+  .image-showcase-wrapper {
+    height: clamp(10rem, 55vw, 14rem);
+  }
+
+  .overlay-title {
+    font-size: 1.05rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 375px) — Small mobile devices
+══════════════════════════════ */
+@media screen and (max-width: 375px) {
+  .collaborate-main {
+    padding-inline: 0.85rem;
+  }
+
+  .main-title {
+    font-size: clamp(1.8rem, 11vw, 2.3rem);
+  }
+
+  .card-title {
+    font-size: 1.15rem;
+  }
+
+  .card-desc {
+    font-size: 0.85rem;
+  }
+
+  .overlay-title {
+    font-size: 0.95rem;
+  }
+
+  .target-tag {
+    font-size: 0.55rem;
   }
 }

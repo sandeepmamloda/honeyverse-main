@@ -1,0 +1,348 @@
+/* ══════════════════════════════
+   WRAPPER
+══════════════════════════════ */
+.feararchitecture-wrapper {
+  width: 100%;
+  max-width: 110rem;
+  margin-inline: auto;
+  padding-block: 4rem;
+  padding-inline: 2rem;
+  box-sizing: border-box;
+}
+
+/* ══════════════════════════════
+   CARD — white background, image sits inset with its own rounded corners
+══════════════════════════════ */
+.feararchitecture-card {
+  --img-h: 35rem; /* single source of truth — image aur card dono isi se sync rehte hain */
+
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  gap: clamp(2rem, 5vw, 2rem);
+  border-radius: 2rem;
+  /* background: #fff; */
+  padding: 1.5rem;
+  box-sizing: border-box;
+  min-height: calc(var(--img-h) + 3rem); /* image height + top/bottom padding */
+}
+
+/* ── LEFT: IMAGE ── */
+.image-wrap {
+  position: relative;
+  flex: 1 1 50%;
+  height: var(--img-h);
+  border-radius: 1.4rem;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.badge {
+  position: absolute;
+  top: 1.2rem;
+  left: 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(217, 24, 106, 1);
+  padding: 0.55rem 0.9rem;
+  z-index: 2;
+}
+
+.badge span {
+  font-family: "consola";
+  /* font-weight: 700; */
+  font-size: 0.72rem;
+  line-height: 1rem;
+  letter-spacing: 0.075rem;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 1);
+  white-space: nowrap;
+}
+
+/* ── RIGHT: CONTENT ── */
+.content {
+  flex: 1 1 58%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+  padding-block: 2rem;
+  padding-inline-end: 2rem;
+  box-sizing: border-box;
+}
+
+/* ── META ROW ── */
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: "consola";
+  font-weight: 400;
+  font-size: clamp(0.75rem, 1vw, 1.1rem);
+  line-height: 1rem;
+  letter-spacing: 0.15rem;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.75);
+}
+.meta-row span{
+    letter-spacing:0.1rem;
+}
+.meta-dot {
+  width: 4px;
+  height: 4px;
+  flex-shrink: 0;
+  background: rgba(217, 24, 106, 1);
+  border-radius: 50%;
+}
+
+/* ── TITLE ── */
+.title {
+  font-family: "interblack";
+  font-weight: 900;
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+  color: rgba(255, 202, 26, 1);
+  margin: 0;
+}
+
+/* ── QUOTE BLOCK ── */
+.quote-block {
+  border-left: 1px solid rgba(217, 24, 106, 1);
+  padding-left: 1.4rem;
+  max-width: 34rem;
+}
+
+.quote-block p {
+  font-family: "interregular";
+  font-weight: 400;
+  font-size: clamp(0.95rem, 1.3vw, 1.4rem);
+  line-height: 1.35;
+  letter-spacing: 0;
+  color: rgba(0, 0, 0, 0.88);
+  margin: 0;
+}
+
+/* ── READ MORE LINK ── */
+.read-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  width: fit-content;
+  transition: gap 0.3s ease, opacity 0.3s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+}
+
+.read-link span:first-child {
+  font-family: "consola";
+  font-weight: 400;
+  font-size: clamp(0.8rem, 1vw, 1rem);
+  line-height: 1.25rem;
+  letter-spacing: 0.0875rem;
+  text-transform: uppercase;
+  color: rgba(255, 202, 26, 1);
+}
+
+.read-arrow {
+  display: inline-flex;
+  align-items: center;
+  color: rgba(255, 202, 26, 1);
+  transition: transform 0.3s ease;
+}
+
+.read-link:hover {
+  gap: 0.85rem;
+}
+
+.read-link:hover .read-arrow {
+  transform: translateX(4px);
+}
+
+/* ══════════════════════════════
+   RESPONSIVE MAX-WIDTH SCALING
+══════════════════════════════ */
+@media screen and (max-width: 1780px) {
+  .feararchitecture-wrapper {
+    max-width: 100rem;
+  }
+}
+@media screen and (max-width: 1630px) {
+  .feararchitecture-wrapper {
+    max-width: 90rem;
+  }
+}
+@media screen and (max-width: 1460px) {
+  .feararchitecture-wrapper {
+    max-width: 85rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1440px)
+══════════════════════════════ */
+@media screen and (max-width: 1440px) {
+  .feararchitecture-wrapper {
+    max-width: 82rem;
+  }
+
+  .feararchitecture-card {
+    --img-h: 32rem;
+  }
+}
+
+@media screen and (max-width: 1370px) {
+  .feararchitecture-wrapper {
+    max-width: 100%;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1280px)
+══════════════════════════════ */
+@media screen and (max-width: 1280px) {
+  .feararchitecture-card {
+    --img-h: 29rem;
+    gap: 2.5rem;
+  }
+
+  .content {
+    gap: 1.2rem;
+    padding-inline-end: 1.5rem;
+  }
+}
+
+/* ══════════════════════════════
+   TABLET  (≤ 1024px)
+══════════════════════════════ */
+@media screen and (max-width: 1024px) {
+  .feararchitecture-wrapper {
+    padding-inline: 1.5rem;
+  }
+
+  .feararchitecture-card {
+    --img-h: 25rem;
+    gap: 1.5rem;
+  }
+
+  .content {
+    padding-block: 1.5rem;
+    padding-inline-end: 1rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 900px) — image starts shrinking before full stack
+══════════════════════════════ */
+@media screen and (max-width: 900px) {
+  .feararchitecture-card {
+    --img-h: 22rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 768px) — image stacks on top of content, height auto (aspect-ratio driven)
+══════════════════════════════ */
+@media screen and (max-width: 768px) {
+  .feararchitecture-card {
+    flex-direction: column;
+    min-height: 0;
+    padding: 1rem;
+    gap: 1.5rem;
+  }
+
+  .image-wrap {
+    flex: none;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
+
+  .content {
+    flex: none;
+    width: 100%;
+    padding: 0.5rem 1rem 1.5rem;
+    gap: 1.2rem;
+  }
+
+  .title {
+    font-size: clamp(1.8rem, 8vw, 2.8rem);
+  }
+
+  .quote-block {
+    max-width: 100%;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 480px)
+══════════════════════════════ */
+@media screen and (max-width: 480px) {
+  .feararchitecture-wrapper {
+    padding-inline: 1.1rem;
+    padding-block: 2.5rem;
+  }
+
+  .feararchitecture-card {
+    padding: 0.75rem;
+  }
+
+  .image-wrap {
+    aspect-ratio: 1 / 1;
+  }
+
+  .badge {
+    top: 0.85rem;
+    left: 0.85rem;
+    padding: 0.45rem 0.75rem;
+  }
+
+  .badge span {
+    font-size: 0.6rem;
+  }
+
+  .content {
+    padding: 0.5rem 0.75rem 1rem;
+  }
+
+  .title {
+    font-size: clamp(1.6rem, 9vw, 2.2rem);
+  }
+
+  .quote-block p {
+    font-size: 0.85rem;
+  }
+
+  .meta-row {
+    font-size: 0.68rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 375px)
+══════════════════════════════ */
+@media screen and (max-width: 375px) {
+  .content {
+    padding: 0.5rem 0.6rem 0.75rem;
+  }
+
+  .title {
+    font-size: clamp(1.45rem, 9.5vw, 1.9rem);
+  }
+
+  .quote-block {
+    padding-left: 1rem;
+  }
+}

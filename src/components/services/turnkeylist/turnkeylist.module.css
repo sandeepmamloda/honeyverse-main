@@ -29,26 +29,30 @@
 
 .badge-icon {
   color: #E60067;
+  flex-shrink: 0;
 }
 
 .badge-text {
   border: 1px solid #E60067;
   padding: 0.5rem 1rem;
+  width: fit-content;
 }
 
 .badge-text h3 {
   color: #E60067;
   font-family: "consola", monospace;
-  font-size: 1rem;
+  font-size: clamp(0.72rem, 1.1vw, 1rem);
   letter-spacing: 0.15rem;
   line-height: 100%;
   font-weight: 400;
   margin: 0;
+  white-space: nowrap;
 }
 
+/* fixed 26rem chhoti screens pe overflow karti thi — ab fluid */
 .header-line {
   display: block;
-  width: 26rem;
+  width: min(26rem, 100%);
   height: 1px;
   background-color: rgba(230, 0, 103, 0.3);
 }
@@ -59,7 +63,7 @@
 
 .main-title {
   font-family: "boldonse", sans-serif;
-  font-size: clamp(5rem, 10vw, 6rem);
+  font-size: clamp(2.6rem, 8vw, 6rem);
   font-weight: 400;
   line-height: 1.8;
   text-transform: uppercase;
@@ -81,6 +85,7 @@
   flex-direction: column;
   row-gap: 1rem;
   text-align: left;
+  min-width: 0;
 }
 
 .sub-title-wrapper {
@@ -89,7 +94,7 @@
 
 .sub-title {
   font-family: "interblack";
-  font-size: clamp(2rem, 3.5vw, 2rem);
+  font-size: clamp(1.4rem, 3vw, 2rem);
   font-weight: 400;
   color: #FCD116;
   margin: 0;
@@ -99,7 +104,7 @@
 
 .intro-text {
   font-family: "intermedium";
-  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  font-size: clamp(0.95rem, 1.4vw, 1.15rem);
   font-weight: 500;
   line-height: 1.5;
   color: #000;
@@ -131,7 +136,7 @@
 
 .item-title {
   font-family: "consola";
-  font-size: 1.15rem;
+  font-size: clamp(0.95rem, 1.3vw, 1.15rem);
   font-weight: 500;
   color: rgba(217, 24, 106, 1); /* Pink titles according to new reference image */
   letter-spacing: 0.09rem;
@@ -141,7 +146,7 @@
 
 .item-desc {
   font-family: "interregular";
-  font-size: 0.95rem;
+  font-size: clamp(0.85rem, 1.1vw, 0.95rem);
   line-height: 1.5;
   color: #000;
   margin: 0;
@@ -151,7 +156,7 @@
 /* Right Side Image Box Styles (Cleaned up from physical rules) */
 .image-showcase-wrapper {
   width: 100%;
-  height:30rem;
+  height: clamp(16rem, 30vw, 30rem); /* fixed 30rem chhoti screens pe squeeze/distort karti thi — ab fluid */
 }
 
 .hero-image {
@@ -162,7 +167,54 @@
 }
 
 /* ══════════════════════════════
-   TABLET & MOBILE RESPONSIVE
+   RESPONSIVE MAX-WIDTH SCALING
+══════════════════════════════ */
+@media screen and (max-width: 1780px) {
+  .turnkey-main {
+    max-width: 100rem;
+  }
+}
+@media screen and (max-width: 1630px) {
+  .turnkey-main {
+    max-width: 90rem;
+  }
+}
+@media screen and (max-width: 1460px) {
+  .turnkey-main {
+    max-width: 85rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1440px) — Large Laptop / Small Desktop
+══════════════════════════════ */
+@media screen and (max-width: 1440px) {
+  .turnkey-main {
+    max-width: 82rem;
+  }
+}
+
+@media screen and (max-width: 1370px) {
+  .turnkey-main {
+    max-width: 100%;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1280px) — Laptop
+══════════════════════════════ */
+@media screen and (max-width: 1280px) {
+  .main-grid {
+    column-gap: 3.5rem;
+  }
+
+  .list-container {
+    row-gap: 1.8rem;
+  }
+}
+
+/* ══════════════════════════════
+   TABLET & MOBILE RESPONSIVE (≤ 1024px)
 ══════════════════════════════ */
 @media (max-width: 1024px) {
   .turnkey-main {
@@ -175,18 +227,98 @@
   }
 }
 
+/* ══════════════════════════════
+   STANDARD  (≤ 768px) — Tablet (portrait) / Mobile
+══════════════════════════════ */
 @media (max-width: 768px) {
   .turnkey-main {
     padding-inline: 1.5rem;
     padding-block: 3rem;
   }
   .main-title {
-    font-size: 4.5rem;
+    font-size: clamp(2.4rem, 10vw, 4.5rem);
   }
   .header-line {
     width: 100%;
   }
   .list-container {
     padding-left: 1.2rem;
+  }
+  .image-showcase-wrapper {
+    height: clamp(14rem, 55vw, 20rem);
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 480px) — Mobile (small)
+══════════════════════════════ */
+@media screen and (max-width: 480px) {
+  .turnkey-main {
+    padding-inline: 1.1rem;
+    padding-block: 2.4rem;
+  }
+
+  .badge-text h3 {
+    font-size: 0.68rem;
+    letter-spacing: 0.1rem;
+  }
+
+  .main-title {
+    font-size: clamp(2rem, 11vw, 2.9rem);
+    line-height: 1.4;
+  }
+
+  .sub-title {
+    font-size: 1.25rem;
+  }
+
+  .intro-text {
+    font-size: 0.9rem;
+  }
+
+  .list-container {
+    padding-left: 1rem;
+    row-gap: 1.6rem;
+  }
+
+  .item-title {
+    font-size: 0.88rem;
+  }
+
+  .item-desc {
+    font-size: 0.8rem;
+  }
+
+  .image-showcase-wrapper {
+    height: clamp(11rem, 55vw, 15rem);
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 375px) — Small mobile devices
+══════════════════════════════ */
+@media screen and (max-width: 375px) {
+  .turnkey-main {
+    padding-inline: 0.85rem;
+  }
+
+  .main-title {
+    font-size: clamp(1.8rem, 11vw, 2.4rem);
+  }
+
+  .sub-title {
+    font-size: 1.1rem;
+  }
+
+  .list-container {
+    padding-left: 0.85rem;
+  }
+
+  .item-title {
+    font-size: 0.8rem;
+  }
+
+  .item-desc {
+    font-size: 0.75rem;
   }
 }

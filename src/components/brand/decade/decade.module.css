@@ -159,13 +159,49 @@
   line-height: 155%;
   font-weight: 600;
 }
+
+/* ══════════════════════════════
+   RESPONSIVE MAX-WIDTH SCALING
+══════════════════════════════ */
+@media screen and (max-width: 1780px) {
+  .decade-main {
+    max-width: 100rem;
+  }
+}
+@media screen and (max-width: 1630px) {
+  .decade-main {
+    max-width: 90rem;
+  }
+}
+@media screen and (max-width: 1460px) {
+  .decade-main {
+    max-width: 85rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1440px) — Large Laptop / Small Desktop
+══════════════════════════════ */
+@media (max-width: 1440px) {
+  .decade-main {
+    max-width: 82rem;
+  }
+}
+
+@media screen and (max-width: 1370px) {
+  .decade-main {
+    max-width: 100%;
+  }
+}
+
 @media (max-width:1315px){
   .themes-card{
     bottom:-6.5rem;
   }
 }
+
 /* ══════════════════════════════
-   TABLET (≤ 1024px)
+   TABLET (≤ 1289px)
 ══════════════════════════════ */
 @media (max-width: 1289px) {
   .decade-main {
@@ -197,8 +233,64 @@
 }
 
 /* ══════════════════════════════
-   MOBILE (≤ 640px)
+   STANDARD  (≤ 1280px) — Laptop
 ══════════════════════════════ */
+@media (max-width: 1280px) {
+  .decade-main {
+    gap: 2.5rem;
+  }
+
+  .decade-heading {
+    font-size: 4.2rem;
+  }
+
+  .themes-title {
+    font-size: 1.45rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 768px) — Tablet (portrait)
+══════════════════════════════ */
+@media (max-width: 768px) {
+  .decade-main {
+    padding-inline: 2rem;
+    padding-block-end: 11rem;
+  }
+
+  .decade-heading {
+    font-size: 3.4rem;
+    letter-spacing: 0.3rem;
+  }
+
+  .text-bold {
+    font-size: 1rem;
+  }
+
+  .text-light {
+    font-size: 0.92rem;
+  }
+
+  .themes-card {
+    left: 1.25rem;
+    right: 1.25rem;
+    padding: 1.6rem 1.8rem;
+  }
+
+  .decade-right::after {
+    left: 1.25rem;
+    right: 1.25rem;
+  }
+
+  .themes-title {
+    font-size: 1.3rem;
+  }
+
+  .themes-desc {
+    font-size: 0.82rem;
+  }
+}
+
 /* ══════════════════════════════
    MOBILE (≤ 640px) - UPDATED TO FIX OVERFLOW
 ══════════════════════════════ */
@@ -270,5 +362,60 @@
   .themes-desc {
     font-size: 0.75rem; 
     line-height: 140%;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 480px) — Mobile (small)
+══════════════════════════════ */
+@media (max-width: 480px) {
+  .decade-heading {
+    font-size: 2.3rem;
+  }
+
+  .badge span {
+    font-size: 0.68rem;
+  }
+
+  .text-bold {
+    font-size: 0.88rem;
+  }
+
+  .text-light {
+    font-size: 0.85rem;
+  }
+
+  .themes-title {
+    font-size: 1.05rem;
+  }
+
+  .themes-desc {
+    font-size: 0.7rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 375px) — Small mobile devices
+══════════════════════════════ */
+@media (max-width: 375px) {
+  .decade-main {
+    padding-inline: 0.85rem;
+  }
+
+  .decade-heading {
+    font-size: 2rem;
+    letter-spacing: 0.1rem;
+  }
+
+  .themes-card {
+    padding: 1rem;
+  }
+
+  .themes-title {
+    font-size: 0.95rem;
+  }
+
+  .themes-desc {
+    font-size: 0.66rem;
   }
 }

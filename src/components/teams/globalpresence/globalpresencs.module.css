@@ -4,7 +4,7 @@
 .global-main {
   width: 100%;
   min-height: 100vh;
-  background-color: #FAFAFA; /* Off-white background as per image */
+  /* background-color: #FAFAFA; */
   padding-block: 8rem 6rem;
   box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -201,6 +201,52 @@
   letter-spacing: 0.08rem;
 }
 
+/* ══════════════════════════════
+   RESPONSIVE MAX-WIDTH SCALING
+══════════════════════════════ */
+@media screen and (max-width: 1780px) {
+  .global-container {
+    max-width: 100rem;
+  }
+}
+@media screen and (max-width: 1630px) {
+  .global-container {
+    max-width: 90rem;
+  }
+}
+@media screen and (max-width: 1460px) {
+  .global-container {
+    max-width: 85rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1440px) — Large Laptop / Small Desktop
+══════════════════════════════ */
+@media screen and (max-width: 1440px) {
+  .global-container {
+    max-width: 82rem;
+  }
+}
+
+@media screen and (max-width: 1370px) {
+  .global-container {
+    max-width: 100%;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1280px) — Laptop
+══════════════════════════════ */
+@media screen and (max-width: 1280px) {
+  .location-card {
+    padding: 2rem;
+  }
+
+  .city-name {
+    font-size: clamp(1.6rem, 2.2vw, 2.2rem);
+  }
+}
 
 /* ══════════════════════════════
    TABLET (≤ 1024px)
@@ -236,6 +282,73 @@
   .location-card {
     aspect-ratio: auto;
     min-height: 300px;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 480px) — Mobile (small)
+══════════════════════════════ */
+@media screen and (max-width: 480px) {
+  .global-main {
+    padding-block: 4rem 3rem;
+  }
+
+  .globe-icon {
+    width: 54px;
+    height: 54px;
+  }
+
+  .main-title {
+    font-size: clamp(2rem, 8vw, 2.6rem);
+  }
+
+  .badge span {
+    font-size: 0.7rem;
+    letter-spacing: 0.14rem;
+  }
+
+  .location-card {
+    padding: 1.6rem;
+    min-height: 240px;
+  }
+
+  .city-name {
+    font-size: clamp(1.4rem, 7vw, 1.8rem);
+  }
+
+  .address-block p {
+    font-size: 0.68rem;
+  }
+
+  .hq-badge {
+    font-size: 0.62rem;
+    padding: 0.32rem 0.5rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 375px) — Small mobile devices
+══════════════════════════════ */
+@media screen and (max-width: 375px) {
+  .global-container {
+    padding-inline: 1.1rem;
+  }
+
+  .main-title {
+    font-size: clamp(1.7rem, 9vw, 2.1rem);
+  }
+
+  .location-card {
+    padding: 1.3rem;
+    min-height: 220px;
+  }
+
+  .city-name {
+    font-size: 1.4rem;
+  }
+
+  .address-block p {
+    font-size: 0.62rem;
   }
 }
 

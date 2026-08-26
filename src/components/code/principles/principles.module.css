@@ -1,0 +1,302 @@
+/* ══════════════════════════════
+   BASE & DESKTOP
+══════════════════════════════ */
+.principles-main {
+  width: 100%;
+  max-width: 110rem;
+  margin-inline: auto;
+  padding-block: 6rem 4rem;
+  padding-inline: 3rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── PRINCIPLES GRID ── */
+.principles-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 6rem;
+  width: 100%;
+}
+
+.principle-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-block: 2.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  min-width: 0; /* grid item ko squeeze hone deta hai, warna lamba content overflow kar sakta hai */
+}
+
+.item-heading {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.item-number {
+  font-family: "consola", monospace;
+  font-weight: 700;
+  font-size: clamp(1.8rem, 2.6vw, 2.4rem);
+  line-height: 1;
+  letter-spacing: 0px;
+  color: rgba(217, 24, 106, 1);
+}
+
+.item-title {
+  font-family: "interblack";
+  font-weight: 900;
+  font-size: clamp(1.6rem, 2.4vw, 2.05rem);
+  line-height: 1.2;
+  letter-spacing: -0.1rem;
+  text-transform: uppercase;
+  color: rgba(255, 202, 26, 1);
+  margin: 0;
+}
+
+.item-description {
+  font-family: "consola", monospace;
+  font-weight: 400;
+  font-size: clamp(0.85rem, 1.1vw, 0.955rem);
+  line-height: 1.55rem;
+  letter-spacing: 0.096rem;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 1);
+  margin: 0 0 1rem 0;
+  max-width: 42rem;
+}
+
+.item-dots {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: rgba(217, 24, 106, 0.25);
+}
+
+.dot:first-child {
+  background-color: rgba(217, 24, 106, 1);
+}
+
+/* ── STRUCTURAL IMAGE BANNER ── */
+.image-banner {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1528 / 655;
+  margin-block: 3.5rem;
+  overflow: hidden;
+  background: rgba(254, 154, 0, 0.1);
+  border-top: 1.09px solid rgba(255, 255, 255, 0.1);
+  border:rgba(24, 24, 27, 1) solid 0.8px;
+}
+.image-banner::after{
+    content:"";
+    position:absolute;
+    height:100%;
+    width:100%;
+    background: rgba(254, 154, 0, 0.1);
+    z-index:2;
+    top:0;
+    left:0;
+
+}
+
+.banner-image {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.banner-badge {
+  position: absolute;
+  z-index: 2;
+  left: 1.7rem;
+  bottom: 2rem;
+  right: 1.7rem; /* bahut lambe badge text ko safely constrain karta hai */
+  background-color: rgba(217, 24, 106, 1);
+  padding: 0.7rem 1.2rem;
+  width: fit-content;
+  max-width: calc(100% - 3.4rem);
+  box-sizing: border-box;
+}
+
+.banner-badge span {
+  font-family: "consola", monospace;
+  font-weight: 400;
+  font-size: 0.82rem;
+  line-height: 1.1rem;
+  letter-spacing: 0.16rem;
+  color: rgba(255, 255, 255, 1);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ══════════════════════════════
+   RESPONSIVE MAX-WIDTH SCALING
+══════════════════════════════ */
+@media screen and (max-width: 1780px) {
+  .principles-main {
+    max-width: 100rem;
+  }
+}
+@media screen and (max-width: 1630px) {
+  .principles-main {
+    max-width: 90rem;
+  }
+}
+@media screen and (max-width: 1460px) {
+  .principles-main {
+    max-width: 85rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1440px) — Large Laptop / Small Desktop
+══════════════════════════════ */
+@media screen and (max-width: 1440px) {
+  .principles-main {
+    max-width: 82rem;
+  }
+}
+
+@media screen and (max-width: 1370px) {
+  .principles-main {
+    max-width: 100%;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1280px) — Laptop
+══════════════════════════════ */
+@media screen and (max-width: 1280px) {
+  .principles-grid {
+    column-gap: 3.5rem;
+  }
+
+  .item-description {
+    max-width: 100%;
+  }
+}
+
+/* ══════════════════════════════
+   TABLET (≤ 1024px)
+══════════════════════════════ */
+@media (max-width: 1024px) {
+  .principles-main {
+    padding-inline: 2rem;
+  }
+
+  .principles-grid {
+    column-gap: 2.5rem;
+  }
+}
+
+/* ══════════════════════════════
+   MOBILE (≤ 768px)
+══════════════════════════════ */
+@media (max-width: 768px) {
+  .principles-main {
+    padding-inline: 1.5rem;
+    padding-block: 4rem 3rem;
+  }
+
+  .principles-grid {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+    row-gap: 0.5rem;
+  }
+
+  .principle-item {
+    padding-block: 2rem;
+  }
+
+  .item-heading {
+    gap: 0.7rem;
+  }
+
+  .item-number {
+    font-size: 1.7rem;
+  }
+
+  .item-title {
+    font-size: 1.5rem;
+  }
+
+  .item-description {
+    font-size: 0.8rem;
+    line-height: 1.4rem;
+    letter-spacing: 0.06rem;
+  }
+
+  .image-banner {
+    aspect-ratio: 4 / 5;
+    margin-block: 2.5rem;
+  }
+
+  .banner-badge {
+    left: 1rem;
+    bottom: 1rem;
+    right: 1rem;
+    max-width: calc(100% - 2rem);
+    padding: 0.55rem 0.9rem;
+  }
+
+  .banner-badge span {
+    font-size: 0.65rem;
+    letter-spacing: 0.1rem;
+    white-space: normal; /* bahut narrow screens pe lamba text wrap ho sake, overflow na ho */
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 480px) — Mobile (small)
+══════════════════════════════ */
+@media screen and (max-width: 480px) {
+  .item-number {
+    font-size: 1.7rem;
+  }
+
+  .item-title {
+    font-size: 1.3rem;
+    letter-spacing: -0.06rem;
+  }
+
+  .item-description {
+    font-size: 0.75rem;
+  }
+
+  .banner-badge span {
+    font-size: 0.6rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 375px) — Small mobile devices
+══════════════════════════════ */
+@media screen and (max-width: 375px) {
+  .principles-main {
+    padding-inline: 1.1rem;
+  }
+
+  .item-number {
+    font-size: 1.5rem;
+  }
+
+  .item-title {
+    font-size: 1.15rem;
+  }
+
+  .item-description {
+    font-size: 0.7rem;
+  }
+}

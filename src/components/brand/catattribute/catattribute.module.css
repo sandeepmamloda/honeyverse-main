@@ -126,7 +126,41 @@
 }
 
 /* ══════════════════════════════
-   TABLET (≤ 1024px)
+   RESPONSIVE MAX-WIDTH SCALING
+══════════════════════════════ */
+@media screen and (max-width: 1780px) {
+  .cat-main {
+    max-width: 100rem;
+  }
+}
+@media screen and (max-width: 1630px) {
+  .cat-main {
+    max-width: 90rem;
+  }
+}
+@media screen and (max-width: 1460px) {
+  .cat-main {
+    max-width: 85rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1440px) — Large Laptop / Small Desktop
+══════════════════════════════ */
+@media (max-width: 1440px) {
+  .cat-main {
+    max-width: 82rem;
+  }
+}
+
+@media screen and (max-width: 1370px) {
+  .cat-main {
+    max-width: 100%;
+  }
+}
+
+/* ══════════════════════════════
+   TABLET (≤ 1430px)
 ══════════════════════════════ */
 @media (max-width: 1430px) {
   .attr-row {
@@ -163,11 +197,49 @@
     max-height: none;
   }
 }
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1280px) — Laptop
+══════════════════════════════ */
+@media (max-width: 1280px) {
+  .attr-row {
+    gap: 1.25rem;
+    padding-block: 2.2rem;
+  }
+
+  .attr-text p {
+    font-size: 1.25rem;
+  }
+}
+
 @media (max-width: 1024px){
   .attr-image{
     aspect-ratio:16/8;
   }
 }
+
+/* ══════════════════════════════
+   STANDARD  (≤ 768px) — Tablet (portrait)
+══════════════════════════════ */
+@media (max-width: 768px) {
+  .cat-main {
+    padding-inline: 1.75rem;
+    padding-block: 3.5rem 5rem;
+  }
+
+  .attr-heading {
+    font-size: clamp(2.2rem, 9vw, 3rem);
+  }
+
+  .attr-text p {
+    font-size: 1.1rem;
+  }
+
+  .attr-image {
+    aspect-ratio: 16 / 9;
+  }
+}
+
 /* ══════════════════════════════
    MOBILE (≤ 640px)
 ══════════════════════════════ */
@@ -199,8 +271,55 @@
     font-size:1.2rem;
   }
 }
+
+/* ══════════════════════════════
+   STANDARD  (≤ 480px) — Mobile (small)
+══════════════════════════════ */
+@media (max-width: 480px) {
+  .badge span {
+    font-size: 0.65rem;
+  }
+
+  .attr-index {
+    font-size: 0.68rem;
+  }
+
+  .attr-heading {
+    font-size: clamp(1.8rem, 11vw, 2.4rem);
+  }
+
+  .attr-highlight {
+    font-size: 0.78rem;
+  }
+
+  .attr-text p {
+    font-size: 0.95rem;
+  }
+}
+
 @media (max-width: 452px) {
   .attr-text p{
     font-size:0.9rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 375px) — Small mobile devices
+══════════════════════════════ */
+@media (max-width: 375px) {
+  .cat-main {
+    padding-inline: 1.1rem;
+  }
+
+  .attr-heading {
+    font-size: clamp(1.6rem, 12vw, 2rem);
+  }
+
+  .attr-text p {
+    font-size: 0.85rem;
+  }
+
+  .attr-image {
+    aspect-ratio: 4 / 3;
   }
 }

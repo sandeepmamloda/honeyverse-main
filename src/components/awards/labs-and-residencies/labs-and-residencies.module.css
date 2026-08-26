@@ -242,9 +242,34 @@
     max-width: 85rem;
   }
 }
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1440px) — Large Laptop / Small Desktop
+══════════════════════════════ */
+@media screen and (max-width: 1440px) {
+  .labs-section {
+    max-width: 82rem;
+  }
+}
+
 @media screen and (max-width: 1370px) {
   .labs-section {
     max-width: 100%;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1280px) — Laptop
+══════════════════════════════ */
+@media screen and (max-width: 1280px) {
+  .labs-card {
+    min-height: 20rem;
+    padding: 1.5rem;
+  }
+
+  .labs-card-icon {
+    width: 4.2rem;
+    height: 4.2rem;
   }
 }
 
@@ -258,6 +283,29 @@
 
   .labs-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 768px) — Tablet (portrait)
+══════════════════════════════ */
+@media screen and (max-width: 768px) {
+  .labs-section {
+    padding-inline: 1.75rem;
+    padding-block: 3rem;
+  }
+
+  .labs-title {
+    font-size: clamp(2.8rem, 9vw, 5rem);
+  }
+
+  .labs-card {
+    min-height: 17rem;
+  }
+
+  .labs-card-icon {
+    width: 3.6rem;
+    height: 3.6rem;
   }
 }
 
@@ -282,11 +330,66 @@
     font-size: clamp(2.5rem, 10vw, 4rem);
   }
 }
+
+/* ══════════════════════════════
+   STANDARD  (≤ 480px) — Mobile (small)
+══════════════════════════════ */
+@media screen and (max-width: 480px) {
+  .labs-title {
+    font-size: clamp(2.1rem, 11vw, 3.2rem);
+  }
+
+  .labs-eyebrow span {
+    font-size: 0.65rem;
+  }
+
+  .labs-card {
+    padding: 1.4rem;
+    min-height: 13rem;
+  }
+
+  .labs-card-name {
+    font-size: 1rem;
+  }
+
+  .labs-card-desc {
+    font-size: 0.65rem;
+  }
+}
+
 @media screen and (max-width: 452px) {
   .labs-eyebrow span{
     font-size:0.6rem;
   }
 }
+
+/* ══════════════════════════════
+   STANDARD  (≤ 375px) — Small mobile devices
+══════════════════════════════ */
+@media screen and (max-width: 375px) {
+  .labs-title {
+    font-size: clamp(1.9rem, 12vw, 2.8rem);
+  }
+
+  .labs-card {
+    padding: 1.2rem;
+    min-height: 12rem;
+  }
+
+  .labs-card-icon {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .labs-card-name {
+    font-size: 0.9rem;
+  }
+
+  .labs-card-years {
+    font-size: 0.7rem;
+  }
+}
+
 /* ══════════════════════════════
    REDUCED MOTION
 ══════════════════════════════ */

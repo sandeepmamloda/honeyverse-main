@@ -175,9 +175,32 @@
     max-width: 85rem;
   }
 }
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1440px) — Large Laptop / Small Desktop
+══════════════════════════════ */
+@media screen and (max-width: 1440px) {
+  .industry-affiliations-wrapper {
+    max-width: 82rem;
+  }
+}
+
 @media screen and (max-width: 1370px) {
   .industry-affiliations-wrapper {
     max-width: 100%;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1280px) — Laptop
+══════════════════════════════ */
+@media screen and (max-width: 1280px) {
+  .industry-affiliations-wrapper {
+    column-gap: 3rem;
+  }
+
+  .industry-affiliations-left h2 {
+    font-size: 1.8rem;
   }
 }
 
@@ -203,6 +226,25 @@
 }
 
 /* ══════════════════════════════
+   STANDARD  (≤ 768px) — Tablet (portrait)
+══════════════════════════════ */
+@media screen and (max-width: 768px) {
+  .industry-affiliations-wrapper {
+    padding-inline: 1.75rem;
+    padding-block: 3rem;
+    row-gap: 2.5rem;
+  }
+
+  .industry-affiliations-left h2 {
+    font-size: 1.7rem;
+  }
+
+  .industry-affiliations-product p {
+    font-size: 1.1rem;
+  }
+}
+
+/* ══════════════════════════════
    MOBILE  (≤ 640px)
 ══════════════════════════════ */
 @media screen and (max-width: 640px) {
@@ -213,6 +255,40 @@
 
   .industry-affiliations-right {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 480px) — Mobile (small)
+══════════════════════════════ */
+@media screen and (max-width: 480px) {
+  .industry-affiliations-left h2 {
+    font-size: 1.5rem;
+  }
+
+  .industry-affiliations-left p {
+    font-size: 0.85rem;
+  }
+
+  .industry-affiliations-product p {
+    font-size: 0.95rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 375px) — Small mobile devices
+══════════════════════════════ */
+@media screen and (max-width: 375px) {
+  .industry-affiliations-wrapper {
+    padding-inline: 1rem;
+  }
+
+  .industry-affiliations-left h2 {
+    font-size: 1.35rem;
+  }
+
+  .industry-affiliations-product p {
+    font-size: 0.85rem;
   }
 }
 

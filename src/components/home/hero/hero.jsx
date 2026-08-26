@@ -2,292 +2,40 @@
 
 import styles from "./hero.module.css";
 import Image from "next/image";
-import { useState, useEffect, useRef } from "react";
-
-const sections = [
-  { video: "/videos/home/first.mp4",  title: "MOST DAYS OUT",   subtitle: "CANERA TRIX"   },
-  { video: "/videos/home/second.mp4", title: "AURORA BEACH",    subtitle: "Braided Truce" },
-  { video: "/videos/home/third.mp4",  title: "Brutalist Arch.", subtitle: "Russian River" },
-   { video: "/videos/home/third.mp4",  title: "Brutalist Arch.", subtitle: "Russian River" },
-  // 👉 add as many more sections as you like — the desktop strip will
-  // still only ever show 3 at a time (2 on tablet), and becomes swipeable.
-];
-
-const INTERVAL    = 3500;
-const FLIP_MS     = 900;
-const SWIPE_THRESHOLD = 40;  // px of horizontal drag before it counts as a swipe
-
-// how many cards are visible at once, based on viewport width —
-// 2 on tablet (601px–1024px), 3 on desktop (1025px+). Mobile (≤600px)
-// ignores this entirely since the CSS switches to a single-card view.
-function getWindowSize() {
-  if (typeof window === "undefined") return 3;
-  return window.innerWidth <= 1024 ? 2 : 3;
-}
 
 export default function Hero() {
-  const [current,     setCurrent]     = useState(0);
-  const [next,        setNext]        = useState(null);
-  const [flipPhase,   setFlipPhase]   = useState("idle"); // "idle" | "first-half" | "second-half"
-  const [progressKey, setProgressKey] = useState(0);
-  const [windowStart, setWindowStart] = useState(0); // index of first visible card in the strip
-  const [windowSize,  setWindowSize]  = useState(3); // how many cards are visible right now
-  const [inView,      setInView]      = useState(true); // is the whole hero section on-screen
-
-  const currentRef   = useRef(0);
-  const flippingRef  = useRef(false);
-  const autoTimer    = useRef(null);
-  const phaseTimer   = useRef(null);
-  const dragRef      = useRef({ startX: 0, dragging: false });
-  const wrapperRef   = useRef(null);
-  const mainVidRef   = useRef(null);
-
-  const total = sections.length;
-  const maxWindowStart = Math.max(0, total - windowSize);
-
-  // keep windowSize in sync with viewport (tablet = 2, desktop = 3)
-  useEffect(() => {
-    function update() {
-      setWindowSize(getWindowSize());
-    }
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
-
-  // if the window shrinks (e.g. desktop → tablet) and the current
-  // windowStart would now show past the end, clamp it back
-  useEffect(() => {
-    setWindowStart(w => Math.min(w, Math.max(0, total - windowSize)));
-  }, [windowSize, total]);
-
-  // ── pause everything when the hero scrolls out of view ──
-  // saves CPU/GPU + bandwidth once the user has scrolled past it.
-  useEffect(() => {
-    if (!wrapperRef.current) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => setInView(entry.isIntersecting),
-      { threshold: 0.1 }
-    );
-    obs.observe(wrapperRef.current);
-    return () => obs.disconnect();
-  }, []);
-
-  // explicitly play/pause the main video based on inView so the
-  // browser actually frees up decode resources when scrolled away
-  useEffect(() => {
-    const vid = mainVidRef.current;
-    if (!vid) return;
-    if (inView) {
-      vid.play().catch(() => {});
-    } else {
-      vid.pause();
-    }
-  }, [inView, current, flipPhase]);
-
-  // pause the autoplay rotation entirely while off-screen
-  useEffect(() => {
-    if (inView) {
-      scheduleAuto();
-    } else {
-      clearTimeout(autoTimer.current);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inView]);
-
-  function flipTo(nextIdx) {
-    if (flippingRef.current) return;
-    if (nextIdx === currentRef.current) return;
-
-    flippingRef.current = true;
-    setNext(nextIdx);
-    setFlipPhase("first-half"); // 0° → 90°  (screen tilts away)
-
-    // At 90° the screen is edge-on → swap the video
-    phaseTimer.current = setTimeout(() => {
-      currentRef.current = nextIdx;
-      setCurrent(nextIdx);
-      setFlipPhase("second-half"); // 90° → 0°  (screen comes back with new video)
-      setProgressKey(k => k + 1);
-
-      phaseTimer.current = setTimeout(() => {
-        setFlipPhase("idle");
-        setNext(null);
-        flippingRef.current = false;
-      }, FLIP_MS / 2);
-
-    }, FLIP_MS / 2);
-  }
-
-  function scheduleAuto() {
-    clearTimeout(autoTimer.current);
-    autoTimer.current = setTimeout(() => {
-      const n = (currentRef.current + 1) % total;
-      flipTo(n);
-      scheduleAuto();
-    }, INTERVAL);
-  }
-
-  useEffect(() => {
-    scheduleAuto();
-    return () => {
-      clearTimeout(autoTimer.current);
-      clearTimeout(phaseTimer.current);
-    };
-  }, []);
-
-  // keep the active card inside the visible window whenever `current`
-  // changes — whether that change came from autoplay, a thumbnail
-  // click, or a swipe.
-  useEffect(() => {
-    setWindowStart(w => {
-      if (current < w) return current;
-      if (current > w + windowSize - 1) {
-        return Math.min(current - windowSize + 1, maxWindowStart);
-      }
-      return w;
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [current, windowSize]);
-
-  function handleThumb(idx) {
-    if (flippingRef.current) return;
-    clearTimeout(autoTimer.current);
-    flipTo(idx);
-    scheduleAuto();
-  }
-
-  // ── swipe / drag the strip to move the visible window ──
-  function shiftWindow(dir) {
-    setWindowStart(w => {
-      let n = w + dir;
-      if (n < 0) n = 0;
-      if (n > maxWindowStart) n = maxWindowStart;
-      return n;
-    });
-  }
-
-  function handleDragStart(e) {
-    dragRef.current.dragging = true;
-    dragRef.current.startX = e.clientX ?? e.touches?.[0]?.clientX ?? 0;
-  }
-
-  function handleDragEnd(e) {
-    if (!dragRef.current.dragging) return;
-    dragRef.current.dragging = false;
-    const endX = e.clientX ?? e.changedTouches?.[0]?.clientX ?? dragRef.current.startX;
-    const delta = endX - dragRef.current.startX;
-    if (delta <= -SWIPE_THRESHOLD) shiftWindow(1);
-    else if (delta >= SWIPE_THRESHOLD) shiftWindow(-1);
-  }
-
-  // which video src to show: during second-half show the NEXT video
-  const displayIdx = flipPhase === "second-half" && next !== null ? next : current;
-
-  // which CSS class drives the flip
-  const flipClass =
-    flipPhase === "first-half"  ? styles.flipFirstHalf  :
-    flipPhase === "second-half" ? styles.flipSecondHalf :
-    "";
-
   return (
-    <section className={styles.wrapper} ref={wrapperRef}>
+    <section className={styles.wrapper}>
 
-      {/* ══ SINGLE SCREEN — the one that flips ════════ */}
-      <div className={`${styles.screen} ${flipClass}`}>
+      {/* ══ SINGLE BACKGROUND VIDEO ════════════════════ */}
+      <div className={styles.screen}>
         <video
-          key={displayIdx}          /* re-mount triggers new src */
-          ref={mainVidRef}
-          autoPlay muted loop playsInline
-          preload="auto"            /* this is the hero's main video, keep it eager */
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
           className={styles.bg}
         >
-          <source src={sections[displayIdx].video} type="video/mp4" />
+          <source src="/videos/home/first.mp4" type="video/mp4" />
         </video>
         <div className={styles.vignette} />
       </div>
 
       {/* ══ HEADLINE ═══════════════════════════════════ */}
       <div className={styles.headline}>
-        <h1 className={styles.h1}>ENTER THE VERSE</h1>
-        <p  className={styles.sub}>
+        <h1 className={styles.h1}>
+          <span>ENTER</span>
+          <span>THE</span>
+          <span>VERSE</span>
+        </h1>
+        <p className={styles.sub}>
           An award winning production company that creates high-impact content that's impossible to ignore.
         </p>
       </div>
 
-      {/* ══ COUNTER ════════════════════════════════════ */}
-      <div className={styles.counter}>
-        {String(current + 1).padStart(2, "0")}&nbsp;/&nbsp;{String(total).padStart(2, "0")}
-      </div>
-
-      {/* ══ BOTTOM STRIP ═══════════════════════════════ */}
+      {/* ══ FOOTER ═════════════════════════════════════ */}
       <footer className={styles.bottom}>
-        <div
-          className={styles.stripWrap}
-          onPointerDown={handleDragStart}
-          onPointerUp={handleDragEnd}
-          onPointerCancel={handleDragEnd}
-        >
-          <div
-            className={styles.strip}
-            style={{
-              "--window-size": windowSize,
-              transform: `translateX(-${windowStart * (100 / windowSize)}%)`,
-            }}
-          >
-            {sections.map((s, i) => {
-              // only decode/play videos for cards currently inside the
-              // visible window (+ the active one, in case it's just
-              // outside due to a mid-shift). everything else stays
-              // un-mounted — massive win since only 2-3 thumbnail
-              // videos are ever downloading/playing at once instead of
-              // every single one in the array.
-              const isVisible =
-                i === current ||
-                (i >= windowStart && i < windowStart + windowSize);
-
-              return (
-                <div
-                  key={i}
-                  onClick={() => handleThumb(i)}
-                  className={`${styles.card} ${i === current ? styles.cardActive : ""}`}
-                >
-                  <div className={styles.thumb}>
-                    {isVisible ? (
-                      <video
-                        autoPlay={inView}
-                        muted
-                        loop
-                        playsInline
-                        preload="metadata"   /* don't fetch the whole file just to show a thumbnail */
-                        className={styles.thumbVid}
-                      >
-                        <source src={s.video} type="video/mp4" />
-                      </video>
-                    ) : (
-                      // placeholder so layout doesn't jump when it scrolls into view later
-                      <div className={styles.thumbPlaceholder} />
-                    )}
-
-                    {i === current && (
-                      <div
-                        key={progressKey}
-                        className={styles.sweep}
-                        style={{ animationDuration: `${INTERVAL}ms` }}
-                      />
-                    )}
-                  </div>
-
-                  <div className={styles.labels}>
-                    <h2 className={styles.cardTitle}>{s.title}</h2>
-                    <p  className={styles.cardSub}>{s.subtitle}</p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
         <div className={styles.logoRow}>
           <span className={styles.logoBox}>
             <Image className={styles.logoImg} src="/images/home/c.png" alt="Logo" fill />

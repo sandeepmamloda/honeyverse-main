@@ -72,13 +72,37 @@
   align-items: center;
   width: 100%;
   padding-block-start: 2rem;
+  position: relative;
+}
+
+/* Cinematic floor glow — poore carousel ko visual grounding deta hai */
+.carousel-wrapper::after {
+  content: "";
+  position: absolute;
+  bottom: 4.5rem;
+  width: min(38rem, 80%);
+  height: 6rem;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(217, 24, 106, 0.22) 0%,
+    rgba(217, 24, 106, 0.08) 45%,
+    transparent 75%
+  );
+  filter: blur(6px);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .scene {
-  width: 520px;  
-  height: 400px; /* Taller Cinematic Height */
+  /* Fixed px ki jagah vw-based fluid sizing — viewport ke hisab se
+     smoothly scale hoga */
+  width: clamp(280px, 27vw, 520px);
+  height: clamp(200px, 20.7vw, 400px);
   position: relative;
-  perspective: 1800px;
+  /* perspective bhi ab vw-based — camera-depth scene size ke saath proportionally badhta/ghatega */
+  perspective: clamp(969px, 93.5vw, 1800px);
+  perspective-origin: 50% 45%;
+  z-index: 1;
 }
 
 .carousel {
@@ -87,7 +111,8 @@
   position: absolute;
   transform-style: preserve-3d;
   will-change: transform;
-  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); /* Ultra smooth rotation */
+  /* Zyada smooth, "weighted" rotation */
+  transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .carousel-item {
@@ -97,22 +122,27 @@
   height: 100%;
   left: 0;
   top: 0;
-  /* 650px translateZ pushes cards outward into a circle */
-  transform: rotateY(calc(var(--i) * 45deg)) translateZ(650px);
-  border-radius: 12px;
+  /* translateZ ab vw-based — circle ka radius viewport ke saath fluidly badhega,
+     cards ke beech ka gap bhi isi se scale hota hai */
+  transform: rotateY(calc(var(--i) * 45deg)) translateZ(clamp(409px, 39.46vw, 760px));
+  border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
   background-color: #000;
   cursor: pointer;
-  border: 1px solid rgba(255, 202, 26, 1);
-  transition: transform 0.4s ease, box-shadow 0.4s ease, filter 0.4s ease;
-  filter: brightness(0.7); /* Background videos stay dark */
+  border: 1px solid rgba(255, 202, 26, 0.5);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.5s ease,
+    filter 0.5s ease,
+    border-color 0.5s ease;
+  filter: brightness(0.55) saturate(0.85); /* Background cards muted rehte hain */
 }
 
 .carousel-item:hover {
-  transform: rotateY(calc(var(--i) * 45deg)) translateZ(680px); /* Zooms out slightly */
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
-  filter: brightness(1.1); /* Brightens on hover */
+  transform: rotateY(calc(var(--i) * 45deg)) translateZ(clamp(431px, 41.54vw, 800px));
+  box-shadow: 0 30px 70px rgba(217, 24, 106, 0.35);
+  filter: brightness(1.08) saturate(1.05);
+  border-color: rgba(255, 202, 26, 1);
 }
 
 .carousel-video {
@@ -130,7 +160,8 @@
   justify-content: center;
   gap: 2rem;
   z-index: 10;
-  margin-top: 10rem; /* Safely pushed below the taller 3D cards */
+  margin-top: 13rem; /* Safely pushed below the taller 3D cards */
+  position: relative;
 }
 
 .nav-btn {
@@ -157,66 +188,194 @@
   box-shadow: 0 10px 20px rgba(217, 24, 106, 0.2);
 }
 
+.nav-btn:active {
+  transform: translateY(0) scale(0.97);
+}
+
 /* ══════════════════════════════
-   TABLET (≤ 1024px)
+   LARGE DESKTOP (≥ 1441px) — fixes clipping on 1920px+ screens
 ══════════════════════════════ */
-@media (max-width: 1024px) {
+@media (min-width: 1441px) {
   .flagship-main {
-    padding-inline: 4rem;
+    padding-inline: clamp(3rem, 6vw, 8rem); /* side clipping rokne ke liye extra breathing room */
   }
-  
+
   .scene {
-    width: 400px;
-    height: 300px;
-    perspective: 1500px;
+    /* thoda tight kiya taaki carousel ka horizontal spread container ke andar rahe */
+    perspective: clamp(1600px, 82vw, 1900px);
   }
 
   .carousel-item {
-    transform: rotateY(calc(var(--i) * 45deg)) translateZ(500px);
+    transform: rotateY(calc(var(--i) * 45deg)) translateZ(clamp(650px, 33vw, 720px));
   }
 
   .carousel-item:hover {
-    transform: rotateY(calc(var(--i) * 45deg)) translateZ(530px);
-  }
-
-  .controls {
-    margin-top: 7rem;
+    transform: rotateY(calc(var(--i) * 45deg)) translateZ(clamp(685px, 35vw, 755px));
   }
 }
 
 /* ══════════════════════════════
-   MOBILE (≤ 768px)
+   TABLET (≤ 1024px) — vw-based, isliye 1024→768px tak
+   khud fluidly scale hota hai, koi hard jump nahi
 ══════════════════════════════ */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .flagship-main {
-    padding-inline: 1.5rem;
+    padding-inline: clamp(1.5rem, 4vw, 3rem); /* side clipping rokne ke liye kam padding */
+    overflow: hidden;
+  }
+
+  .scene {
+    width: clamp(260px, 42vw, 380px);
+    height: clamp(196px, 31.6vw, 286px);
+    perspective: clamp(820px, 118vw, 1150px);
+  }
+
+  .carousel-item {
+    /* radius container ke andar fit rehta hai 1024px se 768px tak */
+    transform: rotateY(calc(var(--i) * 45deg)) translateZ(clamp(347px, 50vw, 480px));
+  }
+
+  .carousel-item:hover {
+    transform: rotateY(calc(var(--i) * 45deg)) translateZ(clamp(364px, 52.5vw, 505px));
+  }
+
+  .controls {
+    margin-top: 10rem;
+  }
+}
+
+/* ══════════════════════════════
+   MOBILE (≤ 930px)
+══════════════════════════════ */
+@media (max-width: 930px) {
+  .flagship-main {
+    padding-inline: clamp(1rem, 3vw, 1.5rem);
     padding-block: 4rem;
+    overflow-x: hidden; /* safety: koi bhi child overflow ho to horizontal scroll na ho */
   }
 
   .header-top {
     margin-bottom: 3rem;
   }
 
+  .badge-wrapper {
+    width: 100%; /* fixed 25rem chhoti screens pe overflow karta tha, ab fluid */
+  }
+
   .scene {
-    width: 280px;
-    height: 200px;
+    width: clamp(220px, 65vw, 280px);
+    height: clamp(157px, 46.4vw, 200px);
+    perspective: clamp(763px, 225vw, 969px);
   }
 
   .carousel-item {
-    transform: rotateY(calc(var(--i) * 45deg)) translateZ(350px);
+    transform: rotateY(calc(var(--i) * 45deg)) translateZ(clamp(322px, 95vw, 409px));
   }
 
   .carousel-item:hover {
-    transform: rotateY(calc(var(--i) * 45deg)) translateZ(370px);
+    transform: rotateY(calc(var(--i) * 45deg)) translateZ(clamp(339px, 100vw, 431px));
   }
 
   .controls {
-    margin-top: 5rem;
+    margin-top: 10rem;
     gap: 1.5rem;
   }
 
   .nav-btn {
     padding: 0.6rem 2rem;
     font-size: 0.95rem;
+  }
+}
+
+/* ══════════════════════════════
+   SMALL MOBILE (≤ 480px) — chhote devices ke liye dedicated fix
+══════════════════════════════ */
+@media (max-width: 480px) {
+  .flagship-main {
+    padding-inline: 1rem;
+    padding-block: 3rem;
+  }
+
+  .header-top {
+    margin-bottom: 2.2rem;
+    gap: 1rem;
+  }
+
+  .badge-wrapper {
+    width: 100%;
+  }
+
+  .badge-text h3 {
+    font-size: 0.65rem;
+    letter-spacing: 0.08rem;
+  }
+
+  .main-title {
+    font-size: clamp(2.4rem, 13vw, 3.4rem);
+    line-height: 130%;
+  }
+
+  .scene {
+    width: clamp(170px, 62vw, 220px);
+    height: clamp(121px, 44.3vw, 157px);
+    perspective: clamp(590px, 217vw, 763px);
+  }
+
+  .carousel-item {
+    border-radius: 10px;
+    transform: rotateY(calc(var(--i) * 45deg)) translateZ(clamp(249px, 91vw, 322px));
+  }
+
+  .carousel-item:hover {
+    transform: rotateY(calc(var(--i) * 45deg)) translateZ(clamp(262px, 96vw, 339px));
+  }
+
+  .controls {
+    margin-top: 5.5rem;
+    gap: 1rem;
+  }
+
+  .nav-btn {
+    padding: 0.55rem 1.6rem;
+    font-size: 0.82rem;
+    border-radius: 30px;
+  }
+}
+
+/* ══════════════════════════════
+   EXTRA SMALL (≤ 375px)
+══════════════════════════════ */
+@media (max-width: 375px) {
+  .flagship-main {
+    padding-inline: 0.85rem;
+    padding-block: 2.6rem;
+  }
+
+  .main-title {
+    font-size: clamp(2rem, 13.5vw, 2.6rem);
+  }
+
+  .scene {
+    width: clamp(150px, 62vw, 190px);
+    height: clamp(107px, 44.3vw, 135px);
+    perspective: clamp(508px, 217vw, 656px);
+  }
+
+  .carousel-item {
+    transform: rotateY(calc(var(--i) * 45deg)) translateZ(clamp(214px, 91vw, 277px));
+  }
+
+  .carousel-item:hover {
+    transform: rotateY(calc(var(--i) * 45deg)) translateZ(clamp(225px, 96vw, 292px));
+  }
+
+  .controls {
+    margin-top: 4.5rem;
+    gap: 0.8rem;
+  }
+
+  .nav-btn {
+    padding: 0.5rem 1.3rem;
+    font-size: 0.75rem;
   }
 }

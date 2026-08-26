@@ -1,4 +1,30 @@
 /* ══════════════════════════════
+   SCROLL REVEAL ANIMATIONS
+══════════════════════════════ */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* ══════════════════════════════
    BASE & DESKTOP (Your Exact Layout)
 ══════════════════════════════ */
 .heroawards-main {
@@ -6,6 +32,7 @@
   width: 100%;
   position: relative;
   overflow: hidden; /* Added to keep 100svh intact on all devices */
+  min-height:820px;
 }
 
 .heroawards-video-wrapper {
@@ -34,6 +61,7 @@
 
   padding-block-start: 16rem;
   padding-inline-start: 8rem;
+  padding-inline-end: 4rem;
   padding-block-end: 4rem; /* Safe padding at bottom */
   box-sizing: border-box;
 }
@@ -56,49 +84,53 @@
   text-transform: uppercase;
 }
 
-/* ── HEADINGS ── */
-.textual-content .middle {
+/* ── HEADING ROW — ab single h1, spans flex-wrap me ── */
+.textual-content .heading-row {
   height: fit-content;
-  width: fit-content;
+  width: 100%;
+  max-width: 100%;
   margin-block-start: 3rem;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.75rem;
+  row-gap: 0.2rem;
 }
 
-.textual-content .middle h1 {
+/* ── "THE" — solid white span ── */
+.middle {
   font-family: "boldonse";
-  font-size: clamp(3rem, 9vw, 9rem);
-  font-weight:400;
+  font-size: clamp(1.8rem, 8vw, 9rem);   /* vw-driven, taaki har viewport pe fit ho */
+  font-weight: 400;
   line-height: 140%;
   letter-spacing: 0.01rem;
   color: #fff;
+  white-space: nowrap;                   /* word kabhi khud break nahi hoga */
 }
 
-.textual-content .bottom {
-  height: fit-content;
-  width: fit-content;
-}
-
-.textual-content .bottom h1 {
+/* ── outline-stroke span (agar future me use ho) ── */
+.bottom {
   font-family: "boldonse";
-  font-size: clamp(3rem, 9vw, 9rem);
-  font-weight:400;
+  font-size: clamp(1.8rem, 8vw, 9rem);
+  font-weight: 400;
   line-height: 140%;
-  letter-spacing: 0.3rem;
+  letter-spacing: clamp(0.05rem, 0.3vw, 0.3rem);
   color: transparent;
-  -webkit-text-stroke: 3px #e0195a;
+  -webkit-text-stroke: clamp(1px, 0.2vw, 3px) #e0195a;
+  white-space: nowrap;
 }
 
-/* Global Pink Styling for "TELLING" across Desktop, Tab, & Mobile */
-.textual-content .bottom-pink {
-  height: fit-content;
-  width: fit-content;
-}
-
-.textual-content .bottom-pink h1 {
+/* ── "PORTFOLIO" — Global Pink span, har screen size par pink ── */
+.bottom-pink {
   font-family: "boldonse";
-  font-size: clamp(3rem, 9vw, 9rem);
+  font-size: clamp(1.8rem, 8vw, 9rem);
+  font-weight: 400;
   line-height: 140%;
   letter-spacing: 0.01rem;
   color: rgba(196, 0, 83, 1);
+  white-space: nowrap;
 }
 
 /* ── DESCRIPTION BOX ── */
@@ -129,6 +161,43 @@
 }
 
 /* ══════════════════════════════
+   RESPONSIVE MAX-WIDTH SCALING (large screens)
+══════════════════════════════ */
+@media (max-width: 1780px) {
+  .middle,
+  .bottom,
+  .bottom-pink {
+    font-size: clamp(1.8rem, 7.6vw, 8rem);
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1440px) — Large Laptop / Small Desktop
+══════════════════════════════ */
+@media (max-width: 1440px) {
+  .textual-content {
+    padding-inline-start: 6rem;
+  }
+
+  .middle,
+  .bottom,
+  .bottom-pink {
+    font-size: clamp(1.7rem, 7vw, 6.5rem);
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1280px) — Laptop
+══════════════════════════════ */
+@media (max-width: 1280px) {
+  .middle,
+  .bottom,
+  .bottom-pink {
+    font-size: clamp(1.6rem, 6.6vw, 5.6rem);
+  }
+}
+
+/* ══════════════════════════════
    TABLET  (≤ 1024px)
 ══════════════════════════════ */
 @media (max-width: 1024px) {
@@ -137,8 +206,14 @@
     padding-inline-end: 2rem;
   }
 
-  .textual-content .middle {
+  .textual-content .heading-row {
     margin-block-start: 2rem;
+  }
+
+  .middle,
+  .bottom,
+  .bottom-pink {
+    font-size: clamp(1.5rem, 6.4vw, 4.6rem);
   }
 
   .bottom-last {
@@ -149,9 +224,24 @@
 }
 
 /* ══════════════════════════════
+   STANDARD  (≤ 768px) — Tablet (portrait)
+══════════════════════════════ */
+@media (max-width: 768px) {
+  .textual-content {
+    padding-block-start: 8rem;
+  }
+
+  .middle,
+  .bottom,
+  .bottom-pink {
+    font-size: clamp(1.4rem, 8vw, 3.6rem);
+  }
+}
+
+/* ══════════════════════════════
    MOBILE  (≤ 640px)
 ══════════════════════════════ */
-@media (max-width: 640px) {
+@media (max-width: 1024px) {
   .textual-content {
     padding-inline: 1.5rem;
     padding-block-start: 2rem; /* Reduced to give flex-1 complete centering freedom */
@@ -164,7 +254,7 @@
   /* badge + headings exact viewport vertical center alignment */
   .headings-group {
     display: flex;
-    row-gap:0.5rem;
+    row-gap: 0.5rem;
     flex-direction: column;
     align-items: center;
     flex: 1;
@@ -180,32 +270,28 @@
     letter-spacing: 0.1rem;
   }
 
-  .textual-content .middle {
+  .textual-content .heading-row {
     margin-block-start: 0;
     margin-inline: auto;
+    justify-content: center;
+    text-align: center;
   }
 
-  .textual-content .middle h1 {
+  .middle {
+    font-size: clamp(1.3rem, 9.5vw, 3.2rem); /* PORTFOLIO jaisa lamba word bhi ek line me fit ho */
     line-height: 140%;
     text-align: center;
   }
 
-  .textual-content .bottom {
-    margin-inline: auto;
-  }
-
-  .textual-content .bottom h1 {
+  .bottom {
+    font-size: clamp(1.3rem, 9.5vw, 3.2rem);
     line-height: 140%;
     -webkit-text-stroke-width: 0.5px;
     text-align: center;
   }
 
-  /* Target both standard and pink variant text headers in mobile view */
-  .textual-content .bottom-pink {
-    margin-inline: auto;
-  }
-  
-  .textual-content .bottom-pink h1 {
+  .bottom-pink {
+    font-size: clamp(1.3rem, 9.5vw, 3.2rem);
     line-height: 140%;
     text-align: center;
   }
@@ -229,6 +315,25 @@
 }
 
 /* ══════════════════════════════
+   STANDARD  (≤ 480px) — Mobile (small)
+══════════════════════════════ */
+@media (max-width: 480px) {
+  .middle,
+  .bottom,
+  .bottom-pink {
+    font-size: clamp(1.1rem, 9.5vw, 2.5rem);
+  }
+
+  .top h3 {
+    font-size: 0.62rem;
+  }
+
+  .bottom-last h2 {
+    font-size: 0.78rem;
+  }
+}
+
+/* ══════════════════════════════
    VERY SMALL  (≤ 375px)
 ══════════════════════════════ */
 @media (max-width: 375px) {
@@ -237,10 +342,10 @@
     padding-inline-end: 1rem;
   }
 
-  .textual-content .middle h1,
-  .textual-content .bottom h1,
-  .textual-content .bottom-pink h1 {
-    font-size: clamp(2.4rem, 11vw, 3.5rem);
+  .middle,
+  .bottom,
+  .bottom-pink {
+    font-size: clamp(0.95rem, 9.5vw, 2.1rem);
   }
 }
 
@@ -252,7 +357,7 @@
     padding-block-start: 12rem;
   }
 
-  .textual-content .middle {
+  .textual-content .heading-row {
     margin-block-start: clamp(1rem, 2vh, 3rem);
   }
 }

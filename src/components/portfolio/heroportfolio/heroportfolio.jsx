@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import styles from "./heroportfolio.module.css";
 
 const headings = [
@@ -5,7 +8,59 @@ const headings = [
   { text: "PORTFOLIO", style: "outline" },
 ];
 
-const Heroawards = () => {
+/* Fades an element into place the first time it scrolls into view.
+   direction: "up" (fade + rise), "left" (fade in from the left),
+   "right" (fade in from the right). `delay` (ms) staggers siblings. */
+const Reveal = ({
+  children,
+  className = "",
+  delay = 0,
+  as = "div",
+  direction = "up",
+}) => {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  const Tag = as;
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -5% 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const directionClass =
+    direction === "left"
+      ? styles["reveal-left"]
+      : direction === "right"
+      ? styles["reveal-right"]
+      : styles["reveal-up"];
+
+  return (
+    <Tag
+      ref={ref}
+      className={`${className} ${directionClass} ${
+        visible ? styles["reveal-visible"] : ""
+      }`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </Tag>
+  );
+};
+
+const Heroportfolio = () => {
   return (
     <section className={styles["heroawards-main"]}>
       <div className={styles["heroawards-video-wrapper"]}>
@@ -21,39 +76,45 @@ const Heroawards = () => {
       </div>
 
       <div className={styles["textual-content"]}>
-
-        {/* Badge + Headings — saath mein center mein */}
+        {/* Badge + Heading — saath mein center mein */}
         <div className={styles["headings-group"]}>
-          <div className={styles["top"]}>
-            <h3>[ Our Identity // Vol. 01 ]</h3>
-          </div>
-
-          {headings.map((heading, index) => (
-            <div
-              key={index}
-              className={
-                index === 2
-                  ? styles["bottom-pink"] // "TELLING" ko har screen size par pink karne ke liye explicit class
-                  : heading.style === "outline"
-                  ? styles["bottom"]
-                  : styles["middle"]
-              }
-            >
-              <h1>{heading.text}</h1>
+          <Reveal direction="up" delay={0}>
+            <div className={styles["top"]}>
+              <h3>[ Our Identity // Vol. 01 ]</h3>
             </div>
-          ))}
+          </Reveal>
+
+          {/* Single h1 — multiple spans (heroawards jaisa pattern) */}
+          <Reveal direction="up" delay={150}>
+            <h1 className={styles["heading-row"]}>
+              {headings.map((heading, index) => (
+                <span
+                  key={index}
+                  className={
+                    heading.style === "outline"
+                      ? styles["bottom"] // outline style — transparent fill + pink stroke
+                      : styles["middle"]
+                  }
+                >
+                  {heading.text}
+                </span>
+              ))}
+            </h1>
+          </Reveal>
         </div>
 
         {/* Description box — bottom pe */}
         <div className={styles["bottom-last"]}>
-          <h2>
-            A curated selection of our original narratives, co-productions, and boundary-pushing digital intellectual properties.
-          </h2>
+          <Reveal direction="up" delay={300}>
+            <h2>
+              A curated selection of our original narratives, co-productions,
+              and boundary-pushing digital intellectual properties.
+            </h2>
+          </Reveal>
         </div>
-
       </div>
     </section>
   );
 };
 
-export default Heroawards;
+export default Heroportfolio;

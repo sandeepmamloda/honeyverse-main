@@ -1,0 +1,440 @@
+/* ══════════════════════════════
+   BASE
+══════════════════════════════ */
+.textualarchitecture-main {
+  width: 100%;
+  max-width: 110rem;
+  margin-inline: auto;
+  padding-block: 6rem;
+  padding-inline: 4rem;
+}
+
+/* ── HEADER GROUP (badge + heading) ── */
+.header-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 100rem;
+  margin-inline: auto;
+  margin-block-end: 3.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: 4rem;
+  row-gap: 3rem;
+  align-items: start;
+  max-width: 100rem;
+  margin-inline: auto;
+}
+
+/* ── LEFT COLUMN ── */
+.left-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+/* ── TOP BADGE ── */
+.top {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: fit-content;
+  width: fit-content;
+  color: rgba(217, 24, 106, 1);
+  margin-block-end: 1.5rem;
+}
+
+.badge-icon {
+  color: rgba(217, 24, 106, 1);
+  flex-shrink: 0;
+}
+
+.top h3 {
+  font-family: "consola";
+  font-size: clamp(0.7rem, 1vw, 0.82rem);
+  line-height: 1.09rem;
+  letter-spacing: 0.16rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  overflow-wrap: break-word;
+}
+
+/* ── HEADING ROW ── */
+.heading-row {
+  font-family: "boldonse";
+  font-weight: 400;
+  /* font-size: clamp(2.5rem, 6vw, 6.34rem); */
+  font-size: clamp(1.6rem, 6vw, 6.34rem);
+  letter-spacing: -0.28rem;
+  text-transform: uppercase;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.heading-row span {
+  display: inline-block;
+  max-width: 100%;
+  line-height: 140%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.heading-row span:first-child {
+  margin-right: 2rem;
+}
+
+.text-solid {
+  color: rgba(255, 202, 26, 1);
+}
+
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(217, 24, 106, 1);
+  margin-inline-start: 0.9rem;
+}
+
+/* ── SUBHEADING ── */
+.subheading {
+  color: rgba(255, 202, 26, 1);
+  font-family: "Inter", sans-serif;
+  font-weight: 900;
+  font-size: clamp(1.4rem, 2.2vw, 2.05rem);
+  line-height: 1.2;
+  letter-spacing: -0.1rem;
+  text-transform: uppercase;
+  margin-block-end: 1rem;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+/* ── PARAGRAPH ── */
+.paragraph {
+  color: rgba(0, 0, 0, 1);
+  font-family: "consola";
+  font-size: clamp(0.8rem, 1vw, 0.955rem);
+  line-height: 1.55rem;
+  letter-spacing: 0.096rem;
+  text-transform: uppercase;
+  /* max-width: 38rem; */
+  width: 100%;
+  margin-block-end: 2.5rem;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+/* ── SPEC CARD ── */
+.spec-card {
+  width: 100%;
+  /* max-width: 38rem; */
+  border-radius: 1.5rem;
+  border-top: 1.09px solid rgba(255, 255, 255, 1);
+  background: rgba(217, 24, 106, 1);
+  padding: 1.7rem 1.7rem 0.1rem 1.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.09rem;
+}
+
+.spec-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-block-end: 1.09rem;
+  flex-wrap: wrap;
+}
+
+.spec-row:not(:last-child) {
+  border-bottom: 1.09px solid rgba(255, 255, 255, 1);
+}
+
+.spec-label {
+  font-family: "consola";
+  font-size: 0.818rem;
+  line-height: 1.09rem;
+  letter-spacing: 0.082rem;
+  text-transform: uppercase;
+  color: rgba(255, 202, 26, 1);
+  overflow-wrap: break-word;
+}
+
+.spec-value {
+  font-family: "consola";
+  font-size: 0.818rem;
+  line-height: 1.09rem;
+  letter-spacing: 0.082rem;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 1);
+  overflow-wrap: break-word;
+}
+
+/* ── RIGHT COLUMN / IMAGE ── */
+.right-col {
+  height: 100%;
+  width: 100%;
+}
+
+.image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 32rem;
+  overflow: hidden;
+}
+
+.still-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.scene-pill {
+  position: absolute;
+  left: 1.5rem;
+  bottom: 1.5rem;
+  background: rgba(217, 24, 106, 1);
+  color: rgba(255, 255, 255, 1);
+  font-family: "consola";
+  font-size: clamp(0.65rem, 1vw, 0.8rem);
+  letter-spacing: 0.12rem;
+  text-transform: uppercase;
+  padding: 0.6rem 1.1rem;
+  border-radius: 999px;
+  max-width: calc(100% - 3rem);
+  overflow-wrap: break-word;
+}
+
+/* ══════════════════════════════
+   SCROLL REVEAL ANIMATIONS
+══════════════════════════════ */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-32px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(32px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translate(0, 0);
+  width: 100%;
+}
+
+/* ══════════════════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+══════════════════════════════════════════════════════════ */
+
+/* Large Desktop */
+@media screen and (max-width: 1440px) {
+  .textualarchitecture-main,
+  .header-group,
+  .grid {
+    max-width: 90rem;
+  }
+}
+
+/* Laptop / Desktop */
+@media screen and (max-width: 1280px) {
+  .textualarchitecture-main,
+  .header-group,
+  .grid {
+    max-width: 100%;
+  }
+
+  .textualarchitecture-main {
+    padding-inline: 3rem;
+  }
+
+  .image-wrapper {
+    min-height: 28rem;
+  }
+}
+
+/* Small Laptop */
+@media screen and (max-width: 1024px) {
+  .textualarchitecture-main {
+    padding-inline: 2rem;
+    padding-block: 4rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .image-wrapper {
+    min-height: 24rem;
+  }
+
+  .heading-row {
+    letter-spacing: -0.18rem;
+  }
+}
+
+/* Tablet */
+@media screen and (max-width: 768px) {
+  .textualarchitecture-main {
+    padding-inline: 1.75rem;
+    padding-block: 3.5rem;
+  }
+
+  .header-group {
+    margin-block-end: 3rem;
+  }
+
+  .heading-row {
+    /* font-size: clamp(2.6rem, 8vw, 4rem); */
+    letter-spacing: -0.14rem;
+  }
+
+  .heading-row span:first-child {
+    margin-right: 1.25rem;
+  }
+
+  .subheading {
+    font-size: clamp(1.3rem, 3.5vw, 1.8rem);
+  }
+
+  .paragraph {
+    font-size: clamp(0.78rem, 1.6vw, 0.9rem);
+  }
+
+  .image-wrapper {
+    min-height: 22rem;
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 640px) {
+  .textualarchitecture-main {
+    padding-inline: 1.25rem;
+    padding-block: 3rem;
+  }
+
+  .header-group {
+    margin-block-end: 2.5rem;
+  }
+
+  .heading-row {
+    /* font-size: clamp(2.2rem, 11vw, 3.2rem); */
+    letter-spacing: -0.1rem;
+  }
+
+  .subheading {
+    font-size: clamp(1.2rem, 6vw, 1.6rem);
+  }
+
+  .spec-card {
+    padding: 1.25rem 1.25rem 0.1rem 1.25rem;
+  }
+
+  .image-wrapper {
+    min-height: 18rem;
+  }
+
+  .scene-pill {
+    left: 1rem;
+    bottom: 1rem;
+    font-size: 0.6rem;
+    padding: 0.5rem 0.85rem;
+  }
+}
+
+/* Large Small Mobile */
+@media screen and (max-width: 480px) {
+  .textualarchitecture-main {
+    padding-inline: 1rem;
+    padding-block: 2.5rem;
+  }
+
+  .top h3 {
+    font-size: 0.62rem;
+    letter-spacing: 0.12rem;
+  }
+
+  .heading-row {
+    /* font-size: clamp(1.9rem, 12vw, 2.6rem); */
+    letter-spacing: -0.06rem;
+  }
+
+  .heading-row span:first-child {
+    margin-right: 0.75rem;
+  }
+
+  .text-outline {
+    -webkit-text-stroke-width: 1.5px;
+    margin-inline-start: 0.5rem;
+  }
+
+  .subheading {
+    font-size: clamp(1.05rem, 6vw, 1.3rem);
+  }
+
+  .paragraph {
+    font-size: 0.72rem;
+    line-height: 1.3rem;
+  }
+
+  .spec-row {
+    gap: 1.5rem;
+  }
+
+  .image-wrapper {
+    min-height: 15rem;
+  }
+}
+
+/* Small Mobile */
+@media screen and (max-width: 360px) {
+  .textualarchitecture-main {
+    padding-inline: 0.85rem;
+  }
+
+  .heading-row {
+    /* font-size: clamp(1.6rem, 13vw, 2.1rem); */
+  }
+
+  .heading-row span:first-child {
+    margin-right: 0.5rem;
+  }
+
+  .paragraph {
+    font-size: 0.65rem;
+    letter-spacing: 0.06rem;
+  }
+
+  .spec-label,
+  .spec-value {
+    font-size: 0.7rem;
+  }
+
+  .spec-row {
+    gap: 1rem;
+  }
+
+  .image-wrapper {
+    min-height: 13rem;
+  }
+
+  .scene-pill {
+    font-size: 0.55rem;
+    padding: 0.4rem 0.7rem;
+  }
+}

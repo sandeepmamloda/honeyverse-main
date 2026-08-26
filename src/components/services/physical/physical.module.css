@@ -29,27 +29,30 @@
 
 .badge-icon {
   color: #E60067;
+  flex-shrink: 0;
 }
 
 .badge-text {
   border: 1px solid #E60067;
   padding: 0.5rem 1rem;
+  width: fit-content;
 }
 
 .badge-text h3 {
   color: #E60067;
   font-family: "consola";
-  font-size: 1rem;
+  font-size: clamp(0.72rem, 1.1vw, 1rem);
   letter-spacing: 0.15rem;
   line-height:100%;
   font-weight: 400;
   margin: 0;
+  white-space: nowrap;
 }
 
-/* NEW: thin underline below the badge */
+/* thin underline below the badge — ab fluid, container se bahar nahi jayega */
 .header-line {
   display: block;
-  width: 26rem;
+  width: min(26rem, 100%);
   height: 1px;
   background-color: rgba(230, 0, 103, 0.3);
 }
@@ -60,7 +63,7 @@
 
 .main-title {
   font-family: "boldonse";
-  font-size: clamp(5rem, 10vw, 6rem);
+  font-size: clamp(2.6rem, 8vw, 6rem);
   font-weight: 400;
   line-height: 1.8;
   text-transform: uppercase;
@@ -78,6 +81,8 @@
 .image-showcase-wrapper {
   position: relative;
   width: 100%;
+  flex: 1 1 45%;
+  min-width: 0;
 }
 
 .yellow-frame {
@@ -96,16 +101,17 @@
 .sys-badge {
   position: absolute;
   bottom: 0;
-  right: -1.4rem;
+  right: 1.4rem; /* negative offset hata diya taaki chhoti screens pe overflow na ho */
   transform: translateY(50%);
   background-color: rgba(217, 24, 106, 1);
   color: #000;
   font-family: "consola";
-  font-size: 0.75rem;
+  font-size: clamp(0.62rem, 1vw, 0.75rem);
   font-weight: 700;
   letter-spacing: 0.1rem;
-  padding: 1.4rem 1.8rem;
+  padding: clamp(0.9rem, 1.8vw, 1.4rem) clamp(1.1rem, 2.2vw, 1.8rem);
   z-index: 2;
+  white-space: nowrap;
 }
 
 /* Right Side Column (Perfect Left Align Rules) */
@@ -113,12 +119,14 @@
   display: flex;
   flex-direction: column;
   gap: 3.5rem;
+  flex: 1 1 55%;
+  min-width: 0;
   text-align: left; /* Ensures all child elements adhere to the left wall */
 }
 
 .intro-text {
   font-family: "intermedium";
-  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  font-size: clamp(1.05rem, 1.8vw, 1.5rem);
   font-weight: 500;
   line-height: 1.5;
   color: #000;
@@ -130,7 +138,7 @@
   display: flex;
   flex-direction: column;
   row-gap: 5rem;
-  margin-left:1.4rem;
+  margin-left: 1.4rem;
 }
 
 .list-row {
@@ -163,7 +171,7 @@
 
 .item-title {
   font-family: "consola";
-  font-size: 1.1rem;
+  font-size: clamp(0.95rem, 1.3vw, 1.1rem);
   font-weight: 700;
   color: #FCD116;
   letter-spacing: 0.16rem;
@@ -173,8 +181,8 @@
 
 .item-desc {
   font-family: "interregular";
-  font-size: 0.95rem;
-  line-height: 1.2;
+  font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+  line-height: 1.4;
   color: rgba(0, 0, 0, 1);
   margin: 0;
   padding-left: 0; /* FIX: Remoted extra left padding so it matches the line of item-title */
@@ -182,7 +190,54 @@
 }
 
 /* ══════════════════════════════
-   TABLET & MOBILE RESPONSIVE
+   RESPONSIVE MAX-WIDTH SCALING
+══════════════════════════════ */
+@media screen and (max-width: 1780px) {
+  .physical-main {
+    max-width: 100rem;
+  }
+}
+@media screen and (max-width: 1630px) {
+  .physical-main {
+    max-width: 90rem;
+  }
+}
+@media screen and (max-width: 1460px) {
+  .physical-main {
+    max-width: 85rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1440px) — Large Laptop / Small Desktop
+══════════════════════════════ */
+@media screen and (max-width: 1440px) {
+  .physical-main {
+    max-width: 82rem;
+  }
+}
+
+@media screen and (max-width: 1370px) {
+  .physical-main {
+    max-width: 100%;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1280px) — Laptop
+══════════════════════════════ */
+@media screen and (max-width: 1280px) {
+  .main-grid {
+    column-gap: 3rem;
+  }
+
+  .list-container {
+    row-gap: 4rem;
+  }
+}
+
+/* ══════════════════════════════
+   TABLET  (≤ 1024px)
 ══════════════════════════════ */
 @media (max-width: 1024px) {
   .physical-main {
@@ -191,24 +246,115 @@
   .main-grid {
     gap: 3rem;
   }
+  .list-container {
+    margin-left: 0.8rem;
+  }
 }
 
+/* ══════════════════════════════
+   STANDARD  (≤ 768px) — Tablet (portrait) / Mobile
+══════════════════════════════ */
 @media (max-width: 768px) {
   .physical-main {
     padding-inline: 1.5rem;
     padding-block: 3rem;
   }
   .main-title {
-    font-size: 4.5rem;
+    font-size: clamp(2.4rem, 10vw, 4.5rem);
+  }
+  .header-line {
+    width: 100%;
   }
   .main-grid {
-    grid-template-columns: 1fr;
-    gap: 4rem;
+    flex-direction: column; /* FIX: pehle grid-template-columns tha jo flex pe kaam nahi karta tha */
+    align-items: stretch;
+    gap: 3rem;
+  }
+  .image-showcase-wrapper,
+  .content-details {
+    flex: 1 1 auto;
+    width: 100%;
   }
   .content-details {
     gap: 2.5rem;
   }
+  .list-container {
+    margin-left: 0.5rem;
+    row-gap: 3rem;
+  }
   .sys-badge {
     right: 1rem; /* Mobile standard padding tweak */
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 480px) — Mobile (small)
+══════════════════════════════ */
+@media screen and (max-width: 480px) {
+  .physical-main {
+    padding-inline: 1.1rem;
+    padding-block: 2.4rem;
+  }
+
+  .badge-text h3 {
+    font-size: 0.68rem;
+    letter-spacing: 0.1rem;
+  }
+
+  .main-title {
+    font-size: clamp(2rem, 11vw, 2.9rem);
+    line-height: 1.4;
+  }
+
+  .yellow-frame {
+    padding: 0.7rem;
+  }
+
+  .sys-badge {
+    right: 0.6rem;
+    padding: 0.7rem 1rem;
+    font-size: 0.6rem;
+  }
+
+  .intro-text {
+    font-size: 0.95rem;
+  }
+
+  .list-container {
+    margin-left: 0;
+    row-gap: 2.4rem;
+  }
+
+  .item-title {
+    font-size: 0.9rem;
+  }
+
+  .item-desc {
+    font-size: 0.8rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 375px) — Small mobile devices
+══════════════════════════════ */
+@media screen and (max-width: 375px) {
+  .physical-main {
+    padding-inline: 0.85rem;
+  }
+
+  .main-title {
+    font-size: clamp(1.8rem, 11vw, 2.4rem);
+  }
+
+  .item-header {
+    gap: 0.6rem;
+  }
+
+  .item-title {
+    font-size: 0.82rem;
+  }
+
+  .item-desc {
+    font-size: 0.75rem;
   }
 }

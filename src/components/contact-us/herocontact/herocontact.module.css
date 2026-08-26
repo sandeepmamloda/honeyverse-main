@@ -1,0 +1,254 @@
+/* ══════════════════════════════
+   BASE
+══════════════════════════════ */
+.herocontact-main {
+  height: 100svh;
+  width: 100%;
+  position: relative;
+  min-height: 850px;
+}
+
+.herocontact-video-wrapper {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.contact-video {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.textual-content {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 99;
+  top: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  padding-block-start: 16rem;
+  padding-inline-start: 8rem;
+  padding-block-end: 2rem;
+}
+
+/* ── TOP BADGE ── */
+.top {
+  height: fit-content;
+  width: fit-content;
+  padding: 0.5rem 0.7rem;
+  border: solid 0.01rem rgba(217, 24, 106, 1);
+}
+
+.top h3 {
+  color: rgba(217, 24, 106, 1);
+  font-family: "consola";
+  font-size: clamp(0.65rem, 1.2vw, 1rem);
+  line-height: 100%;
+  letter-spacing: 0.2rem;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+/* ── HEADING ROW ── */
+.textual-content .heading-row {
+  height: fit-content;
+  margin-block-start: 3rem;
+
+  display: flex;       
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.75rem;
+  row-gap: 0.2rem;
+
+  font-family: "boldonse";
+  font-size: clamp(3rem, 9vw, 10rem);
+  font-weight:400;
+  line-height: 140%;
+}
+
+.text-solid {
+  letter-spacing: 0.01rem;
+  color: #fff;
+}
+
+.text-outline {
+  letter-spacing: 0.3rem;
+  color: transparent;
+  -webkit-text-stroke: 3px #e0195a;
+}
+
+/* ── DESCRIPTION BOX ── */
+.bottom-last {
+  height: fit-content;
+  width: fit-content;
+  max-width: 40rem;
+
+  margin-inline-start: auto;
+  margin-block-start: auto; /* <-- ye important hai */
+
+  background: rgba(255, 255, 255, 0.3);
+  border-left: solid 0.3rem rgba(217, 24, 106, 1);
+
+  padding-inline-start: 1rem;
+  padding-inline-end: 3rem;
+  padding-block: 1rem;
+}
+
+.bottom-last h2 {
+  color: rgba(255, 255, 255, 1);
+  line-height: 120%;
+  font-family: "interbold";
+  font-size: clamp(0.85rem, 1.5vw, 1.6rem);
+  font-weight: normal;
+}
+@media screen and (max-width:1200px){
+  .textual-content{
+    padding-inline-start:5rem;
+    padding-block-start:20rem;
+  }
+}
+/* ══════════════════════════════
+   TABLET & BELOW  (≤ 1024px) — ab yahin se centered layout shuru
+══════════════════════════════ */
+@media screen and (max-width: 1024px) {
+  .textual-content {
+    padding-inline: 1.5rem;
+    padding-block-start: 6rem;
+    padding-block-end: 2.5rem;
+    align-items: center;
+    justify-content: space-between;
+    row-gap: 0;
+  }
+
+  /* badge + headings ek saath center mein */
+  .headings-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .top {
+    align-self: center;
+    margin-bottom: 3rem;
+  }
+
+  .top h3 {
+    letter-spacing: 0.1rem;
+  }
+
+  .textual-content .heading-row {
+    margin-block-start: 0;
+    margin-inline: auto;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .text-solid,
+  .text-outline {
+    line-height: 160%;
+  }
+
+  .text-outline {
+    -webkit-text-stroke-width: 1.5px;
+  }
+
+  .bottom-last {
+    align-self: center; /* pehle stretch tha — ab center */
+    width: 100%;
+    max-width: 40rem;
+    margin-inline: auto; /* pehle margin-inline-start: 0 tha — ab dono taraf auto, so horizontally centered */
+    padding-inline-end: 1rem;
+    margin-block-start: 0;
+    border-right: solid 0.3rem rgba(217, 24, 106, 1);
+  }
+
+  .bottom-last h2 {
+    font-size: clamp(0.8rem, 3.5vw, 1rem);
+    text-align: center;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 768px) — Tablet (portrait) / large mobile
+══════════════════════════════ */
+@media screen and (max-width: 768px) {
+  .textual-content {
+    padding-block-start: 5rem;
+  }
+
+  .textual-content .heading-row {
+    font-size: clamp(2.6rem, 10vw, 6rem);
+  }
+
+  .top {
+    margin-bottom: 2.5rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 480px) — Mobile (small)
+══════════════════════════════ */
+@media screen and (max-width: 480px) {
+  .textual-content {
+    padding-block-start: 4rem;
+    padding-inline: 1.1rem;
+  }
+
+  .top {
+    padding: 0.4rem 0.55rem;
+    margin-bottom: 2rem;
+  }
+
+  .top h3 {
+    font-size: 0.62rem;
+  }
+
+  .textual-content .heading-row {
+    font-size: clamp(2.2rem, 11vw, 4rem);
+  }
+
+  .bottom-last {
+    padding-inline-start: 0.8rem;
+    padding-inline-end: 0.8rem;
+    padding-block: 0.8rem;
+  }
+
+  .bottom-last h2 {
+    font-size: 0.78rem;
+  }
+}
+
+/* ══════════════════════════════
+   VERY SMALL  (≤ 375px)
+══════════════════════════════ */
+@media screen and (max-width: 375px) {
+  .textual-content {
+    padding-inline-start: 1rem;
+    padding-inline-end: 1rem;
+  }
+
+  .textual-content .heading-row {
+    font-size: clamp(2rem, 11vw, 3.5rem);
+  }
+}
+
+/* ══════════════════════════════
+   HEIGHT-BASED — only desktop/tablet
+══════════════════════════════ */
+@media screen and (max-height: 944px) and (min-width: 1025px) {
+  .textual-content {
+    padding-block-start: 12rem;
+  }
+
+  .textual-content .heading-row {
+    margin-block-start: clamp(1rem, 2vh, 3rem);
+  }
+}
