@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useRef, useState } from "react";
 import styles from "./feararchitecture.module.css";
 import { useRouter } from "next/navigation";
 
@@ -19,6 +20,112 @@ const ArrowIcon = () => (
     <path d="M10 4.167 15.833 10 10 15.833" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
+
+/* Shared observer hook — fires once, the first time the element has any
+   part on screen. IntersectionObserver already reports the correct state
+   on the very first callback (even if the element is already visible at
+   mount), so no manual getBoundingClientRect precheck is needed — that
+   precheck was racing with layout/nested-Reveal timing and leaving some
+   elements permanently hidden. */
+const useRevealVisible = () => {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0, rootMargin: "0px 0px -2% 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return [ref, visible];
+};
+
+/* Scroll-triggered clip-path reveal — element is fully clipped from a
+   direction and wipes open into view the first time it enters the
+   viewport (or immediately, if it's already visible at mount). */
+const clipStart = {
+  left: "inset(0 100% 0 0)",
+  right: "inset(0 0 0 100%)",
+  up: "inset(100% 0 0 0)",
+  down: "inset(0 0 100% 0)",
+};
+
+const Reveal = ({
+  children,
+  className = "",
+  delay = 0,
+  as = "div",
+  direction = "left",
+  duration = 1.2,
+}) => {
+  const Tag = as;
+  const [ref, visible] = useRevealVisible();
+
+  const style = {
+    clipPath: visible ? "inset(0 0 0 0)" : clipStart[direction],
+    WebkitClipPath: visible ? "inset(0 0 0 0)" : clipStart[direction],
+    opacity: visible ? 1 : 0,
+    transitionProperty: "clip-path, -webkit-clip-path, opacity",
+    transitionDuration: `${duration}s, ${duration}s, 0.1s`,
+    transitionTimingFunction: "cubic-bezier(0.83,0,0.17,1)",
+    transitionDelay: `${delay}ms`,
+    willChange: "clip-path, opacity",
+  };
+
+  return (
+    <Tag ref={ref} className={className} style={style}>
+      {children}
+    </Tag>
+  );
+};
+
+/* Letter-by-letter curtain reveal, same feel as the gsap "yPercent 115 -> 0"
+   version but done with plain CSS transforms + transition-delay stagger. */
+const RevealLetters = ({ text, delay = 0, step = 20, className = "" }) => {
+  const [ref, visible] = useRevealVisible();
+
+  return (
+    <span ref={ref} className={className} style={{ display: "inline-block" }}>
+      {text.split("").map((char, i) => (
+        <span
+          key={i}
+          style={{
+            display: "inline-block",
+            overflow: "hidden",
+            lineHeight: 1,
+            verticalAlign: "bottom",
+          }}
+        >
+          <i
+            style={{
+              display: "inline-block",
+              fontStyle: "normal",
+              transform: visible ? "translateY(0%)" : "translateY(115%)",
+              transition: `transform 0.9s cubic-bezier(0.19,1,0.22,1) ${delay + i * step}ms`,
+              willChange: "transform",
+            }}
+          >
+            {char === " " ? "\u00A0" : char}
+          </i>
+        </span>
+      ))}
+    </span>
+  );
+};
 
 const FearArchitecture = ({
   badgeLabel = "FEATURED_TRANSMISSION",
@@ -56,36 +163,40 @@ const FearArchitecture = ({
     <section className={styles["feararchitecture-wrapper"]}>
       <div className={styles["feararchitecture-card"]}>
         {/* ── LEFT: IMAGE ── */}
-        <div className={styles["image-wrap"]}>
+        <Reveal as="div" direction="down" duration={1.8} className={styles["image-wrap"]}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img className={styles["image"]} src={image} alt={title} />
 
-          <div className={styles["badge"]}>
+          <Reveal as="div" direction="left" delay={600} duration={1} className={styles["badge"]}>
             <DocumentIcon />
             <span>{badgeLabel}</span>
-          </div>
-        </div>
+          </Reveal>
+        </Reveal>
 
         {/* ── RIGHT: CONTENT ── */}
         <div className={styles["content"]}>
-          <div className={styles["meta-row"]}>
+          <Reveal as="div" direction="left" delay={200} duration={1.1} className={styles["meta-row"]}>
             <span>{date}</span>
             <span className={styles["meta-dot"]} />
             <span>{publication}</span>
-          </div>
+          </Reveal>
 
-          <h2 className={styles["title"]}>{title}</h2>
+          <h2 className={styles["title"]}>
+            <RevealLetters text={title} delay={350} step={18} />
+          </h2>
 
-          <div className={styles["quote-block"]}>
+          <Reveal as="div" direction="left" delay={600} duration={1.2} className={styles["quote-block"]}>
             <p>{quote}</p>
-          </div>
+          </Reveal>
 
-          <button type="button" onClick={handleReadMore} className={styles["read-link"]}>
-            <span>[ READ_FULL_ARTICLE ]</span>
-            <span className={styles["read-arrow"]}>
-              <ArrowIcon />
-            </span>
-          </button>
+          <Reveal as="div" direction="left" delay={850} duration={1}>
+            <button type="button" onClick={handleReadMore} className={styles["read-link"]}>
+              <span>[ READ_FULL_ARTICLE ]</span>
+              <span className={styles["read-arrow"]}>
+                <ArrowIcon />
+              </span>
+            </button>
+          </Reveal>
         </div>
       </div>
     </section>

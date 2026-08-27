@@ -58,6 +58,108 @@ const PressIcon = () => (
     </svg>
 );
 
+/* ══════════════════════════════
+   REVEAL ANIMATION HELPERS
+   (feararchitecture.jsx wale hi pattern se liya — sirf inline style
+   inject karte hain, CSS module ko bilkul touch nahi karte)
+══════════════════════════════ */
+const useRevealVisible = () => {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0, rootMargin: "0px 0px -2% 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return [ref, visible];
+};
+
+const clipStart = {
+  left: "inset(0 100% 0 0)",
+  right: "inset(0 0 0 100%)",
+  up: "inset(100% 0 0 0)",
+  down: "inset(0 0 100% 0)",
+};
+
+const Reveal = ({
+  children,
+  className = "",
+  delay = 0,
+  as = "div",
+  direction = "left",
+  duration = 1.1,
+  style: extraStyle = {},
+}) => {
+  const Tag = as;
+  const [ref, visible] = useRevealVisible();
+
+  const style = {
+    clipPath: visible ? "inset(0 0 0 0)" : clipStart[direction],
+    WebkitClipPath: visible ? "inset(0 0 0 0)" : clipStart[direction],
+    opacity: visible ? 1 : 0,
+    transitionProperty: "clip-path, -webkit-clip-path, opacity",
+    transitionDuration: `${duration}s, ${duration}s, 0.1s`,
+    transitionTimingFunction: "cubic-bezier(0.83,0,0.17,1)",
+    transitionDelay: `${delay}ms`,
+    willChange: "clip-path, opacity",
+    ...extraStyle,
+  };
+
+  return (
+    <Tag ref={ref} className={className} style={style}>
+      {children}
+    </Tag>
+  );
+};
+
+const RevealLetters = ({ text, delay = 0, step = 16, className = "" }) => {
+  const [ref, visible] = useRevealVisible();
+
+  return (
+    <span ref={ref} className={className} style={{ display: "inline-block" }}>
+      {text.split("").map((char, i) => (
+        <span
+          key={i}
+          style={{
+            display: "inline-block",
+            overflow: "hidden",
+            lineHeight: 1,
+            verticalAlign: "bottom",
+          }}
+        >
+          <i
+            style={{
+              display: "inline-block",
+              fontStyle: "normal",
+              transform: visible ? "translateY(0%)" : "translateY(115%)",
+              transition: `transform 1.4s cubic-bezier(0.19,1,0.22,1) ${delay + i * step}ms`,
+              willChange: "transform",
+            }}
+          >
+            {char === " " ? "\u00A0" : char}
+          </i>
+        </span>
+      ))}
+    </span>
+  );
+};
+
 const newsItems = [
   {
     id: 1,
@@ -225,9 +327,9 @@ const NewsGrid = () => {
   return (
     <section className={styles["newsgrid-main"]}>
       {/* ── SORT HEADER ── */}
-      <div className={styles["sort-row"]}>
+      <Reveal as="div" direction="left" duration={1.6} className={styles["sort-row"]}>
         <span>SORT: CHRONOLOGICAL</span>
-      </div>
+      </Reveal>
 
       {/* ── CAROUSEL VIEWPORT — native scroll-snap, sliding window ── */}
       <div
@@ -240,45 +342,71 @@ const NewsGrid = () => {
         onPointerLeave={handlePointerUp}
       >
         <div className={styles["cards-track"]}>
-          {newsItems.map((item, idx) => (
-            <article
-              key={item.id}
-              ref={(el) => (cardRefs.current[idx] = el)}
-              data-index={idx}
-              className={styles["news-card"]}
-              style={{ scrollSnapAlign: "start" }}
-              onClick={() => handleCardClick(item)}
-            >
-              <div className={styles["card-image-wrap"]}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img className={styles["card-image"]} src={item.image} alt={item.title} draggable={false} />
-                <span className={styles["card-number"]}>{item.number}</span>
-                <span className={styles["hover-indicator"]}>
-                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M6 14 14 6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M7.5 6H14v6.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </span>
-              </div>
+          {newsItems.map((item, idx) => {
+            const base = (idx % perPage) * 350; // per-visible-card stagger
+            return (
+              <article
+                key={item.id}
+                ref={(el) => (cardRefs.current[idx] = el)}
+                data-index={idx}
+                className={styles["news-card"]}
+                style={{ scrollSnapAlign: "start" }}
+                onClick={() => handleCardClick(item)}
+              >
+                <Reveal
+                  as="div"
+                  direction="up"
+                  delay={base}
+                  duration={1.8}
+                  className={styles["card-image-wrap"]}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img className={styles["card-image"]} src={item.image} alt={item.title} draggable={false} />
+                  <span className={styles["card-number"]}>{item.number}</span>
+                  <span className={styles["hover-indicator"]}>
+                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M6 14 14 6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M7.5 6H14v6.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                </Reveal>
 
-              <div className={styles["card-meta"]}>
-                <span className={styles["meta-icon"]}>
-                  {item.icon === "mic" ? <MicIcon /> : <PressIcon />}
-                </span>
-                <span className={styles["meta-category"]}>{item.category}</span>
-                <span className={styles["meta-sep"]}>»</span>
-                <span className={styles["meta-date"]}>{item.date}</span>
-              </div>
+                <Reveal
+                  as="div"
+                  direction="left"
+                  delay={base + 350}
+                  duration={1.3}
+                  className={styles["card-meta"]}
+                >
+                  <span className={styles["meta-icon"]}>
+                    {item.icon === "mic" ? <MicIcon /> : <PressIcon />}
+                  </span>
+                  <span className={styles["meta-category"]}>{item.category}</span>
+                  <span className={styles["meta-sep"]}>»</span>
+                  <span className={styles["meta-date"]}>{item.date}</span>
+                </Reveal>
 
-              <h2 className={styles["card-title"]}>{item.title}</h2>
-              <p className={styles["card-excerpt"]}>{item.excerpt}</p>
-            </article>
-          ))}
+                <h2 className={styles["card-title"]}>
+                  <RevealLetters text={item.title} delay={base + 550} step={26} />
+                </h2>
+
+                <Reveal
+                  as="p"
+                  direction="left"
+                  delay={base + 950}
+                  duration={1.3}
+                  className={styles["card-excerpt"]}
+                >
+                  {item.excerpt}
+                </Reveal>
+              </article>
+            );
+          })}
         </div>
       </div>
 
       {/* ── PAGINATION DOTS ── */}
-      <div className={styles["pagination-wrap"]}>
+      <Reveal as="div" direction="up" delay={400} duration={1.4} className={styles["pagination-wrap"]}>
         <div className={styles["pagination-pill"]}>
           {Array.from({ length: totalPages }).map((_, i) => (
             <button
@@ -290,7 +418,7 @@ const NewsGrid = () => {
             />
           ))}
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 };
