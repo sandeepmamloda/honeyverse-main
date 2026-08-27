@@ -726,7 +726,9 @@ export default function SaturnBackground() {
       planetCount: isLowPower ? 34000 : 100000,
       ringCount: isLowPower ? 40000 : 120000,
       haloCount: isLowPower ? 900 : 2200,
-      pixelRatioCap: isLowPower ? 1.5 : 2,
+      // Higher cap = sharper render. Most modern phones handle 2x fine;
+      // the old 1.5 cap was the main source of the blurry look.
+      pixelRatioCap: isLowPower ? 2 : 3,
     };
 
     const scene = new THREE.Scene();
@@ -800,15 +802,17 @@ export default function SaturnBackground() {
 
     // ---------- TEXTURES ----------
     function makeGlowTexture() {
-      const size = 64;
+      // Bigger canvas + a tighter, less-feathered gradient = crisp dot
+      // cores instead of a soft blurry blob when scaled up on screen.
+      const size = 128;
       const canvas = document.createElement("canvas");
       canvas.width = canvas.height = size;
       const ctx = canvas.getContext("2d");
       const grad = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
       grad.addColorStop(0.0, "rgba(255,255,255,1)");
-      grad.addColorStop(0.18, "rgba(255,255,255,1)");
-      grad.addColorStop(0.45, "rgba(255,255,255,0.92)");
-      grad.addColorStop(0.75, "rgba(255,255,255,0.55)");
+      grad.addColorStop(0.5, "rgba(255,255,255,1)");
+      grad.addColorStop(0.72, "rgba(255,255,255,0.85)");
+      grad.addColorStop(0.9, "rgba(255,255,255,0.35)");
       grad.addColorStop(1.0, "rgba(255,255,255,0)");
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, size, size);
@@ -829,6 +833,12 @@ export default function SaturnBackground() {
       return new THREE.CanvasTexture(canvas);
     }
     const glowTex = makeGlowTexture();
+    glowTex.generateMipmaps = false;
+    glowTex.minFilter = THREE.LinearFilter;
+    glowTex.magFilter = THREE.LinearFilter;
+
+    // Bloom texture stays soft/mipmapped on purpose — it's used only for
+    // the additive glow layer, which should look diffuse.
     const bloomTex = makeBloomTexture();
 
     const lightDir = new THREE.Vector3(0.6, 0.45, 0.66).normalize();
