@@ -1,33 +1,124 @@
 "use client";
+import { useEffect, useRef, useState } from "react";
 import styles from "./declaration.module.css";
+
+/* ══════════════════════════════
+   REVEAL ANIMATION HELPERS
+   (principles.jsx / feararchitecture.jsx wale hi pattern se liya — sirf
+   inline style inject karte hain, CSS module ko bilkul touch nahi karte)
+══════════════════════════════ */
+const useRevealVisible = () => {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0, rootMargin: "0px 0px -2% 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return [ref, visible];
+};
+
+const clipStart = {
+  left: "inset(0 100% 0 0)",
+  right: "inset(0 0 0 100%)",
+  up: "inset(100% 0 0 0)",
+  down: "inset(0 0 100% 0)",
+};
+
+const Reveal = ({
+  children,
+  className = "",
+  delay = 0,
+  as = "div",
+  direction = "left",
+  duration = 1.1,
+}) => {
+  const Tag = as;
+  const [ref, visible] = useRevealVisible();
+
+  const style = {
+    clipPath: visible ? "inset(0 0 0 0)" : clipStart[direction],
+    WebkitClipPath: visible ? "inset(0 0 0 0)" : clipStart[direction],
+    opacity: visible ? 1 : 0,
+    transitionProperty: "clip-path, -webkit-clip-path, opacity",
+    transitionDuration: `${duration}s, ${duration}s, 0.1s`,
+    transitionTimingFunction: "cubic-bezier(0.83,0,0.17,1)",
+    transitionDelay: `${delay}ms`,
+    willChange: "clip-path, opacity",
+  };
+
+  return (
+    <Tag ref={ref} className={className} style={style}>
+      {children}
+    </Tag>
+  );
+};
 
 const Declaration = () => {
   return (
     <section className={styles["declaration-main"]}>
       {/* ── TOP WRAPPER: BADGE + TITLE ── */}
       <div className={styles["top-row"]}>
-        <div className={styles["badge-wrapper"]}>
+        <Reveal
+          as="div"
+          direction="left"
+          duration={1}
+          className={styles["badge-wrapper"]}
+        >
           <span>[ THE_DECLARATION ]</span>
-        </div>
+        </Reveal>
 
-        <h1 className={styles["main-title"]}>
+        <Reveal
+          as="h1"
+          direction="right"
+          delay={150}
+          duration={1.2}
+          className={styles["main-title"]}
+        >
           <span className={styles["text-solid"]}>BEYOND</span>
           <span className={styles["text-outline"]}>CONTENT</span>
-        </h1>
+        </Reveal>
       </div>
 
       {/* ── BOTTOM WRAPPER: IMAGE + STATEMENT ── */}
       <div className={styles["bottom-row"]}>
-        <div className={styles["image-wrapper"]}>
+        <Reveal
+          as="div"
+          direction="up"
+          duration={1.4}
+          className={styles["image-wrapper"]}
+        >
           <img
             src="/images/code/declaration.jpg"
             alt="Architecture"
             className={styles["declaration-image"]}
           />
           <div className={styles["corner-bracket"]}></div>
-        </div>
+        </Reveal>
 
-        <div className={styles["statement-block"]}>
+        <Reveal
+          as="div"
+          direction="left"
+          delay={200}
+          duration={1.2}
+          className={styles["statement-block"]}
+        >
           <div className={styles["heading-row"]}>
             <span className={styles["dash-icon"]}>—</span>
             <h2 className={styles["statement-heading"]}>
@@ -50,7 +141,7 @@ const Declaration = () => {
           </div>
 
           <h3 className={styles["vision-text"]}>VISION</h3>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

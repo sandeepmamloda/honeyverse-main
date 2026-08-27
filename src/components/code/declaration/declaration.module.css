@@ -10,7 +10,7 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 3.5rem;
+  gap: 8rem;
 }
 
 /* ══════════════════════════════
@@ -51,6 +51,7 @@
   line-height: 0.8;
   letter-spacing: -0.25rem;
   text-transform: uppercase;
+  row-gap:0.3rem;
 }
 
 .text-solid {
@@ -115,7 +116,7 @@
 
 .dash-icon {
   font-family: "interblack";
-  color: rgba(255, 202, 26, 1);
+  color: rgba(217, 24, 106, 1);
   font-size: 1.8rem;
   line-height: 1;
   margin-top: 0.6rem;
@@ -236,7 +237,7 @@
 @media (max-width: 1024px) {
   .declaration-main {
     padding-inline: 2rem;
-    gap: 2.5rem;
+    gap: 3rem;
   }
 
   .top-row {
@@ -263,7 +264,7 @@
   .declaration-main {
     padding-inline: 1.5rem;
     padding-block: 4rem 5rem;
-    gap: 2rem;
+    gap: 2.2rem;
   }
 
   .badge-wrapper span {

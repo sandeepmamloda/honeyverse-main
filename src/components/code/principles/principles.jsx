@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useRef, useState } from "react";
 import styles from "./principles.module.css";
 
 const principlesItems = [
@@ -32,19 +33,98 @@ const principlesItems = [
   },
 ];
 
-const PrincipleItem = ({ item }) => (
-  <div className={styles["principle-item"]}>
-    <div className={styles["item-heading"]}>
-      <span className={styles["item-number"]}>{item.number}</span>
-      <h2 className={styles["item-title"]}>{item.title}</h2>
+/* ══════════════════════════════
+   REVEAL ANIMATION HELPERS
+   (feararchitecture.jsx / newsgrid.jsx wale hi pattern se liya — sirf
+   inline style inject karte hain, CSS module ko bilkul touch nahi karte)
+══════════════════════════════ */
+const useRevealVisible = () => {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0, rootMargin: "-40% 0px -40% 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return [ref, visible];
+};
+
+const clipStart = {
+  left: "inset(0 100% 0 0)",
+  right: "inset(0 0 0 100%)",
+  up: "inset(100% 0 0 0)",
+  down: "inset(0 0 100% 0)",
+};
+
+const Reveal = ({
+  children,
+  className = "",
+  delay = 0,
+  as = "div",
+  direction = "left",
+  duration = 1.1,
+}) => {
+  const Tag = as;
+  const [ref, visible] = useRevealVisible();
+
+  const style = {
+    clipPath: visible ? "inset(0 0 0 0)" : clipStart[direction],
+    WebkitClipPath: visible ? "inset(0 0 0 0)" : clipStart[direction],
+    opacity: visible ? 1 : 0,
+    transitionProperty: "clip-path, -webkit-clip-path, opacity",
+    transitionDuration: `${duration}s, ${duration}s, 0.1s`,
+    transitionTimingFunction: "cubic-bezier(0.83,0,0.17,1)",
+    transitionDelay: `${delay}ms`,
+    willChange: "clip-path, opacity",
+  };
+
+  return (
+    <Tag ref={ref} className={className} style={style}>
+      {children}
+    </Tag>
+  );
+};
+
+const PrincipleItem = ({ item, index, total }) => (
+  <Reveal
+    as="div"
+    direction="left"
+    delay={index * 150}
+    duration={1}
+    className={styles["principle-item"]}
+  >
+    <span className={styles["item-number"]}>{item.number}</span>
+    <div className={styles["item-content"]}>
+      <div className={styles["item-heading"]}>
+        <h2 className={styles["item-title"]}>{item.title}</h2>
+      </div>
+      <p className={styles["item-description"]}>{item.description}</p>
+      <div className={styles["item-dots"]}>
+        {Array.from({ length: total }).map((_, dotIndex) => (
+          <span
+            key={dotIndex}
+            className={`${styles["dot"]} ${dotIndex <= index ? styles["dot-active"] : ""}`}
+          ></span>
+        ))}
+      </div>
     </div>
-    <p className={styles["item-description"]}>{item.description}</p>
-    <div className={styles["item-dots"]}>
-      <span className={styles["dot"]}></span>
-      <span className={styles["dot"]}></span>
-      <span className={styles["dot"]}></span>
-    </div>
-  </div>
+  </Reveal>
 );
 
 const Principles = () => {
@@ -54,13 +134,18 @@ const Principles = () => {
     <section className={styles["principles-main"]}>
       {/* ── ROW 1 ── */}
       <div className={styles["principles-grid"]}>
-        {row1.map((item) => (
-          <PrincipleItem key={item.id} item={item} />
+        {row1.map((item, i) => (
+          <PrincipleItem key={item.id} item={item} index={i} total={principlesItems.length} />
         ))}
       </div>
 
       {/* ── STRUCTURAL IMAGE BANNER ── */}
-      <div className={styles["image-banner"]}>
+      <Reveal
+        as="div"
+        direction="down"
+        duration={1.6}
+        className={styles["image-banner"]}
+      >
         <img
           src="/images/code/principle.jpg"
           alt="Structural integrity"
@@ -69,12 +154,12 @@ const Principles = () => {
         <div className={styles["banner-badge"]}>
           <span>STRUCTURAL_INTEGRITY_CHECK</span>
         </div>
-      </div>
+      </Reveal>
 
       {/* ── ROW 2 ── */}
       <div className={styles["principles-grid"]}>
-        {row2.map((item) => (
-          <PrincipleItem key={item.id} item={item} />
+        {row2.map((item, i) => (
+          <PrincipleItem key={item.id} item={item} index={i + row1.length} total={principlesItems.length} />
         ))}
       </div>
     </section>

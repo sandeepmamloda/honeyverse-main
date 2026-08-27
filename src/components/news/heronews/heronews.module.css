@@ -59,7 +59,7 @@
   height: fit-content;
   margin-block-start: 3rem;
 
-  display: flex;
+  display: flex;       
   flex-direction: row;
   flex-wrap: wrap;
   align-items: baseline;
@@ -68,7 +68,7 @@
 
   font-family: "boldonse";
   font-size: clamp(3rem, 9vw, 10rem);
-  font-weight: 400;
+  font-weight:400;
   line-height: 140%;
 }
 
@@ -108,16 +108,16 @@
   font-weight: normal;
 }
 
-@media screen and (max-width: 1200px) {
-  .textual-content {
-    padding-inline-start: 5rem;
-    padding-block-start: 20rem;
-  }
-}
-
 /* ══════════════════════════════
    TABLET & BELOW  (≤ 1024px) — ab yahin se centered layout shuru
 ══════════════════════════════ */
+@media screen and (max-width:1200px){
+  .textual-content{
+    padding-inline-start:5rem;
+    padding-block-start:20rem;
+  }
+}
+
 @media screen and (max-width: 1024px) {
   .textual-content {
     padding-inline: 1.5rem;

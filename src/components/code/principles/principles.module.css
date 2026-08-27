@@ -22,11 +22,18 @@
 
 .principle-item {
   display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding-block: 1.6rem;
+  min-width: 0; /* grid item ko squeeze hone deta hai, warna lamba content overflow kar sakta hai */
+}
+
+.item-content {
+  display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding-block: 2.5rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  min-width: 0; /* grid item ko squeeze hone deta hai, warna lamba content overflow kar sakta hai */
+  min-width: 0;
 }
 
 .item-heading {
@@ -43,7 +50,8 @@
   font-size: clamp(1.8rem, 2.6vw, 2.4rem);
   line-height: 1;
   letter-spacing: 0px;
-  color: rgba(217, 24, 106, 1);
+  color: rgba(217, 24, 106, 0.6);
+  flex-shrink: 0;
 }
 
 .item-title {
@@ -81,7 +89,7 @@
   background-color: rgba(217, 24, 106, 0.25);
 }
 
-.dot:first-child {
+.dot-active {
   background-color: rgba(217, 24, 106, 1);
 }
 
@@ -90,7 +98,7 @@
   position: relative;
   width: 100%;
   aspect-ratio: 1528 / 655;
-  margin-block: 3.5rem;
+  margin-block: 6rem;
   overflow: hidden;
   background: rgba(254, 154, 0, 0.1);
   border-top: 1.09px solid rgba(255, 255, 255, 0.1);
@@ -217,7 +225,7 @@
   }
 
   .principle-item {
-    padding-block: 2rem;
+    padding-block: 1.4rem;
   }
 
   .item-heading {
@@ -240,7 +248,7 @@
 
   .image-banner {
     aspect-ratio: 4 / 5;
-    margin-block: 2.5rem;
+    margin-block: 4rem;
   }
 
   .banner-badge {
