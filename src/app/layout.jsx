@@ -15,17 +15,20 @@ export default function RootLayout({ children }) {
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.4,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // expo-out — buttery deceleration
+      easing: (t) =>
+        Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       wheelMultiplier: 1,
       touchMultiplier: 1.2,
     });
 
     let rafId;
+
     function raf(time) {
       lenis.raf(time);
       rafId = requestAnimationFrame(raf);
     }
+
     rafId = requestAnimationFrame(raf);
 
     return () => {
@@ -36,12 +39,21 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <body style={{ backgroundColor: "rgba(255, 249, 255, 1)" }}>
+      <body
+        style={{
+          backgroundColor: "rgba(255, 249, 255, 1)",
+        }}
+      >
         <Saturnbackground />
+
         <Loader />
+
         <Navbar />
+
         {children}
-        {pathname !== "/" && <Footer />}
+
+        {/* Footer will NOT load on "/" and "/timeline" */}
+        {pathname !== "/" && pathname !== "/timeline" && <Footer />}
       </body>
     </html>
   );

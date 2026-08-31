@@ -72,7 +72,7 @@ const Reveal = ({
 
 const Declaration = () => {
   return (
-    <section className={styles["declaration-main"]}>
+    <section className={styles["declaration-main"]} aria-label="Our declaration">
       {/* ── TOP WRAPPER: BADGE + TITLE ── */}
       <div className={styles["top-row"]}>
         <Reveal
@@ -84,8 +84,14 @@ const Declaration = () => {
           <span>[ THE_DECLARATION ]</span>
         </Reveal>
 
+        {/*
+          Downgraded from <h1> to <h2>. A page must have exactly one
+          h1 — that belongs to the Herocode section above ("THE
+          CODE"). This becomes a sibling section heading instead,
+          keeping the outline h1 > h2 (Herocode desc) > h2 (this) > h3s.
+        */}
         <Reveal
-          as="h1"
+          as="h2"
           direction="right"
           delay={150}
           duration={1.2}
@@ -106,10 +112,10 @@ const Declaration = () => {
         >
           <img
             src="/images/code/declaration.jpg"
-            alt="Architecture"
+            alt="Minimalist architectural structure symbolizing lasting creative work over disposable content"
             className={styles["declaration-image"]}
           />
-          <div className={styles["corner-bracket"]}></div>
+          <div className={styles["corner-bracket"]} aria-hidden="true"></div>
         </Reveal>
 
         <Reveal
@@ -120,11 +126,15 @@ const Declaration = () => {
           className={styles["statement-block"]}
         >
           <div className={styles["heading-row"]}>
-            <span className={styles["dash-icon"]}>—</span>
-            <h2 className={styles["statement-heading"]}>
+            <span className={styles["dash-icon"]} aria-hidden="true">—</span>
+            {/*
+              h3 — one level below this section's own h2 ("BEYOND
+              CONTENT") above, instead of another sibling h2.
+            */}
+            <h3 className={styles["statement-heading"]}>
               <span className={styles["heading-yellow"]}>Content is disposable.</span>
               <span className={styles["heading-pink"]}>Architecture stands.</span>
-            </h2>
+            </h3>
           </div>
 
           <p className={styles["statement-paragraph"]}>
@@ -140,7 +150,8 @@ const Declaration = () => {
             <p>WE ENGINEER EMOTION.</p>
           </div>
 
-          <h3 className={styles["vision-text"]}>VISION</h3>
+          {/* h4 — a small closing label under the h3 statement above */}
+          <h4 className={styles["vision-text"]}>VISION</h4>
         </Reveal>
       </div>
     </section>

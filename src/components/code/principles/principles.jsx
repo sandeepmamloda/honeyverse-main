@@ -103,22 +103,37 @@ const Reveal = ({
 
 const PrincipleItem = ({ item, index, total }) => (
   <Reveal
-    as="div"
+    as="article"
     direction="left"
     delay={index * 150}
     duration={1}
     className={styles["principle-item"]}
   >
-    <span className={styles["item-number"]}>{item.number}</span>
+    {/* aria-hidden: the number is decorative/redundant with the
+        heading text that follows, so it shouldn't be read out or
+        indexed as separate content by itself */}
+    <span className={styles["item-number"]} aria-hidden="true">
+      {item.number}
+    </span>
     <div className={styles["item-content"]}>
       <div className={styles["item-heading"]}>
-        <h2 className={styles["item-title"]}>{item.title}</h2>
+        {/*
+          h3, one level below the section's own h2 below — keeps
+          the outline h1 (page) > h2 (this section) > h3 (each
+          principle) instead of jumping straight to h2 per item.
+        */}
+        <h3 className={styles["item-title"]}>{item.title}</h3>
       </div>
       <p className={styles["item-description"]}>{item.description}</p>
-      <div className={styles["item-dots"]}>
+      <div
+        className={styles["item-dots"]}
+        role="img"
+        aria-label={`Principle ${index + 1} of ${total}`}
+      >
         {Array.from({ length: total }).map((_, dotIndex) => (
           <span
             key={dotIndex}
+            aria-hidden="true"
             className={`${styles["dot"]} ${dotIndex <= index ? styles["dot-active"] : ""}`}
           ></span>
         ))}
@@ -131,7 +146,33 @@ const Principles = () => {
   const [row1, row2] = [principlesItems.slice(0, 2), principlesItems.slice(2, 4)];
 
   return (
-    <section className={styles["principles-main"]}>
+    <section
+      className={styles["principles-main"]}
+      aria-labelledby="principles-heading"
+    >
+      {/*
+        Visually-hidden section heading. Gives this block its own
+        entry in the document outline (h1 > h2 > h3 per item) without
+        changing anything the user sees — style is inline so it
+        doesn't depend on any external CSS class being defined.
+      */}
+      <h2
+        id="principles-heading"
+        style={{
+          position: "absolute",
+          width: "1px",
+          height: "1px",
+          padding: 0,
+          margin: "-1px",
+          overflow: "hidden",
+          clip: "rect(0,0,0,0)",
+          whiteSpace: "nowrap",
+          border: 0,
+        }}
+      >
+        Our Production Principles
+      </h2>
+
       {/* ── ROW 1 ── */}
       <div className={styles["principles-grid"]}>
         {row1.map((item, i) => (
@@ -148,7 +189,7 @@ const Principles = () => {
       >
         <img
           src="/images/code/principle.jpg"
-          alt="Structural integrity"
+          alt="Behind-the-scenes structural integrity check during production, showing technical precision on set"
           className={styles["banner-image"]}
         />
         <div className={styles["banner-badge"]}>
