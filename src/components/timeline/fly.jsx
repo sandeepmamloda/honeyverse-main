@@ -31,13 +31,13 @@ function createSkyBackgroundTexture() {
   -------------------------------------------------------- */
   const gradient = ctx.createLinearGradient(0, 0, 0, h);
 
-  gradient.addColorStop(0, "#2c0e2f");   // deep plum/violet (top of sky)
-  gradient.addColorStop(0.18, "#5a1a4d");
-  gradient.addColorStop(0.36, "#8f1f66");
-  gradient.addColorStop(0.55, "#c92a7c");
-  gradient.addColorStop(0.72, "#f0428f"); // vivid hot pink band
-  gradient.addColorStop(0.86, "#ff77a9");
-  gradient.addColorStop(1, "#ffc1d9");   // soft glowing rose horizon
+  gradient.addColorStop(0, "#070313");   // deep plum/violet (top of sky)
+  gradient.addColorStop(0.18, "#18082b");
+  gradient.addColorStop(0.36, "#3b0d55");
+  gradient.addColorStop(0.55, "#82145f");
+  gradient.addColorStop(0.72, "#d62a78"); // vivid hot pink band
+  gradient.addColorStop(0.86, "#f35b9b");
+  gradient.addColorStop(1, "#ffb0cf");   // soft glowing rose horizon
 
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, w, h);
@@ -309,6 +309,56 @@ function createTwinkleField(
   );
 }
 
+function createStarTrailField(count = 180, spread = 55) {
+  const positions = new Float32Array(count * 3);
+  const sizes = new Float32Array(count);
+  const phases = new Float32Array(count);
+
+  for (let i = 0; i < count; i++) {
+    positions[i * 3] = THREE.MathUtils.randFloatSpread(spread);
+    positions[i * 3 + 1] = 8 + Math.random() * 34;
+    positions[i * 3 + 2] = -Math.random() * 260;
+    sizes[i] = THREE.MathUtils.lerp(0.5, 1.8, Math.random());
+    phases[i] = Math.random() * Math.PI * 2;
+  }
+
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute("aSize", new THREE.BufferAttribute(sizes, 1));
+  geometry.setAttribute("aPhase", new THREE.BufferAttribute(phases, 1));
+
+  const material = new THREE.ShaderMaterial({
+    uniforms: { uTime: { value: 0 } },
+    vertexShader: `
+      attribute float aSize;
+      attribute float aPhase;
+      uniform float uTime;
+      varying float vAlpha;
+      void main() {
+        vec3 p = position;
+        float pulse = 0.65 + 0.35 * sin(uTime * 1.4 + aPhase);
+        vec4 mv = modelViewMatrix * vec4(p, 1.0);
+        gl_PointSize = aSize * pulse * (340.0 / -mv.z);
+        vAlpha = pulse;
+        gl_Position = projectionMatrix * mv;
+      }
+    `,
+    fragmentShader: `
+      varying float vAlpha;
+      void main() {
+        float d = length(gl_PointCoord - vec2(0.5));
+        float a = smoothstep(0.5, 0.0, d) * vAlpha * 0.65;
+        gl_FragColor = vec4(1.0, 0.78, 0.92, a);
+      }
+    `,
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+  });
+
+  return new THREE.Points(geometry, material);
+}
+
 /* ============================================================
    COMPONENT
 ============================================================ */
@@ -388,6 +438,13 @@ export default function Fly() {
       );
 
     scene.add(dustField);
+
+    const upperStarField = createTwinkleField(1100, 260, new THREE.Color(0xffffff), 0.45, 1.8);
+    upperStarField.position.y = 18;
+    scene.add(upperStarField);
+
+    const starTrailField = createStarTrailField(220, 65);
+    scene.add(starTrailField);
 
     /* ========================================================
        LIGHTS
@@ -1627,7 +1684,7 @@ export default function Fly() {
     */
 
     const SCROLL_SENSITIVITY =
-      0.00001;
+      0.000055;
 
     /*
       Prevent one huge mouse-wheel event from
@@ -1969,7 +2026,7 @@ export default function Fly() {
         (
           1 -
           Math.exp(
-            -8.0 * dt
+            -11.5 * dt
           )
         );
 
@@ -2131,11 +2188,26 @@ export default function Fly() {
          BACKGROUND
       ====================================================== */
 
+      // Normalized distance travelled by the helicopter.
+      // Keep this inside the animation scope so every star layer
+      // can safely use it without a ReferenceError.
+      const starTravel = t * CURVE_LENGTH;
+
       starField.rotation.y +=
         dt * 0.004;
 
       dustField.rotation.y -=
         dt * 0.008;
+
+      upperStarField.rotation.y += dt * 0.001;
+      upperStarField.material.uniforms.uTime.value += dt * 0.8;
+      starTrailField.material.uniforms.uTime.value += dt;
+
+      // Move the star corridor with the flight so fresh stars keep
+      // entering from above/front instead of the sky feeling static.
+      upperStarField.position.z = -starTravel * 0.32;
+      upperStarField.position.y = 16 + Math.sin(t * Math.PI * 1.7) * 2.5;
+      starTrailField.position.z = -starTravel * 0.52;
 
       starField.material.uniforms.uTime.value +=
         dt;
