@@ -511,15 +511,25 @@ export default function Fly() {
       lineColorAttr
     );
 
+    /*
+      NOTE: path starts fully invisible.
+      It is faded in (opacity 0 -> 1) only
+      once the user starts scrolling.
+      See `revealAlpha` inside animate().
+    */
     const lineCore =
       new THREE.Mesh(
         lineGeo,
         new THREE.MeshBasicMaterial({
           vertexColors: true,
+          transparent: true,
+          opacity: 0,
+          depthWrite: false,
         })
       );
 
     lineCore.position.y = -0.55;
+    lineCore.visible = false;
 
     scene.add(lineCore);
 
@@ -1428,6 +1438,31 @@ export default function Fly() {
         );
     }
 
+    /*
+      ============================================================
+      CARD REVEAL WINDOW (proximity-based, per card)
+      ============================================================
+
+      Each card now tracks its own fade-in state instead of
+      sharing the global `revealAlpha`. As the helicopter's
+      path progress `t` approaches a card's own `data.t`,
+      that card (and only that card) starts fading in.
+
+      - CARD_FADE_START_T: how far ahead (in curve-progress
+        units, 0..1) the fade-in begins before the helicopter
+        actually reaches the card's waypoint.
+      - Once the helicopter has passed a card's waypoint
+        (t >= data.t), that card stays fully visible.
+      - CARD_ALPHA_RESPONSE controls how snappy/smooth the
+        per-card fade transition feels.
+    */
+    const CARD_FADE_START_T = 0.075;
+    const CARD_ALPHA_RESPONSE = 8.5;
+
+    // Card entrance animation
+    const CARD_ENTER_DISTANCE = 1.35;
+    const CARD_ENTER_RESPONSE = 7.5;
+
     function buildCardMeshes() {
       const total =
         waypointData.length;
@@ -1449,13 +1484,21 @@ export default function Fly() {
               3.6
             );
 
+          /*
+            NOTE: cards start fully invisible
+            (opacity 0, visible = false).
+            Each card fades in on its own, only
+            once the helicopter approaches its
+            specific waypoint — see the per-card
+            reveal logic inside animate().
+          */
           const material =
             new THREE.MeshBasicMaterial({
               map: texture,
-              transparent: false,
-              depthWrite: true,
+              transparent: true,
+              depthWrite: false,
               side: THREE.DoubleSide,
-              opacity: 1,
+              opacity: 0,
             });
 
           const mesh =
@@ -1475,6 +1518,13 @@ export default function Fly() {
           mesh.userData.basePos =
             anchor.clone();
 
+          // Store this card's own waypoint t and
+          // a running alpha value used for its
+          // independent fade-in.
+          mesh.userData.t = data.t;
+          mesh.userData.alpha = 0;
+          mesh.userData.enter = 0;
+
           mesh.rotation.set(
             0,
             0,
@@ -1482,6 +1532,8 @@ export default function Fly() {
           );
 
           mesh.scale.setScalar(1);
+
+          mesh.visible = false;
 
           cardGroup.add(mesh);
 
@@ -1509,6 +1561,23 @@ export default function Fly() {
     let currentT = 0;
 
     let flightComplete = false;
+
+    /*
+      REVEAL SYSTEM (flight line only):
+      The path stays hidden (opacity 0) until
+      the user actually scrolls. Once targetT moves
+      past REVEAL_THRESHOLD, revealAlpha smoothly
+      eases 0 -> 1 and the line fades in.
+
+      Cards no longer use this — see CARD_FADE_START_T
+      above for their own independent, proximity-based
+      reveal.
+    */
+    let revealAlpha = 0;
+
+    const REVEAL_THRESHOLD = 0.0005;
+
+    const REVEAL_RESPONSE = 5.5;
 
     /*
       OLD:
@@ -1891,6 +1960,36 @@ export default function Fly() {
       ) {
         currentT = 0;
       }
+
+      /* ======================================================
+         REVEAL (flight line only — fades in on first scroll)
+      ====================================================== */
+
+      const revealTarget =
+        targetT > REVEAL_THRESHOLD
+          ? 1
+          : 0;
+
+      revealAlpha +=
+        (
+          revealTarget -
+          revealAlpha
+        ) *
+        (
+          1 -
+          Math.exp(
+            -REVEAL_RESPONSE * dt
+          )
+        );
+
+      const revealVisible =
+        revealAlpha > 0.01;
+
+      lineCore.visible =
+        revealVisible;
+
+      lineCore.material.opacity =
+        revealAlpha;
 
       /* ======================================================
          PATH VELOCITY
@@ -2312,12 +2411,20 @@ export default function Fly() {
           Rotation remains smoothly interpolated.
         */
 
-        cameraPos.lerp(
-          desiredCamPos,
-          1 -
-            Math.exp(
-              -10 * dt
-            )
+        /*
+          IMPORTANT:
+          Keep the camera at the exact chase position.
+
+          The previous cameraPos.lerp() introduced a small
+          positional lag while scrolling. That made the camera
+          move forward/backward relative to the helicopter.
+
+          Position now follows the calculated chase point
+          directly, while rotation remains smoothly interpolated.
+        */
+
+        cameraPos.copy(
+          desiredCamPos
         );
 
         cameraQuat.slerp(
@@ -2345,32 +2452,98 @@ export default function Fly() {
       );
 
       /* ======================================================
-         CARDS
+         CARDS — proximity-based, per-card reveal
       ====================================================== */
 
       cardMeshes.forEach(
         (mesh) => {
+          /*
+            IMPORTANT: define cardT BEFORE using it.
+            The previous version calculated enterTarget
+            before cardT was initialized, which caused:
+            Cannot access 'cardT' before initialization.
+          */
+          const cardT =
+            mesh.userData.t;
+
+          const fadeStart =
+            cardT -
+            CARD_FADE_START_T;
+
+          const enterTarget =
+            t >= fadeStart
+              ? THREE.MathUtils.clamp(
+                  (t - fadeStart) /
+                    CARD_FADE_START_T,
+                  0,
+                  1
+                )
+              : 0;
+
+          mesh.userData.enter +=
+            (enterTarget - mesh.userData.enter) *
+            (1 - Math.exp(-CARD_ENTER_RESPONSE * dt));
+
+          const enter =
+            mesh.userData.enter;
+
           mesh.position.copy(
             mesh.userData.basePos
           );
 
-          mesh.rotation.set(
-            0,
-            0,
-            0
+          // Card comes from slightly behind the flight path.
+          mesh.position.addScaledVector(
+            tangent,
+            (1 - enter) * -CARD_ENTER_DISTANCE
           );
 
-          mesh.scale.setScalar(1);
+          // Small upward settle.
+          mesh.position.y +=
+            (1 - enter) * 0.45;
+          // Keep every card perfectly straight.
+          mesh.rotation.set(0, 0, 0);
 
-          mesh.visible = true;
+          // Small -> full scale.
+          mesh.scale.setScalar(
+            THREE.MathUtils.lerp(0.82, 1, enter)
+          );
 
-          mesh.material.opacity = 1;
+          /*
+            Target opacity for THIS card only:
+            - 0 while the helicopter is still far
+              before this card's waypoint.
+            - Ramps 0 -> 1 as t moves through the
+              CARD_FADE_START_T window right before
+              the card's own t.
+            - Stays at 1 once the helicopter has
+              reached / passed this card's t.
+          */
+          let targetAlpha = enter;
 
-          mesh.material.transparent =
-            false;
+          mesh.userData.alpha +=
+            (
+              targetAlpha -
+              mesh.userData.alpha
+            ) *
+            (
+              1 -
+              Math.exp(
+                -CARD_ALPHA_RESPONSE *
+                  dt
+              )
+            );
+
+          const alpha =
+            mesh.userData.alpha;
+
+          mesh.visible =
+            alpha > 0.01;
+
+          mesh.material.opacity =
+            alpha;
 
           mesh.material.depthWrite =
-            true;
+            alpha > 0.5;
         }
       );
 
