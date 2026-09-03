@@ -6,6 +6,8 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 /* ============================================================
    BACKGROUND
+   (Upgraded: richer pink/magenta sunset-sky with layered glow,
+   soft nebula clouds, warm horizon light and gentle grain.)
 ============================================================ */
 
 function createSkyBackgroundTexture() {
@@ -21,37 +23,37 @@ function createSkyBackgroundTexture() {
   const w = canvas.width;
   const h = canvas.height;
 
+  /* --------------------------------------------------------
+     BASE SKY GRADIENT
+     Deep magenta-violet top -> hot pink middle -> warm rose
+     horizon glow at the bottom. Much more saturated/attractive
+     than the old pale pastel version.
+  -------------------------------------------------------- */
   const gradient = ctx.createLinearGradient(0, 0, 0, h);
 
-  gradient.addColorStop(0, "#fef6f8");
-  gradient.addColorStop(0.3, "#fceef2");
-  gradient.addColorStop(0.55, "#f9e1ea");
-  gradient.addColorStop(0.74, "#f5cfdd");
-  gradient.addColorStop(0.9, "#f0bdd0");
-  gradient.addColorStop(1, "#ecabc4");
+  gradient.addColorStop(0, "#2c0e2f");   // deep plum/violet (top of sky)
+  gradient.addColorStop(0.18, "#5a1a4d");
+  gradient.addColorStop(0.36, "#8f1f66");
+  gradient.addColorStop(0.55, "#c92a7c");
+  gradient.addColorStop(0.72, "#f0428f"); // vivid hot pink band
+  gradient.addColorStop(0.86, "#ff77a9");
+  gradient.addColorStop(1, "#ffc1d9");   // soft glowing rose horizon
 
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, w, h);
 
+  /* --------------------------------------------------------
+     SOFT NEBULA CLOUDS
+     Larger, more colorful, more layered than before for a
+     dreamy "cosmic sunset" feel.
+  -------------------------------------------------------- */
   const nebulae = [
-    {
-      x: 0.24,
-      y: 0.28,
-      r: 0.42,
-      color: "rgba(255,255,255,0.55)",
-    },
-    {
-      x: 0.78,
-      y: 0.2,
-      r: 0.36,
-      color: "rgba(255,182,210,0.35)",
-    },
-    {
-      x: 0.55,
-      y: 0.45,
-      r: 0.5,
-      color: "rgba(255,255,255,0.25)",
-    },
+    { x: 0.2, y: 0.22, r: 0.5, color: "rgba(255,255,255,0.28)" },
+    { x: 0.8, y: 0.15, r: 0.42, color: "rgba(255,120,190,0.35)" },
+    { x: 0.55, y: 0.4, r: 0.55, color: "rgba(255,80,170,0.30)" },
+    { x: 0.32, y: 0.62, r: 0.48, color: "rgba(255,190,220,0.25)" },
+    { x: 0.72, y: 0.58, r: 0.4, color: "rgba(200,50,140,0.28)" },
+    { x: 0.5, y: 0.85, r: 0.55, color: "rgba(255,150,190,0.30)" },
   ];
 
   nebulae.forEach((n) => {
@@ -71,48 +73,80 @@ function createSkyBackgroundTexture() {
     ctx.fillRect(0, 0, w, h);
   });
 
+  /* --------------------------------------------------------
+     WARM HORIZON GLOW
+     A brighter, wider "sun-kissed" glow near the bottom to
+     give the scene a strong focal point.
+  -------------------------------------------------------- */
   const glow = ctx.createRadialGradient(
     w / 2,
-    h * 0.94,
+    h * 0.96,
     0,
     w / 2,
-    h * 0.94,
-    w * 0.8
+    h * 0.96,
+    w * 0.95
   );
 
-  glow.addColorStop(0, "rgba(255,255,255,0.55)");
-  glow.addColorStop(0.5, "rgba(255,200,220,0.28)");
-  glow.addColorStop(1, "rgba(255,200,220,0)");
+  glow.addColorStop(0, "rgba(255,235,245,0.75)");
+  glow.addColorStop(0.35, "rgba(255,160,205,0.45)");
+  glow.addColorStop(0.7, "rgba(255,100,175,0.22)");
+  glow.addColorStop(1, "rgba(255,100,175,0)");
 
   ctx.fillStyle = glow;
   ctx.fillRect(0, 0, w, h);
 
-  for (let i = 0; i < 2600; i++) {
+  /* A secondary, cooler accent glow up top-right for contrast */
+  const topGlow = ctx.createRadialGradient(
+    w * 0.82,
+    h * 0.08,
+    0,
+    w * 0.82,
+    h * 0.08,
+    w * 0.4
+  );
+
+  topGlow.addColorStop(0, "rgba(255,255,255,0.35)");
+  topGlow.addColorStop(1, "rgba(255,255,255,0)");
+
+  ctx.fillStyle = topGlow;
+  ctx.fillRect(0, 0, w, h);
+
+  /* --------------------------------------------------------
+     FINE GRAIN / SPARKLE DUST
+  -------------------------------------------------------- */
+  for (let i = 0; i < 3000; i++) {
     const gx = Math.random() * w;
     const gy = Math.random() * h;
 
-    const r = Math.random() * 0.9 + 0.2;
+    const r = Math.random() * 1.1 + 0.2;
 
-    ctx.fillStyle = `rgba(150,60,95,${(
-      Math.random() * 0.05
-    ).toFixed(3)})`;
+    const isLight = Math.random() > 0.5;
+
+    ctx.fillStyle = isLight
+      ? `rgba(255,255,255,${(Math.random() * 0.06).toFixed(3)})`
+      : `rgba(120,20,70,${(Math.random() * 0.06).toFixed(3)})`;
 
     ctx.beginPath();
     ctx.arc(gx, gy, r, 0, Math.PI * 2);
     ctx.fill();
   }
 
+  /* --------------------------------------------------------
+     VIGNETTE
+     Slightly stronger, warmer edges to focus attention on
+     the center of the scene.
+  -------------------------------------------------------- */
   const vignette = ctx.createRadialGradient(
     w / 2,
     h / 2,
-    w * 0.25,
+    w * 0.22,
     w / 2,
     h / 2,
-    w * 0.75
+    w * 0.78
   );
 
   vignette.addColorStop(0, "rgba(0,0,0,0)");
-  vignette.addColorStop(1, "rgba(120,50,80,0.16)");
+  vignette.addColorStop(1, "rgba(50,5,35,0.32)");
 
   ctx.fillStyle = vignette;
   ctx.fillRect(0, 0, w, h);
@@ -2501,7 +2535,7 @@ export default function Fly() {
           mesh.position.y +=
             (1 - enter) * 0.45;
           // Keep every card perfectly straight.
-          mesh.rotation.set(0, 0, 0);
+          mesh.rotation.set(-0.285, 0, 0);
 
           // Small -> full scale.
           mesh.scale.setScalar(
