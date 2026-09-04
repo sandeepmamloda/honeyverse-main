@@ -79,6 +79,17 @@
   position: relative;
   overflow: hidden;
   height:20rem;
+  /* card ab <Link> (anchor) hai — default anchor styling reset taaki
+     visually ek div/card jaisa hi dikhe, ek link jaisa nahi */
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.card:focus-visible {
+  outline: 2px solid #ffca1a;
+  outline-offset: 2px;
 }
 
 .card:nth-child(odd) {
@@ -168,7 +179,84 @@
     color:rgba(217, 24, 106, 1);
 }
 
-/* Responsive */
+/* ══════════════════════════════
+   RESPONSIVE MAX-WIDTH SCALING
+   (naye added breakpoints — page ke baaki sections jaisi hi ladder,
+   sirf .container ka max-width scale karte hain)
+══════════════════════════════ */
+@media screen and (max-width: 1780px) {
+  .container {
+    max-width: 100rem;
+  }
+}
+@media screen and (max-width: 1630px) {
+  .container {
+    max-width: 90rem;
+  }
+}
+@media screen and (max-width: 1460px) {
+  .container {
+    max-width: 85rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1440px) — naya added
+══════════════════════════════ */
+@media screen and (max-width: 1440px) {
+  .container {
+    max-width: 82rem;
+  }
+}
+
+@media screen and (max-width: 1370px) {
+  .container {
+    max-width: 100%;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1280px) — naya added
+   Laptop range pe card height aur gap thoda compact karte hain.
+══════════════════════════════ */
+@media screen and (max-width: 1280px) {
+  .grid {
+    column-gap: 0.8rem;
+  }
+
+  .card {
+    height: 17.5rem;
+  }
+}
+
+/* ══════════════════════════════
+   TABLET (≤ 1024px) — naya added
+══════════════════════════════ */
+@media screen and (max-width: 1024px) {
+  .container {
+    padding: 3.5rem 1.5rem;
+  }
+
+  .badgeWrapper {
+    width: 100%;
+    max-width: 26rem;
+  }
+
+  .card {
+    height: 16rem;
+  }
+
+  .cardContent {
+    left: 1.2rem;
+    right: 1.2rem;
+    bottom: 1.2rem;
+  }
+}
+
+/* ══════════════════════════════
+   Responsive (≤ 768px)
+   (yeh pehle se tha, isko bilkul touch nahi kiya)
+══════════════════════════════ */
 @media (max-width: 768px) {
   .grid {
     grid-template-columns: 1fr;
@@ -176,5 +264,67 @@
   }
   .title {
     gap: 0.6rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 480px) — naya added
+══════════════════════════════ */
+@media screen and (max-width: 480px) {
+  .container {
+    padding: 3rem 1.1rem;
+  }
+
+  .badgeWrapper {
+    width: 100%;
+    padding-bottom: 0.6rem;
+    margin-block-end: 2.5rem;
+  }
+
+  .badge h3 {
+    font-size: 0.65rem;
+    letter-spacing: 0.12rem;
+  }
+
+  .headerGroup {
+    margin-bottom: 2.5rem;
+  }
+
+  .title {
+    letter-spacing: 0.15rem;
+  }
+
+  .titleFilled,
+  .titleOutline {
+    letter-spacing: 0.15rem;
+  }
+
+  .card {
+    height: 15rem;
+  }
+
+  .cardIcon {
+    width: 2.2rem;
+    height: 2.2rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .cardContent {
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 375px) — naya added
+══════════════════════════════ */
+@media screen and (max-width: 375px) {
+  .card {
+    height: 13rem;
+  }
+
+  .cardDescription {
+    font-size: 0.68rem;
   }
 }

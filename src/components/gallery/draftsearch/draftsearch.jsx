@@ -1,8 +1,11 @@
 "use client";
-import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useState, useEffect, useRef } from "react";
 import styles from "./draftsearch.module.css";
 
 // Dynamic Data Array
+// NOTE: `href` added — yahi wo route hai jahan card click karne par navigate hoga.
+// Apne actual routes se replace kar dena (e.g. "/drafts/blueprint").
 const draftsData = [
   {
     id: 1,
@@ -11,7 +14,8 @@ const draftsData = [
       "Scripts, storyboards, and structural planning. The foundation of narrative architecture.",
     src: "/images/gallery/draftsearch/draft-1.jpg",
     alt: "The Blueprint",
-    variant: "icon", 
+    variant: "icon",
+    href: "/blueprint",
   },
   {
     id: 2,
@@ -21,8 +25,131 @@ const draftsData = [
     src: "/images/gallery/draftsearch/draft-2.jpg",
     alt: "Moodboards",
     variant: "line",
+    href: "/moodboard",
   },
 ];
+
+/* ══════════════════════════════
+   REVEAL ANIMATION HELPERS
+   (archive-stills.jsx / scenes.jsx wale hi pattern — sirf inline style
+   inject karte hain, CSS module ko bilkul touch nahi karte)
+══════════════════════════════ */
+const useRevealVisible = () => {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    // element pehle se hi viewport ke andar ho sakta hai (fold ke upar,
+    // ya chhota page) — is case me observer trigger hone se pehle hi
+    // yaha check kar lete hain, taaki wo permanently hidden state me
+    // atka na rahe
+    const rect = el.getBoundingClientRect();
+    const alreadyInView =
+      rect.top < (window.innerHeight || document.documentElement.clientHeight) &&
+      rect.bottom > 0;
+    if (alreadyInView) {
+      setVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0, rootMargin: "0px 0px 0px 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return [ref, visible];
+};
+
+const clipStart = {
+  left: "inset(0 100% 0 0)",
+  right: "inset(0 0 0 100%)",
+  up: "inset(100% 0 0 0)",
+  down: "inset(0 0 100% 0)",
+};
+
+const Reveal = ({
+  children,
+  className = "",
+  delay = 0,
+  as = "div",
+  direction = "left",
+  duration = 1.1,
+  variant = "clip", // "clip" = wipe reveal, "fade" = safe for stroke/outline text
+  style: extraStyle = {},
+}) => {
+  const Tag = as;
+  const [ref, visible] = useRevealVisible();
+
+  const clipStyle = {
+    clipPath: visible ? "inset(0 0 0 0)" : clipStart[direction],
+    WebkitClipPath: visible ? "inset(0 0 0 0)" : clipStart[direction],
+    opacity: visible ? 1 : 0,
+    transitionProperty: "clip-path, -webkit-clip-path, opacity",
+    transitionDuration: `${duration}s, ${duration}s, 0.1s`,
+    transitionTimingFunction: "cubic-bezier(0.83,0,0.17,1)",
+    transitionDelay: `${delay}ms`,
+    willChange: "clip-path, opacity",
+  };
+
+  // fade variant kabhi bhi clip-path use nahi karta — isliye -webkit-text-stroke
+  // wale outline text (jaise titleOutline) pe glyph edges kabhi cut/broken nahi
+  // dikhte, sirf clean opacity + upward slide hoti hai
+  const fadeStyle = {
+    opacity: visible ? 1 : 0,
+    transform: visible ? "translateY(0)" : "translateY(24px)",
+    transitionProperty: "opacity, transform",
+    transitionDuration: `${duration}s, ${duration}s`,
+    transitionTimingFunction: "cubic-bezier(0.19,1,0.22,1)",
+    transitionDelay: `${delay}ms`,
+    willChange: "opacity, transform",
+  };
+
+  const style = { ...(variant === "fade" ? fadeStyle : clipStyle), ...extraStyle };
+
+  return (
+    <Tag ref={ref} className={className} style={style}>
+      {children}
+    </Tag>
+  );
+};
+
+// Card ek <Link> (anchor) hai — isliye generic Reveal "Tag" approach use nahi
+// karte (wo href forward nahi karega). Yaha khud Link ko hi ref deke observe
+// karte hain, taaki navigation/href/aria-label sab 100% intact rahein.
+const RevealCard = ({ href, className, ariaLabel, delay = 0, children }) => {
+  const [ref, visible] = useRevealVisible();
+
+  const style = {
+    clipPath: visible ? "inset(0 0 0 0)" : clipStart.up,
+    WebkitClipPath: visible ? "inset(0 0 0 0)" : clipStart.up,
+    opacity: visible ? 1 : 0,
+    transitionProperty: "clip-path, -webkit-clip-path, opacity",
+    transitionDuration: "1.4s, 1.4s, 0.1s",
+    transitionTimingFunction: "cubic-bezier(0.83,0,0.17,1)",
+    transitionDelay: `${delay}ms`,
+    willChange: "clip-path, opacity",
+  };
+
+  return (
+    <Link ref={ref} href={href} className={className} aria-label={ariaLabel} style={style}>
+      {children}
+    </Link>
+  );
+};
 
 const SectionBadgeIcon = () => (
   <svg className={styles.badgeIcon} width="25" height="25" viewBox="0 0 25 25" fill="none">
@@ -69,24 +196,37 @@ const PenIcon = () => (
 const DraftsResearch = () => {
   return (
     <section className={styles.container}>
-      <div className={styles.badgeWrapper}>
+      <Reveal as="div" direction="left" duration={1.3} className={styles.badgeWrapper}>
         <SectionBadgeIcon />
         <div className={styles.badge}>
           <h3>[ 03 // CONCEPTION ]</h3>
         </div>
-      </div>
+      </Reveal>
 
       <div className={styles.headerGroup}>
         <h2 className={styles.title}>
-          <span className={styles.titleFilled}>DRAFTS &amp;</span>
-          <span className={styles.titleOutline}>RESEARCH</span>
+          <Reveal as="span" variant="fade" duration={1.1} delay={150} className={styles.titleFilled}>
+            DRAFTS &amp;
+          </Reveal>
+          <Reveal as="span" variant="fade" duration={1.1} delay={350} className={styles.titleOutline}>
+            RESEARCH
+          </Reveal>
         </h2>
       </div>
 
       {/* Dynamic Grid */}
       <div className={styles.grid}>
-        {draftsData.map((item) => (
-          <div key={item.id} className={styles.card}>
+        {draftsData.map((item, index) => (
+          // Card ab ek navigable link hai (semantically button jaisa behave karta
+          // hai — click aur keyboard Enter/Space dono se navigate hoga, kyunki
+          // yeh render hoke <a> tag banta hai).
+          <RevealCard
+            key={item.id}
+            href={item.href}
+            className={styles.card}
+            ariaLabel={`View ${item.title}`}
+            delay={index * 250}
+          >
             <img src={item.src} alt={item.alt} />
             <div className={styles.overlay}></div>
 
@@ -113,7 +253,7 @@ const DraftsResearch = () => {
                 </div>
               )}
             </div>
-          </div>
+          </RevealCard>
         ))}
       </div>
     </section>

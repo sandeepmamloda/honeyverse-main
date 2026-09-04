@@ -68,7 +68,7 @@
 
   font-family: "boldonse";
   font-size: clamp(3rem, 9vw, 10rem);
-  font-weight:400;
+  font-weight: 400;
   line-height: 140%;
 }
 
@@ -80,7 +80,7 @@
 .text-outline {
   letter-spacing: 0.3rem;
   color: transparent;
-  -webkit-text-stroke: 3.5px #e0195a;
+  -webkit-text-stroke: clamp(1.3px, 0.15vw, 3px) #e0195a;
 }
 
 /* ── DESCRIPTION BOX ── */
@@ -109,27 +109,19 @@
 }
 
 /* ══════════════════════════════
-   TABLET  (≤ 1024px)
+   TABLET & BELOW (≤ 1200px) — dead-zone fix, desktop layout still
 ══════════════════════════════ */
-@media (max-width: 1024px) {
+@media screen and (max-width: 1200px) {
   .textual-content {
-    padding-inline-start: 4rem;
-    padding-inline-end: 2rem;
-  }
-
-  .textual-content .heading-row {
-    margin-block-start: 2rem;
-  }
-
-  .bottom-last {
-    padding-inline-end: 2rem;
+    padding-inline-start: 5rem;
+    padding-block-start: 20rem;
   }
 }
 
 /* ══════════════════════════════
-   MOBILE  (≤ 640px)
+   TABLET (≤ 1024px) — centered layout starts here
 ══════════════════════════════ */
-@media (max-width: 640px) {
+@media screen and (max-width: 1024px) {
   .textual-content {
     padding-inline: 1.5rem;
     padding-block-start: 6rem;
@@ -170,15 +162,17 @@
   }
 
   .text-outline {
-    -webkit-text-stroke-width: 0.5px;
+    /* -webkit-text-stroke-width: 1.75px; */
   }
 
   .bottom-last {
-    margin-inline-start: 0;
-    max-width: 100%;
+    align-self: center;
+    width: 100%;
+    max-width: 40rem;
+    margin-inline: auto;
     padding-inline-end: 1rem;
     margin-block-start: 0;
-    align-self: stretch;
+    border-left: none;
     border-right: solid 0.3rem rgba(217, 24, 106, 1);
   }
 
@@ -189,23 +183,74 @@
 }
 
 /* ══════════════════════════════
-   VERY SMALL  (≤ 375px)
+   STANDARD (≤ 768px) — large mobile / tablet portrait
 ══════════════════════════════ */
-@media (max-width: 375px) {
+@media screen and (max-width: 768px) {
+  .textual-content {
+    padding-block-start: 5rem;
+  }
+
+  .textual-content .heading-row {
+    font-size: clamp(2.6rem, 10vw, 6rem);
+  }
+
+  .top {
+    margin-bottom: 2.5rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD (≤ 480px) — small mobile
+══════════════════════════════ */
+@media screen and (max-width: 480px) {
+  .textual-content {
+    padding-block-start: 4rem;
+    padding-inline: 1.1rem;
+  }
+
+  .top {
+    padding: 0.35rem 0.45rem;
+    margin-bottom: 2rem;
+  }
+
+  .top h3 {
+    font-size: 0.62rem;
+  }
+
+  .textual-content .heading-row {
+    font-size: clamp(2.2rem, 11vw, 4rem);
+  }
+
+  .bottom-last {
+    max-width: 100%;
+    padding-inline-start: 0.8rem;
+    padding-inline-end: 0.8rem;
+    padding-block: 0.8rem;
+  }
+
+  .bottom-last h2 {
+    font-size: 0.78rem;
+  }
+}
+
+/* ══════════════════════════════
+   VERY SMALL (≤ 375px)
+══════════════════════════════ */
+@media screen and (max-width: 375px) {
   .textual-content {
     padding-inline-start: 1rem;
     padding-inline-end: 1rem;
   }
 
   .textual-content .heading-row {
-    font-size: clamp(2.4rem, 11vw, 3.5rem);
+    font-size: clamp(2rem, 11vw, 3.5rem);
   }
 }
 
 /* ══════════════════════════════
    HEIGHT-BASED — only desktop/tablet
 ══════════════════════════════ */
-@media (max-height: 944px) and (min-width: 641px) {
+@media screen and (max-height: 944px) and (min-width: 1025px) {
   .textual-content {
     padding-block-start: 12rem;
   }

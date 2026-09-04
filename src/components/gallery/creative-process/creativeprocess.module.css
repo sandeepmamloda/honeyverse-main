@@ -30,7 +30,7 @@
 
 .badge h3 {
   color: #d9186a;
-  font-family: "consola", monospace;
+  font-family: "consola";
   font-size: clamp(0.65rem, 1.2vw, 1rem);
   line-height: 100%;
   letter-spacing: 0.2rem;
@@ -60,12 +60,14 @@
 
 .titleFilled {
   color: #ffca1a;
+  letter-spacing: 0.3rem;
 }
 
 .titleOutline {
   color: transparent;
   -webkit-text-stroke: 2px #d9186a;
   text-stroke: 2px #d9186a;
+  letter-spacing: 0.3rem;
 }
 
 /* Content Layout: image + steps list */
@@ -132,7 +134,8 @@
   min-width: 3rem;
 }
 
-.stepNumberPink , .stepNumberYellow{
+.stepNumberPink,
+.stepNumberYellow {
   color: #d9186a;
 }
 
@@ -155,52 +158,231 @@
   max-width: 42rem;
 }
 
-/* Responsive */
+/* ══════════════════════════════
+   RESPONSIVE MAX-WIDTH SCALING
+   (page ke baaki sections jaisi hi ladder — sirf .container ka
+   max-width scale karte hain, bade screens pe)
+══════════════════════════════ */
+@media screen and (max-width: 1780px) {
+  .container {
+    max-width: 100rem;
+  }
+}
+
+@media screen and (max-width: 1630px) {
+  .container {
+    max-width: 90rem;
+  }
+}
+
+@media screen and (max-width: 1460px) {
+  .container {
+    max-width: 85rem;
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  .container {
+    max-width: 82rem;
+  }
+
+  .content {
+    gap: 3.2rem;
+  }
+}
+
+@media screen and (max-width: 1370px) {
+  .container {
+    max-width: 100%;
+  }
+}
+
+/* ══════════════════════════════
+   LAPTOP  (≤ 1280px)
+   Content gap thoda compact taaki laptop screens pe
+   image aur steps list cramped na lagein.
+══════════════════════════════ */
+@media screen and (max-width: 1280px) {
+  .content {
+    gap: 2.6rem;
+  }
+
+  .step {
+    gap: 2rem;
+    padding: 2.2rem 0;
+  }
+}
+
+/* ══════════════════════════════
+   TABLET  (≤ 1024px)
+   1280px aur 900px ke beech ka transition step — padding aur
+   gaps thode aur kam, taaki shift jarring na lage.
+══════════════════════════════ */
+@media screen and (max-width: 1024px) {
+  .container {
+    padding: 3.5rem 2rem;
+  }
+
+  .content {
+    gap: 2.2rem;
+  }
+
+  .badgeWrapper {
+    width: fit-content;
+  }
+}
+
+/* ══════════════════════════════
+   TABLET / STACK  (≤ 900px)
+   (pehle se tha — image + steps ab ek column mein stack hote hain)
+══════════════════════════════ */
 @media (max-width: 900px) {
   .content {
     grid-template-columns: 1fr;
+    gap: 2.5rem;
   }
   .imageWrapper {
     height: 26rem;
   }
 }
 
+/* ══════════════════════════════
+   STANDARD  (≤ 768px)
+   (pehle se tha — left-aligned layout shuru)
+══════════════════════════════ */
 @media (max-width: 768px) {
-   .imageLabel{
-    display:none;
-   }
+  .imageLabel {
+    display: none;
+  }
   .badgeWrapper {
     justify-content: flex-start;
     margin-inline: 0;
     width: fit-content;
-    margin-bottom:2.5rem;
+    margin-bottom: 2.5rem;
   }
-  .badge h3{
-    letter-spacing:0.08rem;
-    font-size:0.8rem;
+  .badge h3 {
+    letter-spacing: 0.08rem;
+    font-size: 0.8rem;
   }
   .headerGroup {
     text-align: left;
-    margin-bottom:3rem;
+    margin-bottom: 3rem;
   }
   .title {
     justify-content: flex-start;
     gap: 0.6rem;
   }
-  .title span{
-    line-height:120%;
+  .title span {
+    line-height: 120%;
   }
   .step {
     gap: 0rem;
   }
 }
-@media screen and (max-width:600px){
-    .badge{
-        border:none;
-    }
+
+/* ══════════════════════════════
+   MOBILE  (≤ 640px)
+   768px aur 600px ke beech ka fine-tune step — container padding
+   aur image height ko mobile-appropriate karte hain.
+══════════════════════════════ */
+@media screen and (max-width: 640px) {
+  .container {
+    padding: 3rem 1.5rem;
+  }
+
+  .imageWrapper {
+    height: 20rem;
+  }
+
+  .headerGroup {
+    margin-bottom: 2.5rem;
+  }
+
+  .step {
+    padding: 2rem 0;
+  }
+
+  .stepNumber {
+    min-width: 2.4rem;
+  }
 }
-@media (max-width:400px){
-  .badge h3{
+
+/* ══════════════════════════════
+   MOBILE  (≤ 600px)
+   (pehle se tha — badge border hata di jaati hai)
+══════════════════════════════ */
+@media screen and (max-width: 600px) {
+  .badge {
+    border: none;
+    padding: 0;
+  }
+}
+
+/* ══════════════════════════════
+   SMALL MOBILE  (≤ 480px)
+   600px aur 400px ke beech ka fine-tuning step.
+══════════════════════════════ */
+@media screen and (max-width: 480px) {
+  .container {
+    padding: 2.5rem 1.1rem;
+  }
+
+  .imageWrapper {
+    height: 17rem;
+  }
+
+  .badge h3 {
+    font-size: 0.72rem;
+    letter-spacing: 0.06rem;
+  }
+
+  .step {
+    gap: 0.8rem;
+    padding: 1.6rem 0;
+  }
+
+  .stepDescription {
+    max-width: 100%;
+  }
+}
+
+/* ══════════════════════════════
+   VERY SMALL  (≤ 400px)
+   (pehle se tha — badge text ko wrap hone se rokte hain)
+══════════════════════════════ */
+@media (max-width: 400px) {
+  .badge h3 {
     text-wrap: nowrap;
+  }
+}
+
+/* ══════════════════════════════
+   ULTRA SMALL  (≤ 375px)
+   Sabse chhote phones ke liye final micro-adjustments.
+══════════════════════════════ */
+@media screen and (max-width: 375px) {
+  .container {
+    padding: 2rem 1rem;
+  }
+
+  .imageWrapper {
+    height: 15rem;
+  }
+
+  .title {
+    letter-spacing: 0.15rem;
+  }
+
+  .titleFilled,
+  .titleOutline {
+    letter-spacing: 0.15rem;
+  }
+
+  .stepNumber {
+    min-width: 2rem;
+  }
+
+  .stepTitle {
+    margin-bottom: 0.5rem;
   }
 }

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import styles from "./creativeprocess.module.css";
 
 // Dynamic Data Array
@@ -45,6 +45,104 @@ const stepsData = [
       "The final grade. Applying the brutalist, high-contrast aesthetic. Mastering for delivery.",
   },
 ];
+
+/* ══════════════════════════════
+   REVEAL ANIMATION HELPERS
+   (draftsearch.jsx wale hi final/fixed pattern — reliable trigger +
+   fade variant taaki -webkit-text-stroke wale outline text kabhi
+   cut/broken na dikhein, aur CSS module bilkul touch nahi hota)
+══════════════════════════════ */
+const useRevealVisible = () => {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    // element pehle se hi viewport ke andar ho sakta hai — is case me
+    // observer trigger hone se pehle hi yaha check kar lete hain, taaki
+    // wo permanently hidden/clipped state me atka na rahe
+    const rect = el.getBoundingClientRect();
+    const alreadyInView =
+      rect.top < (window.innerHeight || document.documentElement.clientHeight) &&
+      rect.bottom > 0;
+    if (alreadyInView) {
+      setVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0, rootMargin: "0px 0px 0px 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return [ref, visible];
+};
+
+const clipStart = {
+  left: "inset(0 100% 0 0)",
+  right: "inset(0 0 0 100%)",
+  up: "inset(100% 0 0 0)",
+  down: "inset(0 0 100% 0)",
+};
+
+const Reveal = ({
+  children,
+  className = "",
+  delay = 0,
+  as = "div",
+  direction = "left",
+  duration = 1.1,
+  variant = "clip", // "clip" = wipe reveal, "fade" = safe for stroke/outline text
+  style: extraStyle = {},
+}) => {
+  const Tag = as;
+  const [ref, visible] = useRevealVisible();
+
+  const clipStyle = {
+    clipPath: visible ? "inset(0 0 0 0)" : clipStart[direction],
+    WebkitClipPath: visible ? "inset(0 0 0 0)" : clipStart[direction],
+    opacity: visible ? 1 : 0,
+    transitionProperty: "clip-path, -webkit-clip-path, opacity",
+    transitionDuration: `${duration}s, ${duration}s, 0.1s`,
+    transitionTimingFunction: "cubic-bezier(0.83,0,0.17,1)",
+    transitionDelay: `${delay}ms`,
+    willChange: "clip-path, opacity",
+  };
+
+  // fade variant kabhi clip-path use nahi karta — isliye -webkit-text-stroke
+  // wale outline text (titleOutline) pe glyph edges kabhi cut/broken nahi
+  // dikhte, sirf clean opacity + upward slide hoti hai
+  const fadeStyle = {
+    opacity: visible ? 1 : 0,
+    transform: visible ? "translateY(0)" : "translateY(24px)",
+    transitionProperty: "opacity, transform",
+    transitionDuration: `${duration}s, ${duration}s`,
+    transitionTimingFunction: "cubic-bezier(0.19,1,0.22,1)",
+    transitionDelay: `${delay}ms`,
+    willChange: "opacity, transform",
+  };
+
+  const style = { ...(variant === "fade" ? fadeStyle : clipStyle), ...extraStyle };
+
+  return (
+    <Tag ref={ref} className={className} style={style}>
+      {children}
+    </Tag>
+  );
+};
 
 const ArchiveIcon = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -92,32 +190,43 @@ const ArchiveIcon = () => {
 const CreativeProcess = () => {
   return (
     <section className={styles.container}>
-      <div className={styles.badgeWrapper}>
+      <Reveal as="div" direction="up" duration={1.2} className={styles.badgeWrapper}>
         <ArchiveIcon />
         <div className={styles.badge}>
           <h3>[ 03 // CONCEPTION ]</h3>
         </div>
-      </div>
+      </Reveal>
 
       <div className={styles.headerGroup}>
         <h2 className={styles.title}>
-          <span className={styles.titleFilled}>CREATIVE</span>
-          <span className={styles.titleOutline}>PROCESS</span>
+          <Reveal as="span" variant="fade" duration={1.1} delay={150} className={styles.titleFilled}>
+            CREATIVE
+          </Reveal>
+          <Reveal as="span" variant="fade" duration={1.1} delay={350} className={styles.titleOutline}>
+            PROCESS
+          </Reveal>
         </h2>
       </div>
 
       <div className={styles.content}>
-        <div className={styles.imageWrapper}>
+        <Reveal as="div" direction="up" duration={1.4} delay={200} className={styles.imageWrapper}>
           <span className={styles.imageLabel}>SYS.POST_PRODUCTION</span>
           <img
             src="/images/gallery/createprocess/createprocess.jpg"
             alt="Post Production Setup"
           />
-        </div>
+        </Reveal>
 
         <div className={styles.stepsList}>
-          {stepsData.map((step) => (
-            <div key={step.id} className={styles.step}>
+          {stepsData.map((step, index) => (
+            <Reveal
+              key={step.id}
+              as="div"
+              direction="left"
+              duration={1.1}
+              delay={200 + index * 150}
+              className={styles.step}
+            >
               <span
                 className={`${styles.stepNumber} ${
                   step.numColor === "pink"
@@ -131,7 +240,7 @@ const CreativeProcess = () => {
                 <h3 className={styles.stepTitle}>{step.title}</h3>
                 <p className={styles.stepDescription}>{step.description}</p>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>

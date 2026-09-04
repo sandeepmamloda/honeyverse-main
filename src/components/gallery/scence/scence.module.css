@@ -52,7 +52,7 @@
   font-size: clamp(2rem, 10vw, 5rem);
   font-weight:400;
   color: #ffca1a;
-  line-height: 1;
+  line-height: 142%;
   margin: 0;
   letter-spacing: 0.5rem;
 }
@@ -117,12 +117,154 @@
   z-index: 1;
 }
 
-/* Responsive */
+/* ══════════════════════════════
+   RESPONSIVE MAX-WIDTH SCALING
+   (naye added breakpoints — page ke baaki sections jaisi hi ladder,
+   sirf .scenesContainer ka max-width scale karte hain)
+══════════════════════════════ */
+@media screen and (max-width: 1780px) {
+  .scenesContainer {
+    max-width: 100rem;
+  }
+}
+@media screen and (max-width: 1630px) {
+  .scenesContainer {
+    max-width: 90rem;
+  }
+}
+@media screen and (max-width: 1460px) {
+  .scenesContainer {
+    max-width: 85rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1440px) — naya added
+══════════════════════════════ */
+@media screen and (max-width: 1440px) {
+  .scenesContainer {
+    max-width: 82rem;
+  }
+}
+
+@media screen and (max-width: 1370px) {
+  .scenesContainer {
+    max-width: 100%;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1280px) — naya added
+   Laptop range pe grid gap aur card image height thodi compact
+   karte hain taaki right-aligned header/badge zyada crowd na ho.
+══════════════════════════════ */
+@media screen and (max-width: 1280px) {
+  .grid {
+    column-gap: 3rem;
+  }
+
+  .card img {
+    height: 440px;
+  }
+}
+
+/* ══════════════════════════════
+   TABLET (≤ 1024px) — naya added
+══════════════════════════════ */
+@media screen and (max-width: 1024px) {
+  .scenesContainer {
+    padding: 3.5rem 1.5rem;
+  }
+
+  .badgeWrapper {
+    width: 100%;
+    max-width: 26rem;
+  }
+
+  .headerGroup {
+    max-width: 100%;
+  }
+
+  .grid {
+    column-gap: 2rem;
+  }
+
+  .card img {
+    height: 380px;
+  }
+}
+
+/* ══════════════════════════════
+   Responsive (≤ 768px)
+   (yeh pehle se tha, isko bilkul touch nahi kiya)
+══════════════════════════════ */
 @media (max-width: 768px) {
   .grid {
     grid-template-columns: 1fr;
   }
   .headerGroup {
     text-align: left; /* Mobile pe left return kar sakte hain agar chahein */
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 480px) — naya added
+══════════════════════════════ */
+@media screen and (max-width: 480px) {
+  .scenesContainer {
+    padding: 3rem 1.1rem;
+  }
+
+  .badgeWrapper {
+    width: 100%;
+    padding-bottom: 0.6rem;
+    margin-block-end: 2.5rem;
+  }
+
+  .badge h3 {
+    font-size: 0.65rem;
+    letter-spacing: 0.12rem;
+  }
+
+  .headerGroup {
+    margin-bottom: 2.5rem;
+  }
+
+  .title {
+    letter-spacing: 0.25rem;
+  }
+
+  .description {
+    margin-top: 1.5rem;
+  }
+
+  .card img {
+    height: 320px;
+  }
+
+  .card:nth-child(even) {
+    margin-top: 1.5rem;
+  }
+
+  .cardLabel {
+    font-size: 0.68rem;
+    padding: 0.35rem 0.7rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 375px) — naya added
+══════════════════════════════ */
+@media screen and (max-width: 375px) {
+  .title {
+    letter-spacing: 0.15rem;
+  }
+
+  .description {
+    font-size: 0.75rem;
+  }
+
+  .card img {
+    height: 260px;
   }
 }

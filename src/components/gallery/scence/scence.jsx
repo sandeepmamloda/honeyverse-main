@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./scence.module.css";
 
 // Dynamic Data Array
@@ -17,6 +17,76 @@ const sceneData = [
     alt: "Grip and Electric"
   },
 ];
+
+/* ══════════════════════════════
+   REVEAL ANIMATION HELPERS
+   (archive-stills.jsx wale hi pattern se liya — sirf inline style
+   inject karte hain, CSS module ko bilkul touch nahi karte)
+══════════════════════════════ */
+const useRevealVisible = () => {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0, rootMargin: "0px 0px -2% 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return [ref, visible];
+};
+
+const clipStart = {
+  left: "inset(0 100% 0 0)",
+  right: "inset(0 0 0 100%)",
+  up: "inset(100% 0 0 0)",
+  down: "inset(0 0 100% 0)",
+};
+
+const Reveal = ({
+  children,
+  className = "",
+  delay = 0,
+  as = "div",
+  direction = "left",
+  duration = 1.1,
+  style: extraStyle = {},
+}) => {
+  const Tag = as;
+  const [ref, visible] = useRevealVisible();
+
+  const style = {
+    clipPath: visible ? "inset(0 0 0 0)" : clipStart[direction],
+    WebkitClipPath: visible ? "inset(0 0 0 0)" : clipStart[direction],
+    opacity: visible ? 1 : 0,
+    transitionProperty: "clip-path, -webkit-clip-path, opacity",
+    transitionDuration: `${duration}s, ${duration}s, 0.1s`,
+    transitionTimingFunction: "cubic-bezier(0.83,0,0.17,1)",
+    transitionDelay: `${delay}ms`,
+    willChange: "clip-path, opacity",
+    ...extraStyle,
+  };
+
+  return (
+    <Tag ref={ref} className={className} style={style}>
+      {children}
+    </Tag>
+  );
+};
 
 const ArchiveIcon = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -48,27 +118,36 @@ const ArchiveIcon = () => {
 const Scenes = () => {
   return (
     <section className={styles.scenesContainer}>
-      <div className={styles.badgeWrapper}>
+      <Reveal as="div" direction="right" duration={1.3} className={styles.badgeWrapper}>
         <div className={styles.badge}>
           <h3>[ 02 // ON_SET ]</h3>
         </div>
         <ArchiveIcon />
-      </div>
+      </Reveal>
 
       <div className={styles.headerGroup}>
-        <h2 className={styles.title}>SCENES</h2>
-        <p className={styles.description}>
+        <Reveal as="h2" direction="up" duration={1.4} delay={150} className={styles.title}>
+          SCENES
+        </Reveal>
+        <Reveal as="p" direction="up" duration={1.2} delay={400} className={styles.description}>
           Raw, unfiltered documentation from the trenches. Tactical execution of complex lighting and camera moves.
-        </p>
+        </Reveal>
       </div>
 
       {/* Dynamic Grid */}
       <div className={styles.grid}>
-        {sceneData.map((item) => (
-          <div key={item.id} className={styles.card}>
+        {sceneData.map((item, index) => (
+          <Reveal
+            key={item.id}
+            as="div"
+            direction="up"
+            duration={1.4}
+            delay={index * 250}
+            className={styles.card}
+          >
             <div className={styles.cardLabel}>{item.label}</div>
             <img src={item.src} alt={item.alt} />
-          </div>
+          </Reveal>
         ))}
       </div>
     </section>

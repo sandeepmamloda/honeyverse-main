@@ -6,8 +6,6 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 /* ============================================================
    BACKGROUND
-   (Upgraded: richer pink/magenta sunset-sky with layered glow,
-   soft nebula clouds, warm horizon light and gentle grain.)
 ============================================================ */
 
 function createSkyBackgroundTexture() {
@@ -23,37 +21,56 @@ function createSkyBackgroundTexture() {
   const w = canvas.width;
   const h = canvas.height;
 
-  /* --------------------------------------------------------
-     BASE SKY GRADIENT
-     Deep magenta-violet top -> hot pink middle -> warm rose
-     horizon glow at the bottom. Much more saturated/attractive
-     than the old pale pastel version.
-  -------------------------------------------------------- */
   const gradient = ctx.createLinearGradient(0, 0, 0, h);
 
-  gradient.addColorStop(0, "#070313");   // deep plum/violet (top of sky)
+  gradient.addColorStop(0, "#070313");
   gradient.addColorStop(0.18, "#18082b");
   gradient.addColorStop(0.36, "#3b0d55");
   gradient.addColorStop(0.55, "#82145f");
-  gradient.addColorStop(0.72, "#d62a78"); // vivid hot pink band
+  gradient.addColorStop(0.72, "#d62a78");
   gradient.addColorStop(0.86, "#f35b9b");
-  gradient.addColorStop(1, "#ffb0cf");   // soft glowing rose horizon
+  gradient.addColorStop(1, "#ffb0cf");
 
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, w, h);
 
-  /* --------------------------------------------------------
-     SOFT NEBULA CLOUDS
-     Larger, more colorful, more layered than before for a
-     dreamy "cosmic sunset" feel.
-  -------------------------------------------------------- */
   const nebulae = [
-    { x: 0.2, y: 0.22, r: 0.5, color: "rgba(255,255,255,0.28)" },
-    { x: 0.8, y: 0.15, r: 0.42, color: "rgba(255,120,190,0.35)" },
-    { x: 0.55, y: 0.4, r: 0.55, color: "rgba(255,80,170,0.30)" },
-    { x: 0.32, y: 0.62, r: 0.48, color: "rgba(255,190,220,0.25)" },
-    { x: 0.72, y: 0.58, r: 0.4, color: "rgba(200,50,140,0.28)" },
-    { x: 0.5, y: 0.85, r: 0.55, color: "rgba(255,150,190,0.30)" },
+    {
+      x: 0.2,
+      y: 0.22,
+      r: 0.5,
+      color: "rgba(255,255,255,0.28)",
+    },
+    {
+      x: 0.8,
+      y: 0.15,
+      r: 0.42,
+      color: "rgba(255,120,190,0.35)",
+    },
+    {
+      x: 0.55,
+      y: 0.4,
+      r: 0.55,
+      color: "rgba(255,80,170,0.30)",
+    },
+    {
+      x: 0.32,
+      y: 0.62,
+      r: 0.48,
+      color: "rgba(255,190,220,0.25)",
+    },
+    {
+      x: 0.72,
+      y: 0.58,
+      r: 0.4,
+      color: "rgba(200,50,140,0.28)",
+    },
+    {
+      x: 0.5,
+      y: 0.85,
+      r: 0.55,
+      color: "rgba(255,150,190,0.30)",
+    },
   ];
 
   nebulae.forEach((n) => {
@@ -73,11 +90,6 @@ function createSkyBackgroundTexture() {
     ctx.fillRect(0, 0, w, h);
   });
 
-  /* --------------------------------------------------------
-     WARM HORIZON GLOW
-     A brighter, wider "sun-kissed" glow near the bottom to
-     give the scene a strong focal point.
-  -------------------------------------------------------- */
   const glow = ctx.createRadialGradient(
     w / 2,
     h * 0.96,
@@ -95,7 +107,6 @@ function createSkyBackgroundTexture() {
   ctx.fillStyle = glow;
   ctx.fillRect(0, 0, w, h);
 
-  /* A secondary, cooler accent glow up top-right for contrast */
   const topGlow = ctx.createRadialGradient(
     w * 0.82,
     h * 0.08,
@@ -111,9 +122,6 @@ function createSkyBackgroundTexture() {
   ctx.fillStyle = topGlow;
   ctx.fillRect(0, 0, w, h);
 
-  /* --------------------------------------------------------
-     FINE GRAIN / SPARKLE DUST
-  -------------------------------------------------------- */
   for (let i = 0; i < 3000; i++) {
     const gx = Math.random() * w;
     const gy = Math.random() * h;
@@ -123,19 +131,26 @@ function createSkyBackgroundTexture() {
     const isLight = Math.random() > 0.5;
 
     ctx.fillStyle = isLight
-      ? `rgba(255,255,255,${(Math.random() * 0.06).toFixed(3)})`
-      : `rgba(120,20,70,${(Math.random() * 0.06).toFixed(3)})`;
+      ? `rgba(255,255,255,${(
+          Math.random() * 0.06
+        ).toFixed(3)})`
+      : `rgba(120,20,70,${(
+          Math.random() * 0.06
+        ).toFixed(3)})`;
 
     ctx.beginPath();
-    ctx.arc(gx, gy, r, 0, Math.PI * 2);
+
+    ctx.arc(
+      gx,
+      gy,
+      r,
+      0,
+      Math.PI * 2
+    );
+
     ctx.fill();
   }
 
-  /* --------------------------------------------------------
-     VIGNETTE
-     Slightly stronger, warmer edges to focus attention on
-     the center of the scene.
-  -------------------------------------------------------- */
   const vignette = ctx.createRadialGradient(
     w / 2,
     h / 2,
@@ -145,8 +160,15 @@ function createSkyBackgroundTexture() {
     w * 0.78
   );
 
-  vignette.addColorStop(0, "rgba(0,0,0,0)");
-  vignette.addColorStop(1, "rgba(50,5,35,0.32)");
+  vignette.addColorStop(
+    0,
+    "rgba(0,0,0,0)"
+  );
+
+  vignette.addColorStop(
+    1,
+    "rgba(50,5,35,0.32)"
+  );
 
   ctx.fillStyle = vignette;
   ctx.fillRect(0, 0, w, h);
@@ -176,13 +198,19 @@ function createTwinkleField(
   const phases = new Float32Array(count);
 
   for (let i = 0; i < count; i++) {
-    const r = radius * (0.6 + Math.random() * 0.4);
+    const r =
+      radius *
+      (0.6 + Math.random() * 0.4);
 
-    const theta = Math.random() * Math.PI * 2;
+    const theta =
+      Math.random() *
+      Math.PI *
+      2;
 
-    const phi = Math.acos(
-      THREE.MathUtils.randFloatSpread(2)
-    );
+    const phi =
+      Math.acos(
+        THREE.MathUtils.randFloatSpread(2)
+      );
 
     positions[i * 3] =
       r *
@@ -190,118 +218,140 @@ function createTwinkleField(
       Math.cos(theta);
 
     positions[i * 3 + 1] =
-      Math.abs(r * Math.cos(phi)) * 0.6 + 10;
+      Math.abs(
+        r *
+          Math.cos(phi)
+      ) *
+        0.6 +
+      10;
 
     positions[i * 3 + 2] =
       r *
       Math.sin(phi) *
       Math.sin(theta);
 
-    sizes[i] = THREE.MathUtils.lerp(
-      minSize,
-      maxSize,
-      Math.random()
-    );
+    sizes[i] =
+      THREE.MathUtils.lerp(
+        minSize,
+        maxSize,
+        Math.random()
+      );
 
-    phases[i] = Math.random() * Math.PI * 2;
+    phases[i] =
+      Math.random() *
+      Math.PI *
+      2;
   }
 
-  const geometry = new THREE.BufferGeometry();
+  const geometry =
+    new THREE.BufferGeometry();
 
   geometry.setAttribute(
     "position",
-    new THREE.BufferAttribute(positions, 3)
+    new THREE.BufferAttribute(
+      positions,
+      3
+    )
   );
 
   geometry.setAttribute(
     "aSize",
-    new THREE.BufferAttribute(sizes, 1)
+    new THREE.BufferAttribute(
+      sizes,
+      1
+    )
   );
 
   geometry.setAttribute(
     "aPhase",
-    new THREE.BufferAttribute(phases, 1)
+    new THREE.BufferAttribute(
+      phases,
+      1
+    )
   );
 
-  const material = new THREE.ShaderMaterial({
-    uniforms: {
-      uTime: {
-        value: 0,
+  const material =
+    new THREE.ShaderMaterial({
+      uniforms: {
+        uTime: {
+          value: 0,
+        },
+
+        uColor: {
+          value: color,
+        },
       },
-      uColor: {
-        value: color,
-      },
-    },
 
-    vertexShader: `
-      attribute float aSize;
-      attribute float aPhase;
+      vertexShader: `
+        attribute float aSize;
+        attribute float aPhase;
 
-      uniform float uTime;
+        uniform float uTime;
 
-      varying float vTwinkle;
+        varying float vTwinkle;
 
-      void main() {
+        void main() {
 
-        vTwinkle =
-          0.5 +
-          0.5 *
-          sin(
-            uTime * 1.6 +
-            aPhase
-          );
+          vTwinkle =
+            0.5 +
+            0.5 *
+            sin(
+              uTime * 1.6 +
+              aPhase
+            );
 
-        vec4 mvPosition =
-          modelViewMatrix *
-          vec4(position, 1.0);
+          vec4 mvPosition =
+            modelViewMatrix *
+            vec4(position, 1.0);
 
-        gl_PointSize =
-          aSize *
-          (300.0 / -mvPosition.z);
+          gl_PointSize =
+            aSize *
+            (300.0 / -mvPosition.z);
 
-        gl_Position =
-          projectionMatrix *
-          mvPosition;
-      }
-    `,
+          gl_Position =
+            projectionMatrix *
+            mvPosition;
+        }
+      `,
 
-    fragmentShader: `
-      uniform vec3 uColor;
+      fragmentShader: `
+        uniform vec3 uColor;
 
-      varying float vTwinkle;
+        varying float vTwinkle;
 
-      void main() {
+        void main() {
 
-        float d =
-          length(
-            gl_PointCoord -
-            vec2(0.5)
-          );
+          float d =
+            length(
+              gl_PointCoord -
+              vec2(0.5)
+            );
 
-        float alpha =
-          smoothstep(
-            0.5,
-            0.0,
-            d
-          ) *
-          (
-            0.35 +
-            0.65 *
-            vTwinkle
-          );
+          float alpha =
+            smoothstep(
+              0.5,
+              0.0,
+              d
+            ) *
+            (
+              0.35 +
+              0.65 *
+              vTwinkle
+            );
 
-        gl_FragColor =
-          vec4(
-            uColor,
-            alpha
-          );
-      }
-    `,
+          gl_FragColor =
+            vec4(
+              uColor,
+              alpha
+            );
+        }
+      `,
 
-    transparent: true,
-    depthWrite: false,
-    blending: THREE.AdditiveBlending,
-  });
+      transparent: true,
+      depthWrite: false,
+      blending:
+        THREE.AdditiveBlending,
+    });
 
   return new THREE.Points(
     geometry,
@@ -309,54 +359,157 @@ function createTwinkleField(
   );
 }
 
-function createStarTrailField(count = 180, spread = 55) {
-  const positions = new Float32Array(count * 3);
-  const sizes = new Float32Array(count);
-  const phases = new Float32Array(count);
+function createStarTrailField(
+  count = 180,
+  spread = 55
+) {
+  const positions =
+    new Float32Array(count * 3);
+
+  const sizes =
+    new Float32Array(count);
+
+  const phases =
+    new Float32Array(count);
 
   for (let i = 0; i < count; i++) {
-    positions[i * 3] = THREE.MathUtils.randFloatSpread(spread);
-    positions[i * 3 + 1] = 8 + Math.random() * 34;
-    positions[i * 3 + 2] = -Math.random() * 260;
-    sizes[i] = THREE.MathUtils.lerp(0.5, 1.8, Math.random());
-    phases[i] = Math.random() * Math.PI * 2;
+    positions[i * 3] =
+      THREE.MathUtils.randFloatSpread(
+        spread
+      );
+
+    positions[i * 3 + 1] =
+      8 +
+      Math.random() * 34;
+
+    positions[i * 3 + 2] =
+      -Math.random() * 260;
+
+    sizes[i] =
+      THREE.MathUtils.lerp(
+        0.5,
+        1.8,
+        Math.random()
+      );
+
+    phases[i] =
+      Math.random() *
+      Math.PI *
+      2;
   }
 
-  const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-  geometry.setAttribute("aSize", new THREE.BufferAttribute(sizes, 1));
-  geometry.setAttribute("aPhase", new THREE.BufferAttribute(phases, 1));
+  const geometry =
+    new THREE.BufferGeometry();
 
-  const material = new THREE.ShaderMaterial({
-    uniforms: { uTime: { value: 0 } },
-    vertexShader: `
-      attribute float aSize;
-      attribute float aPhase;
-      uniform float uTime;
-      varying float vAlpha;
-      void main() {
-        vec3 p = position;
-        float pulse = 0.65 + 0.35 * sin(uTime * 1.4 + aPhase);
-        vec4 mv = modelViewMatrix * vec4(p, 1.0);
-        gl_PointSize = aSize * pulse * (340.0 / -mv.z);
-        vAlpha = pulse;
-        gl_Position = projectionMatrix * mv;
-      }
-    `,
-    fragmentShader: `
-      varying float vAlpha;
-      void main() {
-        float d = length(gl_PointCoord - vec2(0.5));
-        float a = smoothstep(0.5, 0.0, d) * vAlpha * 0.65;
-        gl_FragColor = vec4(1.0, 0.78, 0.92, a);
-      }
-    `,
-    transparent: true,
-    depthWrite: false,
-    blending: THREE.AdditiveBlending,
-  });
+  geometry.setAttribute(
+    "position",
+    new THREE.BufferAttribute(
+      positions,
+      3
+    )
+  );
 
-  return new THREE.Points(geometry, material);
+  geometry.setAttribute(
+    "aSize",
+    new THREE.BufferAttribute(
+      sizes,
+      1
+    )
+  );
+
+  geometry.setAttribute(
+    "aPhase",
+    new THREE.BufferAttribute(
+      phases,
+      1
+    )
+  );
+
+  const material =
+    new THREE.ShaderMaterial({
+      uniforms: {
+        uTime: {
+          value: 0,
+        },
+      },
+
+      vertexShader: `
+        attribute float aSize;
+        attribute float aPhase;
+
+        uniform float uTime;
+
+        varying float vAlpha;
+
+        void main() {
+
+          vec3 p = position;
+
+          float pulse =
+            0.65 +
+            0.35 *
+            sin(
+              uTime * 1.4 +
+              aPhase
+            );
+
+          vec4 mv =
+            modelViewMatrix *
+            vec4(p, 1.0);
+
+          gl_PointSize =
+            aSize *
+            pulse *
+            (340.0 / -mv.z);
+
+          vAlpha = pulse;
+
+          gl_Position =
+            projectionMatrix *
+            mv;
+        }
+      `,
+
+      fragmentShader: `
+        varying float vAlpha;
+
+        void main() {
+
+          float d =
+            length(
+              gl_PointCoord -
+              vec2(0.5)
+            );
+
+          float a =
+            smoothstep(
+              0.5,
+              0.0,
+              d
+            ) *
+            vAlpha *
+            0.65;
+
+          gl_FragColor =
+            vec4(
+              1.0,
+              0.78,
+              0.92,
+              a
+            );
+        }
+      `,
+
+      transparent: true,
+      depthWrite: false,
+      blending:
+        THREE.AdditiveBlending,
+    });
+
+  return new THREE.Points(
+    geometry,
+    material
+  );
 }
 
 /* ============================================================
@@ -364,36 +517,51 @@ function createStarTrailField(count = 180, spread = 55) {
 ============================================================ */
 
 export default function Fly() {
-  const canvasRef = useRef(null);
-  const sectionRef = useRef(null);
+  const canvasRef =
+    useRef(null);
+
+  const sectionRef =
+    useRef(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const section = sectionRef.current;
+    const canvas =
+      canvasRef.current;
 
-    if (!canvas || !section) return;
+    const section =
+      sectionRef.current;
+
+    if (!canvas || !section) {
+      return;
+    }
 
     /* ========================================================
        SCENE
     ======================================================== */
 
-    const scene = new THREE.Scene();
+    const scene =
+      new THREE.Scene();
 
-    const camera = new THREE.PerspectiveCamera(
-      60,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    );
+    const camera =
+      new THREE.PerspectiveCamera(
+        60,
+        window.innerWidth /
+          window.innerHeight,
+        0.1,
+        1000
+      );
 
-    const renderer = new THREE.WebGLRenderer({
-      canvas,
-      antialias: true,
-      alpha: true,
-    });
+    const renderer =
+      new THREE.WebGLRenderer({
+        canvas,
+        antialias: true,
+        alpha: true,
+      });
 
     renderer.setPixelRatio(
-      Math.min(window.devicePixelRatio || 1, 2)
+      Math.min(
+        window.devicePixelRatio || 1,
+        2
+      )
     );
 
     renderer.setSize(
@@ -414,14 +582,17 @@ export default function Fly() {
       createSkyBackgroundTexture();
 
     if (skyTexture) {
-      scene.background = skyTexture;
+      scene.background =
+        skyTexture;
     }
 
     const starField =
       createTwinkleField(
         1400,
         150,
-        new THREE.Color(0xffd9ec),
+        new THREE.Color(
+          0xffd9ec
+        ),
         0.9,
         2.4
       );
@@ -432,19 +603,42 @@ export default function Fly() {
       createTwinkleField(
         340,
         75,
-        new THREE.Color(0xff6fa8),
+        new THREE.Color(
+          0xff6fa8
+        ),
         1.6,
         3.8
       );
 
     scene.add(dustField);
 
-    const upperStarField = createTwinkleField(1100, 260, new THREE.Color(0xffffff), 0.45, 1.8);
-    upperStarField.position.y = 18;
-    scene.add(upperStarField);
+    const upperStarField =
+      createTwinkleField(
+        1100,
+        260,
+        new THREE.Color(
+          0xffffff
+        ),
+        0.45,
+        1.8
+      );
 
-    const starTrailField = createStarTrailField(220, 65);
-    scene.add(starTrailField);
+    upperStarField.position.y =
+      18;
+
+    scene.add(
+      upperStarField
+    );
+
+    const starTrailField =
+      createStarTrailField(
+        220,
+        65
+      );
+
+    scene.add(
+      starTrailField
+    );
 
     /* ========================================================
        LIGHTS
@@ -494,47 +688,120 @@ export default function Fly() {
         2
       );
 
-    scene.add(planeGlow);
+    scene.add(
+      planeGlow
+    );
 
     /* ========================================================
-       FLIGHT PATH
+       WIDE FLIGHT PATH
+       
+       IMPORTANT:
+       The path is intentionally much wider
+       than the viewport.
+
+       The curve can travel completely
+       outside the screen on both sides.
     ======================================================== */
 
     const waypoints = [];
 
-    const TOTAL_WP = 72;
+    const TOTAL_WP = 180;
 
-    /*
-      Path depth.
-      Keeping this value means the complete route
-      remains exactly the same.
-    */
     const Z_STEP = -5.4;
 
-    for (let i = 0; i < TOTAL_WP; i++) {
+    /*
+      OLD:
+        27
+
+      NEW:
+        55
+
+      This creates a much wider
+      left/right sweep.
+    */
+    const MAIN_CURVE_AMPLITUDE = 55;
+
+    /*
+      Secondary movement adds
+      organic variation without
+      making the curve jagged.
+    */
+    const SECONDARY_AMPLITUDE = 12;
+
+    /*
+      Multiple large bends throughout
+      the complete route.
+    */
+    const LONG_CURVE_FREQUENCY = 2.15;
+
+    for (
+      let i = 0;
+      i < TOTAL_WP;
+      i++
+    ) {
       const u =
-        i / (TOTAL_WP - 1);
+        i /
+        (TOTAL_WP - 1);
 
       const z =
-        i * Z_STEP;
+        i *
+        Z_STEP;
 
+      /*
+        Envelope keeps the beginning
+        and end centered while allowing
+        the middle of the journey to
+        become extremely wide.
+      */
       const envelope =
-        Math.sin(Math.PI * u);
+        Math.sin(
+          Math.PI * u
+        );
+
+      /*
+        Main large sweeping curve.
+      */
+      const primaryCurve =
+        Math.sin(
+          u *
+            Math.PI *
+            LONG_CURVE_FREQUENCY -
+            0.18
+        );
+
+      /*
+        Secondary broad movement.
+      */
+      const secondaryCurve =
+        Math.sin(
+          u *
+            Math.PI *
+            0.86 +
+            0.8
+        ) *
+        SECONDARY_AMPLITUDE;
+
+      /*
+        Small additional long-wave
+        movement for a more natural
+        continuous route.
+      */
+      const tertiaryCurve =
+        Math.sin(
+          u *
+            Math.PI *
+            3.25 +
+            1.15
+        ) *
+        4.5;
 
       const x =
         envelope *
         (
-          Math.sin(
-            u * Math.PI * 3.2 + 0.15
-          ) * 7.2 +
-
-          Math.sin(
-            u * Math.PI * 1.65 + 0.75
-          ) * 2.7 +
-
-          Math.sin(
-            u * Math.PI * 0.72
-          ) * 1.2
+          primaryCurve *
+            MAIN_CURVE_AMPLITUDE +
+          secondaryCurve +
+          tertiaryCurve
         );
 
       waypoints.push(
@@ -546,18 +813,31 @@ export default function Fly() {
       );
     }
 
+    /*
+      Always start and finish
+      directly in the center.
+    */
     waypoints[0].x = 0;
-    waypoints[TOTAL_WP - 1].x = 0;
+
+    waypoints[
+      TOTAL_WP - 1
+    ].x = 0;
 
     const curve =
       new THREE.CatmullRomCurve3(
         waypoints,
         false,
         "centripetal",
-        0.5
+        0.42
       );
 
-    curve.arcLengthDivisions = 1400;
+    /*
+      Very high arc length resolution
+      keeps movement smooth even across
+      these large bends.
+    */
+    curve.arcLengthDivisions =
+      4000;
 
     const CURVE_LENGTH =
       curve.getLength();
@@ -566,8 +846,11 @@ export default function Fly() {
        FLIGHT LINE
     ======================================================== */
 
-    const TUBULAR_SEGMENTS = 700;
-    const RADIAL_SEGMENTS = 8;
+    const TUBULAR_SEGMENTS =
+      1600;
+
+    const RADIAL_SEGMENTS =
+      8;
 
     const lineGeo =
       new THREE.TubeGeometry(
@@ -587,8 +870,8 @@ export default function Fly() {
     const lineColorArray =
       new Float32Array(
         RING_COUNT *
-        VERTS_PER_RING *
-        3
+          VERTS_PER_RING *
+          3
       );
 
     const lineColorAttr =
@@ -602,12 +885,6 @@ export default function Fly() {
       lineColorAttr
     );
 
-    /*
-      NOTE: path starts fully invisible.
-      It is faded in (opacity 0 -> 1) only
-      once the user starts scrolling.
-      See `revealAlpha` inside animate().
-    */
     const lineCore =
       new THREE.Mesh(
         lineGeo,
@@ -619,18 +896,26 @@ export default function Fly() {
         })
       );
 
-    lineCore.position.y = -0.55;
+    lineCore.position.y =
+      -0.55;
+
     lineCore.visible = false;
 
     scene.add(lineCore);
 
     const LINE_COLOR_AHEAD =
-      new THREE.Color(0xffd400);
+      new THREE.Color(
+        0xffd400
+      );
 
     const LINE_COLOR_PASSED =
-      new THREE.Color(0xff2e93);
+      new THREE.Color(
+        0xff2e93
+      );
 
-    function updateLineProgressColor(currentT) {
+    function updateLineProgressColor(
+      currentT
+    ) {
       const arr =
         lineColorAttr.array;
 
@@ -647,7 +932,8 @@ export default function Fly() {
         ring++
       ) {
         const u =
-          ring / TUBULAR_SEGMENTS;
+          ring /
+          TUBULAR_SEGMENTS;
 
         const color =
           u <= safeT
@@ -665,15 +951,22 @@ export default function Fly() {
           k++
         ) {
           const idx =
-            base + k * 3;
+            base +
+            k * 3;
 
-          arr[idx] = color.r;
-          arr[idx + 1] = color.g;
-          arr[idx + 2] = color.b;
+          arr[idx] =
+            color.r;
+
+          arr[idx + 1] =
+            color.g;
+
+          arr[idx + 2] =
+            color.b;
         }
       }
 
-      lineColorAttr.needsUpdate = true;
+      lineColorAttr.needsUpdate =
+        true;
     }
 
     updateLineProgressColor(0);
@@ -700,7 +993,7 @@ export default function Fly() {
       -0.4;
 
     const IDLE_ROTOR_TIME_SCALE =
-      0.10;
+      0.1;
 
     const MAX_ROTOR_TIME_SCALE =
       0.72;
@@ -717,18 +1010,23 @@ export default function Fly() {
       HELICOPTER_MODEL_URL,
 
       (gltf) => {
-        const model = gltf.scene;
+        const model =
+          gltf.scene;
 
         model.scale.setScalar(
           HELICOPTER_MODEL_SCALE
         );
 
-        model.updateMatrixWorld(true);
+        model.updateMatrixWorld(
+          true
+        );
 
         model.rotation.y =
           HELICOPTER_YAW_OFFSET;
 
-        model.updateMatrixWorld(true);
+        model.updateMatrixWorld(
+          true
+        );
 
         const box =
           new THREE.Box3().setFromObject(
@@ -746,7 +1044,9 @@ export default function Fly() {
         model.position.z -=
           center.z;
 
-        model.updateMatrixWorld(true);
+        model.updateMatrixWorld(
+          true
+        );
 
         const centeredBox =
           new THREE.Box3().setFromObject(
@@ -761,58 +1061,73 @@ export default function Fly() {
 
         const bakedLights = [];
 
-        model.traverse((child) => {
-          if (child.isLight) {
-            bakedLights.push(child);
+        model.traverse(
+          (child) => {
+            if (child.isLight) {
+              bakedLights.push(
+                child
+              );
+            }
           }
-        });
+        );
 
-        bakedLights.forEach((light) => {
-          if (light.parent) {
-            light.parent.remove(light);
+        bakedLights.forEach(
+          (light) => {
+            if (light.parent) {
+              light.parent.remove(
+                light
+              );
+            }
           }
-        });
+        );
 
-        model.traverse((child) => {
-          if (
-            !child.isMesh ||
-            !child.material
-          ) {
-            return;
-          }
-
-          const materials =
-            Array.isArray(child.material)
-              ? child.material
-              : [child.material];
-
-          materials.forEach((material) => {
+        model.traverse(
+          (child) => {
             if (
-              material.roughness !==
-              undefined
+              !child.isMesh ||
+              !child.material
             ) {
-              material.roughness =
-                Math.max(
-                  material.roughness,
-                  0.68
-                );
+              return;
             }
 
-            if (
-              material.isGLTFSpecularGlossinessMaterial &&
-              material.glossiness !==
-                undefined
-            ) {
-              material.glossiness =
-                Math.min(
-                  material.glossiness,
-                  0.32
-                );
-            }
+            const materials =
+              Array.isArray(
+                child.material
+              )
+                ? child.material
+                : [child.material];
 
-            material.needsUpdate = true;
-          });
-        });
+            materials.forEach(
+              (material) => {
+                if (
+                  material.roughness !==
+                  undefined
+                ) {
+                  material.roughness =
+                    Math.max(
+                      material.roughness,
+                      0.68
+                    );
+                }
+
+                if (
+                  material.isGLTFSpecularGlossinessMaterial &&
+                  material.glossiness !==
+                    undefined
+                ) {
+                  material.glossiness =
+                    Math.min(
+                      material.glossiness,
+                      0.32
+                    );
+                }
+
+                material.needsUpdate =
+                  true;
+              }
+            );
+          }
+        );
 
         plane.add(model);
 
@@ -838,19 +1153,22 @@ export default function Fly() {
         } else {
           let prop = null;
 
-          model.traverse((child) => {
-            if (
-              !prop &&
-              /prop|rotor|blade|fan/i.test(
-                child.name
-              )
-            ) {
-              prop = child;
+          model.traverse(
+            (child) => {
+              if (
+                !prop &&
+                /prop|rotor|blade|fan/i.test(
+                  child.name
+                )
+              ) {
+                prop = child;
+              }
             }
-          });
+          );
 
           if (prop) {
-            plane.userData.prop = prop;
+            plane.userData.prop =
+              prop;
           }
         }
       },
@@ -877,7 +1195,10 @@ export default function Fly() {
         title: "Inception of the Void",
         desc:
           "Lumière Pictures is established with a singular manifesto: content is disposable. Architecture stands.",
-        meta: ["ALT 420ft", "HDG 032°"],
+        meta: [
+          "ALT 420ft",
+          "HDG 032°",
+        ],
       },
 
       {
@@ -887,17 +1208,23 @@ export default function Fly() {
         title: "Crosswind",
         desc:
           "Each card marks a point along the same curve the plane flies.",
-        meta: ["ALT 610ft", "HDG 118°"],
+        meta: [
+          "ALT 610ft",
+          "HDG 118°",
+        ],
       },
 
       {
-        t: 0.40,
+        t: 0.4,
         year: "2019",
         eyebrow: "Reframe",
         title: "Cloud Break",
         desc:
           "This is where the old cloud models used to sit — now a card.",
-        meta: ["ALT 780ft", "HDG 205°"],
+        meta: [
+          "ALT 780ft",
+          "HDG 205°",
+        ],
       },
 
       {
@@ -907,7 +1234,10 @@ export default function Fly() {
         title: "After Dark",
         desc:
           "Cards fade in and out as the camera approaches and passes.",
-        meta: ["ALT 690ft", "HDG 291°"],
+        meta: [
+          "ALT 690ft",
+          "HDG 291°",
+        ],
       },
 
       {
@@ -917,7 +1247,10 @@ export default function Fly() {
         title: "New Coordinates",
         desc:
           "Swap eyebrow / title / desc / meta with real content freely.",
-        meta: ["ALT 540ft", "HDG 344°"],
+        meta: [
+          "ALT 540ft",
+          "HDG 344°",
+        ],
       },
 
       {
@@ -927,7 +1260,10 @@ export default function Fly() {
         title: "The Next Frame",
         desc:
           "Final stretch before the route ends at the last waypoint.",
-        meta: ["ALT 310ft", "HDG 060°"],
+        meta: [
+          "ALT 310ft",
+          "HDG 060°",
+        ],
       },
     ];
 
@@ -935,32 +1271,43 @@ export default function Fly() {
       {
         accent: "#ff2e93",
         corner: "tl",
-        ring: "rgba(255,46,147,0.55)",
+        ring:
+          "rgba(255,46,147,0.55)",
       },
+
       {
         accent: "#ffd400",
         corner: "tr",
-        ring: "rgba(255,212,0,0.55)",
+        ring:
+          "rgba(255,212,0,0.55)",
       },
+
       {
         accent: "#37e6c1",
         corner: "tl",
-        ring: "rgba(55,230,193,0.50)",
+        ring:
+          "rgba(55,230,193,0.50)",
       },
+
       {
         accent: "#ff2e93",
         corner: "tr",
-        ring: "rgba(255,46,147,0.55)",
+        ring:
+          "rgba(255,46,147,0.55)",
       },
+
       {
         accent: "#ffd400",
         corner: "tl",
-        ring: "rgba(255,212,0,0.55)",
+        ring:
+          "rgba(255,212,0,0.55)",
       },
+
       {
         accent: "#37e6c1",
         corner: "tr",
-        ring: "rgba(55,230,193,0.50)",
+        ring:
+          "rgba(55,230,193,0.50)",
       },
     ];
 
@@ -978,7 +1325,10 @@ export default function Fly() {
     ) {
       ctx.beginPath();
 
-      ctx.moveTo(x + r, y);
+      ctx.moveTo(
+        x + r,
+        y
+      );
 
       ctx.arcTo(
         x + w,
@@ -1023,34 +1373,41 @@ export default function Fly() {
       maxWidth,
       lineHeight
     ) {
-      const words = text.split(" ");
+      const words =
+        text.split(" ");
 
       let line = "";
       let yy = y;
 
-      words.forEach((word, index) => {
-        const test =
-          line + word + " ";
+      words.forEach(
+        (word, index) => {
+          const test =
+            line +
+            word +
+            " ";
 
-        if (
-          ctx.measureText(test).width >
-            maxWidth &&
-          index > 0
-        ) {
-          ctx.fillText(
-            line,
-            x,
-            yy
-          );
+          if (
+            ctx.measureText(
+              test
+            ).width >
+              maxWidth &&
+            index > 0
+          ) {
+            ctx.fillText(
+              line,
+              x,
+              yy
+            );
 
-          line =
-            word + " ";
+            line =
+              word + " ";
 
-          yy += lineHeight;
-        } else {
-          line = test;
+            yy += lineHeight;
+          } else {
+            line = test;
+          }
         }
-      });
+      );
 
       ctx.fillText(
         line,
@@ -1080,14 +1437,16 @@ export default function Fly() {
 
       if (!ctx) return null;
 
-      const YELLOW = "#ffd400";
+      const YELLOW =
+        "#ffd400";
 
       const MUTED =
         "rgba(244,241,234,0.62)";
 
       const theme =
         CARD_THEMES[
-          index % CARD_THEMES.length
+          index %
+            CARD_THEMES.length
         ];
 
       const PAD = 64;
@@ -1128,11 +1487,16 @@ export default function Fly() {
         "rgba(6,5,10,0.72)"
       );
 
-      ctx.fillStyle = panelGrad;
+      ctx.fillStyle =
+        panelGrad;
+
       ctx.fill();
 
       ctx.lineWidth = 2;
-      ctx.strokeStyle = theme.ring;
+
+      ctx.strokeStyle =
+        theme.ring;
+
       ctx.stroke();
 
       ctx.restore();
@@ -1146,7 +1510,10 @@ export default function Fly() {
 
       ctx.beginPath();
 
-      if (theme.corner === "tl") {
+      if (
+        theme.corner ===
+        "tl"
+      ) {
         ctx.moveTo(
           PAD,
           PAD + 46
@@ -1184,7 +1551,8 @@ export default function Fly() {
 
       ctx.save();
 
-      ctx.textAlign = "right";
+      ctx.textAlign =
+        "right";
 
       ctx.font =
         '700 24px "JetBrains Mono", monospace';
@@ -1193,10 +1561,9 @@ export default function Fly() {
         "rgba(244,241,234,0.5)";
 
       const idxLabel =
-        String(index + 1).padStart(
-          2,
-          "0"
-        ) +
+        String(
+          index + 1
+        ).padStart(2, "0") +
         " / " +
         String(total).padStart(
           2,
@@ -1209,11 +1576,13 @@ export default function Fly() {
         PAD + 26
       );
 
-      ctx.textAlign = "left";
+      ctx.textAlign =
+        "left";
 
       ctx.restore();
 
-      let y = PAD + 108;
+      let y =
+        PAD + 108;
 
       ctx.save();
 
@@ -1263,7 +1632,9 @@ export default function Fly() {
 
       ctx.fillText(
         yearText,
-        w - PAD - yearWidth,
+        w -
+          PAD -
+          yearWidth,
         y
       );
 
@@ -1273,7 +1644,8 @@ export default function Fly() {
 
       ctx.save();
 
-      ctx.fillStyle = YELLOW;
+      ctx.fillStyle =
+        YELLOW;
 
       ctx.font =
         '900 68px "Archivo Black", sans-serif';
@@ -1360,7 +1732,8 @@ export default function Fly() {
 
       ctx.save();
 
-      ctx.fillStyle = MUTED;
+      ctx.fillStyle =
+        MUTED;
 
       ctx.font =
         '500 28px "JetBrains Mono", monospace';
@@ -1399,7 +1772,8 @@ export default function Fly() {
           data.meta[1]
         ) || "";
 
-      ctx.textAlign = "right";
+      ctx.textAlign =
+        "right";
 
       ctx.fillText(
         rightText,
@@ -1415,7 +1789,9 @@ export default function Fly() {
         );
 
       texture.anisotropy = 8;
-      texture.needsUpdate = true;
+
+      texture.needsUpdate =
+        true;
 
       return texture;
     }
@@ -1438,40 +1814,127 @@ export default function Fly() {
         0
       );
 
-    function curveDirectionAt(t) {
-      const tA =
-        Math.max(
-          t - 0.015,
+    /* ========================================================
+       CURVE FRAME
+    ======================================================== */
+
+    function getCurveFrame(t) {
+      const safeT =
+        THREE.MathUtils.clamp(
+          t,
+          0,
+          0.999
+        );
+
+      const tangent =
+        curve
+          .getTangentAt(
+            safeT
+          )
+          .normalize();
+
+      const right =
+        new THREE.Vector3()
+          .crossVectors(
+            tangent,
+            WORLD_UP
+          );
+
+      if (
+        right.lengthSq() <
+        1e-6
+      ) {
+        right.set(
+          1,
+          0,
           0
+        );
+      } else {
+        right.normalize();
+      }
+
+      return {
+        tangent,
+        right,
+      };
+    }
+
+    /* ========================================================
+       CURVE TURN
+    ======================================================== */
+
+    function curveDirectionAt(t) {
+      const sample = 0.012;
+
+      const tA =
+        THREE.MathUtils.clamp(
+          t - sample,
+          0,
+          0.999
         );
 
       const tB =
-        Math.min(
-          t + 0.015,
+        THREE.MathUtils.clamp(
+          t + sample,
+          0,
           0.999
         );
 
       const tanA =
         curve
-          .getTangentAt(tA)
+          .getTangentAt(
+            tA
+          )
           .normalize();
 
       const tanB =
         curve
-          .getTangentAt(tB)
+          .getTangentAt(
+            tB
+          )
           .normalize();
 
-      return (
-        tanB.x -
-        tanA.x
+      const headingA =
+        Math.atan2(
+          tanA.x,
+          -tanA.z
+        );
+
+      const headingB =
+        Math.atan2(
+          tanB.x,
+          -tanB.z
+        );
+
+      return Math.atan2(
+        Math.sin(
+          headingB -
+            headingA
+        ),
+        Math.cos(
+          headingB -
+            headingA
+        )
       );
     }
 
-    const CARD_SIDE_DISTANCE =
-      5.8;
+    /* ========================================================
+       CARD POSITION
+    ======================================================== */
 
-    const CARD_SIDE_ALTERNATE =
-      1.1;
+    /*
+      Cards remain close to the line
+      even though the overall path is
+      now extremely wide.
+    */
+    const CARD_SIDE_DISTANCE =
+      3.2;
+
+    const CARD_EXTRA_OUTSIDE =
+      0.65;
+
+    const CARD_VERTICAL_OFFSET =
+      0.55;
 
     function anchorForWaypoint(
       data,
@@ -1482,77 +1945,68 @@ export default function Fly() {
           data.t
         );
 
-      const tangent =
-        curve
-          .getTangentAt(
-            data.t
-          )
-          .normalize();
+      const frame =
+        getCurveFrame(
+          data.t
+        );
 
-      const right =
-        new THREE.Vector3()
-          .crossVectors(
-            tangent,
-            WORLD_UP
-          )
-          .normalize();
-
-      const bendSide =
+      const turn =
         curveDirectionAt(
           data.t
-        ) > 0
+        );
+
+      const bendSide =
+        turn > 0
           ? -1
           : 1;
 
-      const altNudge =
-        (
-          index % 2 === 0
-            ? 1
-            : -1
-        ) *
-        CARD_SIDE_ALTERNATE;
+      const alternating =
+        index % 2 === 0
+          ? 0.18
+          : -0.18;
+
+      const curvatureStrength =
+        THREE.MathUtils.clamp(
+          Math.abs(turn) * 6,
+          0,
+          CARD_EXTRA_OUTSIDE
+        );
 
       const lateral =
         bendSide *
-          CARD_SIDE_DISTANCE +
-        altNudge;
+          (
+            CARD_SIDE_DISTANCE +
+            curvatureStrength
+          ) +
+        alternating;
 
-      return p
-        .clone()
-        .addScaledVector(
-          right,
-          lateral
-        )
-        .addScaledVector(
-          WORLD_UP,
-          0.75
-        );
+      const anchor =
+        p.clone();
+
+      anchor.addScaledVector(
+        frame.right,
+        lateral
+      );
+
+      anchor.addScaledVector(
+        WORLD_UP,
+        CARD_VERTICAL_OFFSET
+      );
+
+      return anchor;
     }
 
-    /*
-      ============================================================
-      CARD REVEAL WINDOW (proximity-based, per card)
-      ============================================================
+    const CARD_FADE_START_T =
+      0.075;
 
-      Each card now tracks its own fade-in state instead of
-      sharing the global `revealAlpha`. As the helicopter's
-      path progress `t` approaches a card's own `data.t`,
-      that card (and only that card) starts fading in.
+    const CARD_ALPHA_RESPONSE =
+      8.5;
 
-      - CARD_FADE_START_T: how far ahead (in curve-progress
-        units, 0..1) the fade-in begins before the helicopter
-        actually reaches the card's waypoint.
-      - Once the helicopter has passed a card's waypoint
-        (t >= data.t), that card stays fully visible.
-      - CARD_ALPHA_RESPONSE controls how snappy/smooth the
-        per-card fade transition feels.
-    */
-    const CARD_FADE_START_T = 0.075;
-    const CARD_ALPHA_RESPONSE = 8.5;
+    const CARD_ENTER_DISTANCE =
+      0.65;
 
-    // Card entrance animation
-    const CARD_ENTER_DISTANCE = 1.35;
-    const CARD_ENTER_RESPONSE = 7.5;
+    const CARD_ENTER_RESPONSE =
+      7.5;
 
     function buildCardMeshes() {
       const total =
@@ -1575,14 +2029,6 @@ export default function Fly() {
               3.6
             );
 
-          /*
-            NOTE: cards start fully invisible
-            (opacity 0, visible = false).
-            Each card fades in on its own, only
-            once the helicopter approaches its
-            specific waypoint — see the per-card
-            reveal logic inside animate().
-          */
           const material =
             new THREE.MeshBasicMaterial({
               map: texture,
@@ -1604,25 +2050,31 @@ export default function Fly() {
               index
             );
 
-          mesh.position.copy(anchor);
+          mesh.position.copy(
+            anchor
+          );
 
           mesh.userData.basePos =
             anchor.clone();
 
-          // Store this card's own waypoint t and
-          // a running alpha value used for its
-          // independent fade-in.
-          mesh.userData.t = data.t;
-          mesh.userData.alpha = 0;
-          mesh.userData.enter = 0;
+          mesh.userData.t =
+            data.t;
+
+          mesh.userData.alpha =
+            0;
+
+          mesh.userData.enter =
+            0;
 
           mesh.rotation.set(
-            0,
+            -0.285,
             0,
             0
           );
 
-          mesh.scale.setScalar(1);
+          mesh.scale.setScalar(
+            1
+          );
 
           mesh.visible = false;
 
@@ -1645,68 +2097,48 @@ export default function Fly() {
     }
 
     /* ========================================================
-       SCROLL CONTROL
+       SMOOTH SCROLL
     ======================================================== */
 
+    let scrollTargetT = 0;
+
     let targetT = 0;
+
     let currentT = 0;
 
     let flightComplete = false;
 
-    /*
-      REVEAL SYSTEM (flight line only):
-      The path stays hidden (opacity 0) until
-      the user actually scrolls. Once targetT moves
-      past REVEAL_THRESHOLD, revealAlpha smoothly
-      eases 0 -> 1 and the line fades in.
+    const SCROLL_SENSITIVITY =
+      0.000045;
 
-      Cards no longer use this — see CARD_FADE_START_T
-      above for their own independent, proximity-based
-      reveal.
-    */
+    const TARGET_RESPONSE =
+      7.5;
+
+    const FLIGHT_RESPONSE =
+      5.5;
+
     let revealAlpha = 0;
 
-    const REVEAL_THRESHOLD = 0.0005;
+    const REVEAL_THRESHOLD =
+      0.0005;
 
-    const REVEAL_RESPONSE = 5.5;
+    const REVEAL_RESPONSE =
+      5.5;
 
-    /*
-      OLD:
-      0.000009
-
-      This was WAY too slow.
-
-      NEW:
-      0.00032
-
-      This gives proper movement with normal
-      mouse-wheel input.
-    */
-
-    const SCROLL_SENSITIVITY =
-      0.000055;
-
-    /*
-      Prevent one huge mouse-wheel event from
-      instantly jumping the helicopter.
-    */
-
-    const MAX_WHEEL_DELTA = 120;
-
-    /*
-      Extra smoothing for targetT.
-    */
-
-    const TARGET_SMOOTHING = 0.18;
+    const MAX_WHEEL_DELTA =
+      120;
 
     const FLIGHT_COMPLETE_THRESHOLD =
       0.999;
 
     function releaseFlightLock() {
-      if (flightComplete) return;
+      if (flightComplete) {
+        return;
+      }
 
       flightComplete = true;
 
+      scrollTargetT = 1;
       targetT = 1;
       currentT = 1;
 
@@ -1719,22 +2151,25 @@ export default function Fly() {
       );
     }
 
-    /*
-      Normalize wheel delta.
+    function normalizeWheelDelta(
+      event
+    ) {
+      let delta =
+        event.deltaY;
 
-      Different browsers/mice can send
-      different delta values.
-    */
-
-    function normalizeWheelDelta(event) {
-      let delta = event.deltaY;
-
-      if (event.deltaMode === 1) {
+      if (
+        event.deltaMode ===
+        1
+      ) {
         delta *= 16;
       }
 
-      if (event.deltaMode === 2) {
-        delta *= window.innerHeight;
+      if (
+        event.deltaMode ===
+        2
+      ) {
+        delta *=
+          window.innerHeight;
       }
 
       return THREE.MathUtils.clamp(
@@ -1744,33 +2179,28 @@ export default function Fly() {
       );
     }
 
-    function handleWheel(event) {
+    function handleWheel(
+      event
+    ) {
       if (flightComplete) {
         return;
       }
 
-      /*
-        Stop the browser from moving the page
-        while helicopter flight is active.
-      */
-
       event.preventDefault();
 
       const delta =
-        normalizeWheelDelta(event);
-
-      /*
-        Convert wheel movement into
-        normalized flight progress.
-      */
+        normalizeWheelDelta(
+          event
+        );
 
       const progress =
         delta *
         SCROLL_SENSITIVITY;
 
-      targetT =
+      scrollTargetT =
         THREE.MathUtils.clamp(
-          targetT + progress,
+          scrollTargetT +
+            progress,
           0,
           1
         );
@@ -1785,12 +2215,14 @@ export default function Fly() {
     );
 
     /* ========================================================
-       TOUCH CONTROL
+       TOUCH
     ======================================================== */
 
     let touchStartY = null;
 
-    function handleTouchStart(event) {
+    function handleTouchStart(
+      event
+    ) {
       if (
         !event.touches ||
         !event.touches.length
@@ -1802,7 +2234,9 @@ export default function Fly() {
         event.touches[0].clientY;
     }
 
-    function handleTouchMove(event) {
+    function handleTouchMove(
+      event
+    ) {
       if (flightComplete) {
         touchStartY = null;
         return;
@@ -1821,16 +2255,18 @@ export default function Fly() {
 
       const dy =
         THREE.MathUtils.clamp(
-          touchStartY - currentY,
+          touchStartY -
+            currentY,
           -120,
           120
         );
 
-      touchStartY = currentY;
+      touchStartY =
+        currentY;
 
-      targetT =
+      scrollTargetT =
         THREE.MathUtils.clamp(
-          targetT +
+          scrollTargetT +
             dy *
               SCROLL_SENSITIVITY *
               1.5,
@@ -1889,16 +2325,27 @@ export default function Fly() {
       new THREE.Vector3();
 
     let previousT = 0;
-    let previousPathVelocity = 0;
+
+    let smoothedPathVelocity = 0;
+
+    let smoothedPathAcceleration = 0;
+
+    let previousSmoothedVelocity = 0;
 
     let rotorDrive =
       IDLE_ROTOR_TIME_SCALE;
 
-    const CHASE_DISTANCE = 2.8;
-    const CHASE_HEIGHT = 1;
-    const CAMERA_LOOK_AHEAD = 3.2;
+    const CHASE_DISTANCE =
+      2.8;
 
-    const CAMERA_ROTATION_RESPONSE = 4.8;
+    const CHASE_HEIGHT =
+      1;
+
+    const CAMERA_LOOK_AHEAD =
+      3.2;
+
+    const CAMERA_ROTATION_RESPONSE =
+      4.8;
 
     const tangentPrev =
       new THREE.Vector3();
@@ -1942,6 +2389,10 @@ export default function Fly() {
     const desiredCameraQuat =
       new THREE.Quaternion();
 
+    let smoothBank = 0;
+
+    let smoothPitch = 0;
+
     function signedTurnAmount(t) {
       const sample =
         THREE.MathUtils.clamp(
@@ -1967,13 +2418,17 @@ export default function Fly() {
 
       tangentPrev
         .copy(
-          curve.getTangentAt(ta)
+          curve.getTangentAt(
+            ta
+          )
         )
         .normalize();
 
       tangentNext
         .copy(
-          curve.getTangentAt(tb)
+          curve.getTangentAt(
+            tb
+          )
         )
         .normalize();
 
@@ -1990,8 +2445,12 @@ export default function Fly() {
         );
 
       return Math.atan2(
-        Math.sin(b - a),
-        Math.cos(b - a)
+        Math.sin(
+          b - a
+        ),
+        Math.cos(
+          b - a
+        )
       );
     }
 
@@ -2010,54 +2469,99 @@ export default function Fly() {
         );
 
       /* ======================================================
-         TARGET SMOOTHING
+         SMOOTH FLIGHT TARGET
       ====================================================== */
 
-      /*
-        Instead of directly jumping to targetT,
-        smooth it every frame.
-      */
-
-      const targetDifference =
-        targetT - currentT;
-
-      currentT +=
-        targetDifference *
-        (
-          1 -
-          Math.exp(
-            -11.5 * dt
-          )
+      const targetBlend =
+        1 -
+        Math.exp(
+          -TARGET_RESPONSE *
+            dt
         );
 
-      /*
-        Snap to final point once sufficiently close.
-      */
+      targetT +=
+        (
+          scrollTargetT -
+          targetT
+        ) *
+        targetBlend;
+
+      const flightBlend =
+        1 -
+        Math.exp(
+          -FLIGHT_RESPONSE *
+            dt
+        );
+
+      currentT +=
+        (
+          targetT -
+          currentT
+        ) *
+        flightBlend;
 
       if (
-        targetT >= 1 &&
+        Math.abs(
+          currentT -
+            targetT
+        ) <
+        0.00001
+      ) {
+        currentT =
+          targetT;
+      }
+
+      scrollTargetT =
+        THREE.MathUtils.clamp(
+          scrollTargetT,
+          0,
+          1
+        );
+
+      targetT =
+        THREE.MathUtils.clamp(
+          targetT,
+          0,
+          1
+        );
+
+      currentT =
+        THREE.MathUtils.clamp(
+          currentT,
+          0,
+          1
+        );
+
+      if (
+        scrollTargetT >= 1 &&
+        targetT >= 0.998 &&
         currentT >=
           FLIGHT_COMPLETE_THRESHOLD
       ) {
-        currentT = 1;
+        scrollTargetT = 1;
         targetT = 1;
+        currentT = 1;
 
         releaseFlightLock();
       }
 
       if (
-        targetT <= 0 &&
-        currentT <= 0.0001
+        scrollTargetT <= 0 &&
+        targetT <= 0.00001 &&
+        currentT <= 0.00001
       ) {
+        scrollTargetT = 0;
+        targetT = 0;
         currentT = 0;
       }
 
       /* ======================================================
-         REVEAL (flight line only — fades in on first scroll)
+         REVEAL
       ====================================================== */
 
       const revealTarget =
-        targetT > REVEAL_THRESHOLD
+        scrollTargetT >
+        REVEAL_THRESHOLD
           ? 1
           : 0;
 
@@ -2069,7 +2573,8 @@ export default function Fly() {
         (
           1 -
           Math.exp(
-            -REVEAL_RESPONSE * dt
+            -REVEAL_RESPONSE *
+              dt
           )
         );
 
@@ -2086,7 +2591,7 @@ export default function Fly() {
          PATH VELOCITY
       ====================================================== */
 
-      const pathVelocity =
+      const rawPathVelocity =
         (
           currentT -
           previousT
@@ -2096,29 +2601,53 @@ export default function Fly() {
           0.001
         );
 
-      const pathAcceleration =
+      const velocityBlend =
+        1 -
+        Math.exp(
+          -12 * dt
+        );
+
+      smoothedPathVelocity +=
         (
-          pathVelocity -
-          previousPathVelocity
+          rawPathVelocity -
+          smoothedPathVelocity
+        ) *
+        velocityBlend;
+
+      const rawAcceleration =
+        (
+          smoothedPathVelocity -
+          previousSmoothedVelocity
         ) /
         Math.max(
           dt,
           0.001
         );
 
-      previousPathVelocity +=
-        (
-          pathVelocity -
-          previousPathVelocity
-        ) *
-        (
-          1 -
-          Math.exp(
-            -6 * dt
-          )
+      const accelerationBlend =
+        1 -
+        Math.exp(
+          -9 * dt
         );
 
-      previousT = currentT;
+      smoothedPathAcceleration +=
+        (
+          rawAcceleration -
+          smoothedPathAcceleration
+        ) *
+        accelerationBlend;
+
+      previousSmoothedVelocity =
+        smoothedPathVelocity;
+
+      previousT =
+        currentT;
+
+      const pathVelocity =
+        smoothedPathVelocity;
+
+      const pathAcceleration =
+        smoothedPathAcceleration;
 
       const speed01 =
         THREE.MathUtils.clamp(
@@ -2182,16 +2711,16 @@ export default function Fly() {
           )
           .normalize();
 
-      updateLineProgressColor(t);
+      updateLineProgressColor(
+        t
+      );
 
       /* ======================================================
          BACKGROUND
       ====================================================== */
 
-      // Normalized distance travelled by the helicopter.
-      // Keep this inside the animation scope so every star layer
-      // can safely use it without a ReferenceError.
-      const starTravel = t * CURVE_LENGTH;
+      const starTravel =
+        t * CURVE_LENGTH;
 
       starField.rotation.y +=
         dt * 0.004;
@@ -2199,15 +2728,29 @@ export default function Fly() {
       dustField.rotation.y -=
         dt * 0.008;
 
-      upperStarField.rotation.y += dt * 0.001;
-      upperStarField.material.uniforms.uTime.value += dt * 0.8;
-      starTrailField.material.uniforms.uTime.value += dt;
+      upperStarField.rotation.y +=
+        dt * 0.001;
 
-      // Move the star corridor with the flight so fresh stars keep
-      // entering from above/front instead of the sky feeling static.
-      upperStarField.position.z = -starTravel * 0.32;
-      upperStarField.position.y = 16 + Math.sin(t * Math.PI * 1.7) * 2.5;
-      starTrailField.position.z = -starTravel * 0.52;
+      upperStarField.material.uniforms.uTime.value +=
+        dt * 0.8;
+
+      starTrailField.material.uniforms.uTime.value +=
+        dt;
+
+      upperStarField.position.z =
+        -starTravel * 0.32;
+
+      upperStarField.position.y =
+        16 +
+        Math.sin(
+          t *
+            Math.PI *
+            1.7
+        ) *
+          2.5;
+
+      starTrailField.position.z =
+        -starTravel * 0.52;
 
       starField.material.uniforms.uTime.value +=
         dt;
@@ -2253,6 +2796,19 @@ export default function Fly() {
           -1.05,
           1.05
         );
+
+      const bankBlend =
+        1 -
+        Math.exp(
+          -7.5 * dt
+        );
+
+      smoothBank +=
+        (
+          targetBank -
+          smoothBank
+        ) *
+        bankBlend;
 
       const headingLookAhead =
         THREE.MathUtils.clamp(
@@ -2313,14 +2869,14 @@ export default function Fly() {
         .copy(right)
         .applyAxisAngle(
           tangentNext,
-          targetBank
+          smoothBank
         );
 
       planeUp
         .copy(flightUp)
         .applyAxisAngle(
           tangentNext,
-          targetBank
+          smoothBank
         );
 
       basis.makeBasis(
@@ -2350,7 +2906,7 @@ export default function Fly() {
          PITCH
       ====================================================== */
 
-      const accelerationPitch =
+      const targetPitch =
         THREE.MathUtils.clamp(
           -pathAcceleration *
             0.0025,
@@ -2358,14 +2914,28 @@ export default function Fly() {
           0.055
         );
 
+      const pitchBlend =
+        1 -
+        Math.exp(
+          -7 * dt
+        );
+
+      smoothPitch +=
+        (
+          targetPitch -
+          smoothPitch
+        ) *
+        pitchBlend;
+
       if (
         Math.abs(
-          accelerationPitch
-        ) > 0.0001
+          smoothPitch
+        ) >
+        0.0001
       ) {
         pitchQuat.setFromAxisAngle(
           right,
-          accelerationPitch
+          smoothPitch
         );
 
         planeQuat.multiply(
@@ -2377,7 +2947,9 @@ export default function Fly() {
          HELICOPTER POSITION
       ====================================================== */
 
-      plane.position.copy(pos);
+      plane.position.copy(
+        pos
+      );
 
       plane.quaternion.copy(
         planeQuat
@@ -2396,7 +2968,9 @@ export default function Fly() {
         jetMixer.update(dt);
       }
 
-      planeGlow.position.copy(pos);
+      planeGlow.position.copy(
+        pos
+      );
 
       /* ======================================================
          CHASE CAMERA
@@ -2512,23 +3086,6 @@ export default function Fly() {
         camera.userData.initialized =
           true;
       } else {
-        /*
-          Position follows path directly.
-          Rotation remains smoothly interpolated.
-        */
-
-        /*
-          IMPORTANT:
-          Keep the camera at the exact chase position.
-
-          The previous cameraPos.lerp() introduced a small
-          positional lag while scrolling. That made the camera
-          move forward/backward relative to the helicopter.
-
-          Position now follows the calculated chase point
-          directly, while rotation remains smoothly interpolated.
-        */
-
         cameraPos.copy(
           desiredCamPos
         );
@@ -2558,17 +3115,11 @@ export default function Fly() {
       );
 
       /* ======================================================
-         CARDS — proximity-based, per-card reveal
+         CARDS
       ====================================================== */
 
       cardMeshes.forEach(
         (mesh) => {
-          /*
-            IMPORTANT: define cardT BEFORE using it.
-            The previous version calculated enterTarget
-            before cardT was initialized, which caused:
-            Cannot access 'cardT' before initialization.
-          */
           const cardT =
             mesh.userData.t;
 
@@ -2579,7 +3130,10 @@ export default function Fly() {
           const enterTarget =
             t >= fadeStart
               ? THREE.MathUtils.clamp(
-                  (t - fadeStart) /
+                  (
+                    t -
+                    fadeStart
+                  ) /
                     CARD_FADE_START_T,
                   0,
                   1
@@ -2587,44 +3141,76 @@ export default function Fly() {
               : 0;
 
           mesh.userData.enter +=
-            (enterTarget - mesh.userData.enter) *
-            (1 - Math.exp(-CARD_ENTER_RESPONSE * dt));
+            (
+              enterTarget -
+              mesh.userData.enter
+            ) *
+            (
+              1 -
+              Math.exp(
+                -CARD_ENTER_RESPONSE *
+                  dt
+              )
+            );
 
           const enter =
             mesh.userData.enter;
+
+          /*
+            IMPORTANT:
+
+            Card uses its own tangent,
+            so the entrance animation
+            stays attached to its own
+            waypoint.
+          */
+          const cardTangent =
+            curve
+              .getTangentAt(
+                THREE.MathUtils.clamp(
+                  cardT,
+                  0,
+                  0.999
+                )
+              )
+              .normalize();
 
           mesh.position.copy(
             mesh.userData.basePos
           );
 
-          // Card comes from slightly behind the flight path.
           mesh.position.addScaledVector(
-            tangent,
-            (1 - enter) * -CARD_ENTER_DISTANCE
+            cardTangent,
+            (
+              1 -
+              enter
+            ) *
+              -CARD_ENTER_DISTANCE
           );
 
-          // Small upward settle.
           mesh.position.y +=
-            (1 - enter) * 0.45;
-          // Keep every card perfectly straight.
-          mesh.rotation.set(-0.285, 0, 0);
+            (
+              1 -
+              enter
+            ) *
+            0.3;
 
-          // Small -> full scale.
-          mesh.scale.setScalar(
-            THREE.MathUtils.lerp(0.82, 1, enter)
+          mesh.rotation.set(
+            -0.285,
+            0,
+            0
           );
 
-          /*
-            Target opacity for THIS card only:
-            - 0 while the helicopter is still far
-              before this card's waypoint.
-            - Ramps 0 -> 1 as t moves through the
-              CARD_FADE_START_T window right before
-              the card's own t.
-            - Stays at 1 once the helicopter has
-              reached / passed this card's t.
-          */
-          let targetAlpha = enter;
+          mesh.scale.setScalar(
+            THREE.MathUtils.lerp(
+              0.84,
+              1,
+              enter
+            )
+          );
+
+          const targetAlpha =
+            enter;
 
           mesh.userData.alpha +=
             (
@@ -2672,7 +3258,8 @@ export default function Fly() {
 
       renderer.setPixelRatio(
         Math.min(
-          window.devicePixelRatio || 1,
+          window.devicePixelRatio ||
+            1,
           2
         )
       );

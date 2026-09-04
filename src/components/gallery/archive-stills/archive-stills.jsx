@@ -13,6 +13,137 @@ const slides = [
   { src: "/images/gallery/first.jpg", type: "image", tag: "EXTRACT_003.DPX", title: "COLOR PASS" },
 ];
 
+/* ══════════════════════════════
+   REVEAL ANIMATION HELPERS
+   (newsgrid.jsx wale hi pattern se liya — sirf inline style inject
+   karte hain, CSS module ko bilkul touch nahi karte)
+══════════════════════════════ */
+const useRevealVisible = () => {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0, rootMargin: "0px 0px -2% 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return [ref, visible];
+};
+
+// stage jaisa element jiska apna ref+pointer-handlers already hai —
+// isliye naya wrapper div nahi, balki wahi existing ref observe karte hain
+const useRevealVisibleFor = (externalRef) => {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = externalRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0, rootMargin: "0px 0px -2% 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return visible;
+};
+
+const clipStart = {
+  left: "inset(0 100% 0 0)",
+  right: "inset(0 0 0 100%)",
+  up: "inset(100% 0 0 0)",
+  down: "inset(0 0 100% 0)",
+};
+
+const Reveal = ({
+  children,
+  className = "",
+  delay = 0,
+  as = "div",
+  direction = "left",
+  duration = 1.1,
+  style: extraStyle = {},
+}) => {
+  const Tag = as;
+  const [ref, visible] = useRevealVisible();
+
+  const style = {
+    clipPath: visible ? "inset(0 0 0 0)" : clipStart[direction],
+    WebkitClipPath: visible ? "inset(0 0 0 0)" : clipStart[direction],
+    opacity: visible ? 1 : 0,
+    transitionProperty: "clip-path, -webkit-clip-path, opacity",
+    transitionDuration: `${duration}s, ${duration}s, 0.1s`,
+    transitionTimingFunction: "cubic-bezier(0.83,0,0.17,1)",
+    transitionDelay: `${delay}ms`,
+    willChange: "clip-path, opacity",
+    ...extraStyle,
+  };
+
+  return (
+    <Tag ref={ref} className={className} style={style}>
+      {children}
+    </Tag>
+  );
+};
+
+const RevealLetters = ({ text, delay = 0, step = 16, className = "" }) => {
+  const [ref, visible] = useRevealVisible();
+
+  return (
+    <span ref={ref} className={className} style={{ display: "inline-block" }}>
+      {text.split("").map((char, i) => (
+        <span
+          key={i}
+          style={{
+            display: "inline-block",
+            overflow: "hidden",
+            lineHeight: 1,
+            verticalAlign: "bottom",
+          }}
+        >
+          <i
+            style={{
+              display: "inline-block",
+              fontStyle: "normal",
+              transform: visible ? "translateY(0%)" : "translateY(115%)",
+              transition: `transform 1.4s cubic-bezier(0.19,1,0.22,1) ${delay + i * step}ms`,
+              willChange: "transform",
+            }}
+          >
+            {char === " " ? "\u00A0" : char}
+          </i>
+        </span>
+      ))}
+    </span>
+  );
+};
+
 // Responsive Icon Component
 const ArchiveIcon = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -51,6 +182,10 @@ const ArchiveAndStills = () => {
   const currentDrag = useRef(0);
   const stageRef = useRef(null);
 
+  // stage ka apna ref+pointer handlers already hain, isliye Reveal wrapper
+  // add nahi karte — direct usi node ko observe karte hain
+  const stageVisible = useRevealVisibleFor(stageRef);
+
   const goTo = (index) => {
     const clamped = Math.max(0, Math.min(slides.length - 1, index));
     setActive(clamped);
@@ -88,18 +223,25 @@ const ArchiveAndStills = () => {
 
   return (
     <section className={styles["archs-section"]}>
-      <div className={styles["archs-badge-wrapper"]}>
+      <Reveal as="div" direction="left" duration={1.4} className={styles["archs-badge-wrapper"]}>
         <ArchiveIcon />
         <div className={styles["archs-badge"]}>
           <h3>[ 01 // FRAMEWORK ]</h3>
         </div>
-      </div>
+      </Reveal>
 
       <h2 className={styles["archs-heading-row"]}>
         {headings.map((heading, index) => (
-          <span key={index} className={heading.style === "outline" ? styles["archs-text-outline"] : styles["archs-text-solid"]}>
+          <Reveal
+            key={index}
+            as="span"
+            direction="up"
+            duration={1.3}
+            delay={index * 200}
+            className={heading.style === "outline" ? styles["archs-text-outline"] : styles["archs-text-solid"]}
+          >
             {heading.text}
-          </span>
+          </Reveal>
         ))}
       </h2>
 
@@ -110,6 +252,16 @@ const ArchiveAndStills = () => {
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerLeave={handlePointerUp}
+        style={{
+          clipPath: stageVisible ? "inset(0 0 0 0)" : "inset(0 0 100% 0)",
+          WebkitClipPath: stageVisible ? "inset(0 0 0 0)" : "inset(0 0 100% 0)",
+          opacity: stageVisible ? 1 : 0,
+          transitionProperty: "clip-path, -webkit-clip-path, opacity",
+          transitionDuration: "1.8s, 1.8s, 0.1s",
+          transitionTimingFunction: "cubic-bezier(0.83,0,0.17,1)",
+          transitionDelay: "300ms",
+          willChange: "clip-path, opacity",
+        }}
       >
         <div
           className={styles["archs-track"]}
@@ -125,17 +277,26 @@ const ArchiveAndStills = () => {
           ))}
         </div>
         <div className={styles["archs-media-overlay"]} />
-        <div className={styles["archs-caption"]} key={active}>
-          <span className={styles["archs-caption-tag"]}>{slides[active].tag}</span>
-          <h3 className={styles["archs-caption-title"]}>{slides[active].title}</h3>
-        </div>
+        <Reveal as="div" direction="up" duration={1.1} delay={200} className={styles["archs-caption"]} key={active}>
+          <span className={styles["archs-caption-tag"]}>
+            <RevealLetters text={slides[active].tag} step={14} />
+          </span>
+          <h3 className={styles["archs-caption-title"]}>
+            <RevealLetters text={slides[active].title} delay={150} step={20} />
+          </h3>
+        </Reveal>
       </div>
 
-      <div className={styles["archs-dots"]}>
+      <Reveal as="div" direction="up" duration={1.2} delay={500} className={styles["archs-dots"]}>
         {slides.map((_, index) => (
-          <button key={index} className={`${styles["archs-dot"]} ${index === active ? styles.active : ""}`} onClick={() => goTo(index)} aria-label={`Slide ${index + 1}`} />
+          <button
+            key={index}
+            className={`${styles["archs-dot"]} ${index === active ? styles.active : ""}`}
+            onClick={() => goTo(index)}
+            aria-label={`Slide ${index + 1}`}
+          />
         ))}
-      </div>
+      </Reveal>
     </section>
   );
 };
