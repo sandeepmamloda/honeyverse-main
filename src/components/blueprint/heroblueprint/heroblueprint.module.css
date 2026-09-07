@@ -51,7 +51,7 @@
   padding-block-end: 2rem;
 }
 
-/* ── RETURN TO GALLERY PILL (badge slot — kept as-is) ── */
+/* ── RETURN TO GALLERY PILL ── */
 .return-link {
   display: inline-flex;
   align-items: center;
@@ -61,7 +61,7 @@
   width: fit-content;
   padding: 0.6rem 1.1rem;
 
-  background: return-link;
+  background: rgba(255, 255, 255, 0.6);
   border: solid 0.06rem rgba(255, 202, 26, 1);
   border-radius: 999px;
   cursor: pointer;
@@ -91,7 +91,7 @@
   transform: translateX(-3px);
 }
 
-/* ── HEADING ROW (matches Heroawards) ── */
+/* ── HEADING ROW ── */
 .textual-content .heading-row {
   height: fit-content;
   margin-block-start: 3rem;
@@ -120,14 +120,14 @@
   -webkit-text-stroke: 3px #e0195a;
 }
 
-/* ── DESCRIPTION BOX (matches Heroawards) ── */
+/* ── DESCRIPTION BOX ── */
 .bottom-last {
   height: fit-content;
   width: fit-content;
   max-width: 40rem;
 
   margin-inline-start: auto;
-  margin-block-start: auto; /* <-- ye important hai */
+  margin-block-start: auto;
 
   background: rgba(255, 255, 255, 0.3);
   border-left: solid 0.3rem rgba(217, 24, 106, 1);
@@ -146,53 +146,19 @@
 }
 
 /* ══════════════════════════════
-   SCROLL REVEAL ANIMATIONS
+   1200px — heading text ke liye top padding badhao
 ══════════════════════════════ */
-.reveal-up {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-
-.reveal-left {
-  opacity: 0;
-  transform: translateX(-32px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-
-.reveal-right {
-  opacity: 0;
-  transform: translateX(32px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-
-.reveal-visible {
-  opacity: 1;
-  transform: translate(0, 0);
+@media screen and (max-width: 1200px) {
+  .textual-content {
+    padding-inline-start: 5rem;
+    padding-block-start: 20rem;
+  }
 }
 
 /* ══════════════════════════════
-   TABLET  (≤ 1024px)
+   TABLET & BELOW  (≤ 1024px) — centered layout shuru
 ══════════════════════════════ */
 @media screen and (max-width: 1024px) {
-  .textual-content {
-    padding-inline-start: 4rem;
-    padding-inline-end: 2rem;
-  }
-
-  .textual-content .heading-row {
-    margin-block-start: 2rem;
-  }
-
-  .bottom-last {
-    padding-inline-end: 2rem;
-  }
-}
-
-/* ══════════════════════════════
-   MOBILE  (≤ 640px)
-══════════════════════════════ */
-@media screen and (max-width: 640px) {
   .textual-content {
     padding-inline: 1.5rem;
     padding-block-start: 6rem;
@@ -202,7 +168,7 @@
     row-gap: 0;
   }
 
-  /* badge + headings ek saath center mein */
+  /* return-link + heading ek saath center mein */
   .headings-group {
     display: flex;
     flex-direction: column;
@@ -233,17 +199,68 @@
   }
 
   .bottom-last {
-    margin-inline-start: 0;
-    max-width: 100%;
+    align-self: center;
+    width: 100%;
+    max-width: 40rem;
+    margin-inline: auto;
     padding-inline-end: 1rem;
     margin-block-start: 0;
-    align-self: stretch;
     border-right: solid 0.3rem rgba(217, 24, 106, 1);
   }
 
   .bottom-last h2 {
     font-size: clamp(0.8rem, 3.5vw, 1rem);
     text-align: center;
+  }
+}
+
+/* ══════════════════════════════
+   ≤ 768px — Tablet (portrait) / large mobile
+══════════════════════════════ */
+@media screen and (max-width: 768px) {
+  .textual-content {
+    padding-block-start: 5rem;
+  }
+
+  .textual-content .heading-row {
+    font-size: clamp(2.6rem, 10vw, 6rem);
+  }
+
+  .return-link {
+    margin-bottom: 2.5rem;
+  }
+}
+
+/* ══════════════════════════════
+   ≤ 480px — Mobile (small)
+══════════════════════════════ */
+@media screen and (max-width: 480px) {
+  .textual-content {
+    padding-block-start: 4rem;
+    padding-inline: 1.1rem;
+  }
+
+  .return-link {
+    padding: 0.4rem 0.55rem;
+    margin-bottom: 2rem;
+  }
+
+  .return-link span {
+    font-size: 0.6rem;
+  }
+
+  .textual-content .heading-row {
+    font-size: clamp(2.2rem, 11vw, 4rem);
+  }
+
+  .bottom-last {
+    padding-inline-start: 0.8rem;
+    padding-inline-end: 0.8rem;
+    padding-block: 0.8rem;
+  }
+
+  .bottom-last h2 {
+    font-size: 0.78rem;
   }
 }
 
@@ -257,14 +274,14 @@
   }
 
   .textual-content .heading-row {
-    font-size: clamp(2.4rem, 11vw, 3.5rem);
+    font-size: clamp(2rem, 11vw, 3.5rem);
   }
 }
 
 /* ══════════════════════════════
    HEIGHT-BASED — only desktop/tablet
 ══════════════════════════════ */
-@media screen and (max-height: 944px) and (min-width: 641px) {
+@media screen and (max-height: 944px) and (min-width: 481px) {
   .textual-content {
     padding-block-start: 12rem;
   }

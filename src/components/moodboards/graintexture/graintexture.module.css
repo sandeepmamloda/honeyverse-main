@@ -162,6 +162,8 @@
 
 /* ══════════════════════════════
    SCROLL REVEAL ANIMATIONS
+   (ab JSX inline-style se clip-path drive karta hai, ye classes
+   currently unused hain — safe hai rehne dena)
 ══════════════════════════════ */
 .reveal-up {
   opacity: 0;
@@ -277,7 +279,6 @@
 
   .heading-row {
     letter-spacing: -0.18rem;
-    /* line-height: 1.1; */
   }
 
   .panels-grid {
@@ -354,6 +355,44 @@
 }
 
 /* ══════════════════════════════
+   NEW — STANDARD (≤ 640px)
+   768px aur 480px ke beech ka fine-tuning step, taaki transition
+   achanak/jarring na lage — large mobile phones.
+══════════════════════════════ */
+@media screen and (max-width: 640px) {
+  .graintexture-main {
+    padding-inline: 1.4rem;
+    padding-block: 3.25rem;
+  }
+
+  .header-group {
+    margin-block-end: 2.75rem;
+  }
+
+  .heading-row {
+    font-size: clamp(2.2rem, 9vw, 3.2rem);
+    letter-spacing: -0.1rem;
+  }
+
+  .text-outline {
+    -webkit-text-stroke-width: 1.75px;
+  }
+
+  .paragraph {
+    font-size: clamp(0.75rem, 2vw, 0.85rem);
+    line-height: 1.25rem;
+  }
+
+  .panels-grid {
+    gap: 1.1rem;
+  }
+
+  .panel-image-wrapper {
+    height: 22rem;
+  }
+}
+
+/* ══════════════════════════════
    STANDARD  (≤ 480px) — Mobile (small)
 ══════════════════════════════ */
 @media screen and (max-width: 480px) {
@@ -381,6 +420,10 @@
     line-height: 1.3rem;
   }
 
+  .panels-grid {
+    gap: 1rem;
+  }
+
   .panel-image-wrapper {
     height: 20rem;
   }
@@ -401,6 +444,14 @@
   .paragraph {
     font-size: 0.65rem;
     letter-spacing: 0.06rem;
+  }
+
+  .panels-grid {
+    gap: 0.85rem;
+  }
+
+  .panel-image-wrapper {
+    height: 18rem;
   }
 
   .panel-tag {

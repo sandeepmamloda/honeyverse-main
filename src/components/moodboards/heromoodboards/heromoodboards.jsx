@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import styles from "./heromoodboards.module.css";
 
 const headings = [
@@ -8,59 +9,78 @@ const headings = [
   { text: "BOARDS", style: "outline" },
 ];
 
-/* Fades an element into place the first time it scrolls into view.
-   direction: "up" (fade + rise), "left" (fade in from the left),
-   "right" (fade in from the right). `delay` (ms) staggers siblings. */
+/* ══════════════════════════════
+   REVEAL ANIMATION HELPERS — TIMER BASED
+   Ye hero section hai (page ka first section), isliye scroll-into-view
+   wala IntersectionObserver yaha kaam ka nahi — page load ke turant baad
+   hi section screen pe hota hai. Isliye ek shared "ready" timer use karte
+   hain jo load ke 3000ms baad true hota hai, aur uske upar har element ka
+   apna stagger delay hota hai.
+══════════════════════════════ */
+const HERO_START_DELAY = 3000; // ms — page load ke kitni der baad animation shuru ho
+
+const useDelayedReady = (delayMs = HERO_START_DELAY) => {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setReady(true), delayMs);
+    return () => clearTimeout(timer);
+  }, [delayMs]);
+
+  return ready;
+};
+
+const clipStart = {
+  left: "inset(0 100% 0 0)",
+  right: "inset(0 0 0 100%)",
+  up: "inset(100% 0 0 0)",
+  down: "inset(0 0 100% 0)",
+};
+
+/* Extra props (onClick, type, etc.) spread onto the tag so it can
+   double up as an interactive element, like the return-link button. */
 const Reveal = ({
   children,
   className = "",
+  ready = false,
   delay = 0,
   as = "div",
-  direction = "up",
+  direction = "left",
+  duration = 1.1,
+  style: extraStyle = {},
+  ...rest
 }) => {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
   const Tag = as;
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.15, rootMargin: "0px 0px -5% 0px" }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  const directionClass =
-    direction === "left"
-      ? styles["reveal-left"]
-      : direction === "right"
-      ? styles["reveal-right"]
-      : styles["reveal-up"];
+  const style = {
+    clipPath: ready ? "inset(0 0 0 0)" : clipStart[direction],
+    WebkitClipPath: ready ? "inset(0 0 0 0)" : clipStart[direction],
+    opacity: ready ? 1 : 0,
+    transitionProperty: "clip-path, -webkit-clip-path, opacity",
+    transitionDuration: `${duration}s, ${duration}s, 0.1s`,
+    transitionTimingFunction: "cubic-bezier(0.83,0,0.17,1)",
+    transitionDelay: `${delay}ms`,
+    willChange: "clip-path, opacity",
+    ...extraStyle,
+  };
 
   return (
-    <Tag
-      ref={ref}
-      className={`${className} ${directionClass} ${
-        visible ? styles["reveal-visible"] : ""
-      }`}
-      style={{ transitionDelay: `${delay}ms` }}
-    >
+    <Tag className={className} style={style} {...rest}>
       {children}
     </Tag>
   );
 };
 
 const Heromoodboard = ({ onReturnToGallery }) => {
+  const ready = useDelayedReady(HERO_START_DELAY);
+  const router = useRouter();
+
+  const handleReturnClick = () => {
+    // agar parent ne apna khud ka handler diya hai to wo bhi chalega
+    onReturnToGallery?.();
+    router.push("/gallery");
+  };
+
   return (
     <section className={styles["heromoodboard-main"]}>
       <div className={styles["heromoodboard-image-wrapper"]}>
@@ -76,45 +96,56 @@ const Heromoodboard = ({ onReturnToGallery }) => {
       <div className={styles["textual-content"]}>
         {/* Return link + Heading — saath mein group */}
         <div className={styles["headings-group"]}>
-          <Reveal direction="up" delay={0}>
-            <button
-              type="button"
-              onClick={onReturnToGallery}
-              className={styles["return-link"]}
-            >
-              <span className={styles["return-arrow"]}>&larr;</span>
-              <span>[ RETURN_TO_GALLERY ]</span>
-            </button>
+          <Reveal
+            as="button"
+            type="button"
+            onClick={handleReturnClick}
+            ready={ready}
+            direction="left"
+            duration={1.2}
+            delay={0}
+            className={styles["return-link"]}
+          >
+            <span className={styles["return-arrow"]}>&larr;</span>
+            <span>[ RETURN_TO_GALLERY ]</span>
           </Reveal>
 
-          <Reveal direction="up" delay={150}>
-            <h1 className={styles["heading-row"]}>
-              {headings.map((heading, index) => (
-                <span
-                  key={index}
-                  className={
-                    heading.style === "outline"
-                      ? styles["text-outline"]
-                      : styles["text-solid"]
-                  }
-                >
-                  {heading.text}
-                </span>
-              ))}
-            </h1>
-          </Reveal>
+          <h1 className={styles["heading-row"]}>
+            {headings.map((heading, index) => (
+              <Reveal
+                key={index}
+                as="span"
+                ready={ready}
+                direction="up"
+                duration={1.3}
+                delay={250 + index * 200}
+                className={
+                  heading.style === "outline"
+                    ? styles["text-outline"]
+                    : styles["text-solid"]
+                }
+              >
+                {heading.text}
+              </Reveal>
+            ))}
+          </h1>
         </div>
 
         {/* Description box — bottom pe */}
-        <div className={styles["bottom-last"]}>
-          <Reveal direction="up" delay={300}>
-            <h2>
-              Visual frequencies and tonal anchors. Aggregating texture,
-              color, and light to establish the exact psychological space
-              of a film before production begins.
-            </h2>
-          </Reveal>
-        </div>
+        <Reveal
+          as="div"
+          ready={ready}
+          direction="up"
+          duration={1.3}
+          delay={700}
+          className={styles["bottom-last"]}
+        >
+          <h2>
+            Visual frequencies and tonal anchors. Aggregating texture,
+            color, and light to establish the exact psychological space
+            of a film before production begins.
+          </h2>
+        </Reveal>
       </div>
     </section>
   );
