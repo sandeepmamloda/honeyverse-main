@@ -1,6 +1,6 @@
 "use client";
 import styles from "./lookbook.module.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const galleryItems = [
   {
@@ -32,6 +32,82 @@ const galleryItems = [
     badge: { type: "scope", label: "SCOPE & SCALE : WIDE" },
   },
 ];
+
+/* ══════════════════════════════
+   REVEAL ANIMATION HELPERS
+   (principles.jsx / optical-signature.jsx wale hi pattern se liya —
+   scroll-triggered, IntersectionObserver based, clip-path driven)
+══════════════════════════════ */
+const useRevealVisible = () => {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0, rootMargin: "-30% 0px -30% 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return [ref, visible];
+};
+
+/* NOTE: overshoot inset use kiya hai (-25%/-10%) instead of exact 0. Bold
+   display fonts (jaise "boldonse" is title mein) apne tight line-height box
+   se thoda upar-neeche paint hote hain — exact 0 clip use karne se glyphs
+   (O, L, K jaisi round/tall letters) top-bottom se cut ho rahe the, chahe
+   animation complete ho chuki ho. Overshoot se clip-box hamesha glyph se
+   bada rehta hai, sirf wipe wali direction hi properly animate hoti hai. */
+const clipStart = {
+  left: "inset(-25% 100% -25% -10%)",
+  right: "inset(-25% -10% -25% 100%)",
+  up: "inset(100% -10% -25% -10%)",
+  down: "inset(-25% -10% 100% -10%)",
+};
+
+const clipEnd = "inset(-25% -10% -25% -10%)";
+
+const Reveal = ({
+  children,
+  className = "",
+  delay = 0,
+  as = "div",
+  direction = "left",
+  duration = 1.1,
+}) => {
+  const Tag = as;
+  const [ref, visible] = useRevealVisible();
+
+  const style = {
+    clipPath: visible ? clipEnd : clipStart[direction],
+    WebkitClipPath: visible ? clipEnd : clipStart[direction],
+    opacity: visible ? 1 : 0,
+    transitionProperty: "clip-path, -webkit-clip-path, opacity",
+    transitionDuration: `${duration}s, ${duration}s, 0.1s`,
+    transitionTimingFunction: "cubic-bezier(0.83,0,0.17,1)",
+    transitionDelay: `${delay}ms`,
+    willChange: "clip-path, opacity",
+  };
+
+  return (
+    <Tag ref={ref} className={className} style={style}>
+      {children}
+    </Tag>
+  );
+};
 
 const LookBook = () => {
   const [openImage, setOpenImage] = useState(null); // holds the clicked gallery item, or null when closed
@@ -67,7 +143,7 @@ const LookBook = () => {
 
       {/* ── HEADER LAYOUT ── */}
       <div className={styles["header-top"]}>
-        <div className={styles["badge-wrapper"]}>
+        <Reveal as="div" direction="left" duration={1} className={styles["badge-wrapper"]}>
           {/* Custom SVG Icon — same style as optical-signature.jsx, no bordered box */}
           <svg className={styles["badge-icon"]} xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
             <path d="M10.417 8.07288C10.4173 7.93412 10.4545 7.79793 10.5248 7.67832C10.5951 7.55871 10.6961 7.45999 10.8172 7.39231C10.9383 7.32463 11.0753 7.29044 11.2141 7.29325C11.3528 7.29606 11.4883 7.33577 11.6066 7.4083L15.4232 9.75101C15.537 9.8209 15.6309 9.91879 15.6961 10.0353C15.7613 10.1518 15.7955 10.2831 15.7955 10.4166C15.7955 10.5501 15.7613 10.6814 15.6961 10.7979C15.6309 10.9145 15.537 11.0124 15.4232 11.0823L11.6066 13.426C11.4881 13.4986 11.3525 13.5383 11.2135 13.5411C11.0746 13.5438 10.9375 13.5094 10.8163 13.4415C10.6951 13.3736 10.5942 13.2745 10.524 13.1546C10.4538 13.0347 10.4169 12.8983 10.417 12.7593V8.07288Z" stroke="#C40053" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
@@ -78,16 +154,25 @@ const LookBook = () => {
           <div className={styles["badge-text"]}>
             <h3>[ 02 // ARCHIVES ]</h3>
           </div>
-        </div>
-        <span className={styles["header-line"]}></span>
+        </Reveal>
+        <Reveal as="span" direction="left" delay={200} duration={1.3} className={styles["header-line"]} />
       </div>
 
       {/* ── BIG TITLE ── */}
       <div className={styles["title-wrapper"]}>
-        <h1 className={styles["main-title"]}>THE LOOKBOOK</h1>
+        <Reveal as="h1" direction="up" delay={150} duration={1.2} className={styles["main-title"]}>
+          THE LOOKBOOK
+        </Reveal>
       </div>
 
-      {/* ── GALLERY GRID (accordion hover) ── */}
+      {/* ── GALLERY GRID (accordion hover) ──
+          NOTE: reveal animation ek INNER wrapper pe lagaya hai, .gallery-item
+          (outer, flex item) pe nahi — kyunki Reveal apna inline transition
+          (clip-path/opacity) set karta hai jo .gallery-item ke apne CSS
+          transition (flex-grow, hover-accordion ke liye) ko override kar
+          deta agar seedha wahi element hota. Outer div hover/active state
+          aur flex-grow purely CSS se control karta hai, andar wala inner
+          div sirf ek-baar-wala scroll reveal karta hai — dono independent. */}
       <div className={styles["gallery-grid"]}>
         {galleryItems.map((item, index) => (
           <div
@@ -97,32 +182,40 @@ const LookBook = () => {
             onMouseEnter={() => { setIsPaused(true); setActiveIndex(index); }}
             onMouseLeave={() => setIsPaused(false)}
           >
-            <img src={item.src} alt={item.alt} className={styles["gallery-image"]} />
+            <Reveal
+              as="div"
+              direction="up"
+              delay={300 + index * 130}
+              duration={1}
+              className={styles["gallery-item-inner"]}
+            >
+              <img src={item.src} alt={item.alt} className={styles["gallery-image"]} />
 
-            {item.badge.type === "pill" && (
-              <span className={styles["pill-badge"]}>{item.badge.label}</span>
-            )}
+              {item.badge.type === "pill" && (
+                <span className={styles["pill-badge"]}>{item.badge.label}</span>
+              )}
 
-            {item.badge.type === "tag" && (
-              <span className={styles["tag-badge"]}>{item.badge.label}</span>
-            )}
+              {item.badge.type === "tag" && (
+                <span className={styles["tag-badge"]}>{item.badge.label}</span>
+              )}
 
-            {item.badge.type === "center" && (
-              <div className={styles["center-overlay"]}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M6.66667 5.83333L7.91667 3.75H12.0833L13.3333 5.83333H16.25C16.7141 5.83333 17.0833 6.20257 17.0833 6.66667V15C17.0833 15.4641 16.7141 15.8333 16.25 15.8333H3.75C3.28587 15.8333 2.91667 15.4641 2.91667 15V6.66667C2.91667 6.20257 3.28587 5.83333 3.75 5.83333H6.66667Z" stroke="#FFF5FA" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-                  <circle cx="10" cy="10.8333" r="2.5" stroke="#FFF5FA" strokeWidth="1.3"/>
-                </svg>
-                <span>{item.badge.label}</span>
-              </div>
-            )}
+              {item.badge.type === "center" && (
+                <div className={styles["center-overlay"]}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M6.66667 5.83333L7.91667 3.75H12.0833L13.3333 5.83333H16.25C16.7141 5.83333 17.0833 6.20257 17.0833 6.66667V15C17.0833 15.4641 16.7141 15.8333 16.25 15.8333H3.75C3.28587 15.8333 2.91667 15.4641 2.91667 15V6.66667C2.91667 6.20257 3.28587 5.83333 3.75 5.83333H6.66667Z" stroke="#FFF5FA" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+                    <circle cx="10" cy="10.8333" r="2.5" stroke="#FFF5FA" strokeWidth="1.3"/>
+                  </svg>
+                  <span>{item.badge.label}</span>
+                </div>
+              )}
 
-            {item.badge.type === "scope" && (
-              <div className={styles["scope-label"]}>
-                <span className={styles["scope-dash"]}></span>
-                {item.badge.label}
-              </div>
-            )}
+              {item.badge.type === "scope" && (
+                <div className={styles["scope-label"]}>
+                  <span className={styles["scope-dash"]}></span>
+                  {item.badge.label}
+                </div>
+              )}
+            </Reveal>
           </div>
         ))}
       </div>

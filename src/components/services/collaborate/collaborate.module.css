@@ -25,8 +25,6 @@
 .badge-icon-wrapper {
   width: 6rem;
   height: 6rem;
-  /* border: 1px solid #E60067; */
-  /* transform: rotate(45deg); */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -63,7 +61,6 @@
   letter-spacing: 0rem;
 }
 
-/* CHANGED: grid -> flex, so child widths can be controlled via flex-basis instead of equal fr columns */
 .main-grid {
   display: flex;
   column-gap: 5.8rem;
@@ -77,7 +74,7 @@
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  flex: 0.85; /* narrower than the image side */
+  flex: 0.85;
   min-width: 0;
 }
 
@@ -124,9 +121,9 @@
 /* Right: Showcase Image with Overlay Caption */
 .image-showcase-wrapper {
   position: relative;
-  height: clamp(16rem, 26vw, 28rem); /* fixed 28rem ki jagah fluid — beech ke breakpoints pe bhi smooth */
+  height: clamp(16rem, 26vw, 28rem);
   overflow: hidden;
-  flex: 1.15; /* wider than the protocol card */
+  flex: 1.15;
   min-width: 0;
 }
 
@@ -218,7 +215,7 @@
 }
 
 /* ══════════════════════════════
-   TABLET & MOBILE RESPONSIVE (≤ 1024px)
+   TABLET (≤ 1024px)
 ══════════════════════════════ */
 @media (max-width: 1024px) {
   .collaborate-main {
@@ -233,7 +230,7 @@
 }
 
 /* ══════════════════════════════
-   STANDARD  (≤ 768px) — Tablet (portrait) / Mobile
+   MOBILE (≤ 768px)
 ══════════════════════════════ */
 @media (max-width: 768px) {
   .collaborate-main {
@@ -249,7 +246,7 @@
   }
   .protocol-card,
   .image-showcase-wrapper {
-    flex: 1; /* equal/full width when stacked on mobile */
+    flex: 1;
   }
   .image-showcase-wrapper {
     height: clamp(12rem, 55vw, 18rem);

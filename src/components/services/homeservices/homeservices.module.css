@@ -1,37 +1,12 @@
 /* ══════════════════════════════
-   SCROLL REVEAL ANIMATIONS
-══════════════════════════════ */
-.reveal-up {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
-}
-
-.reveal-left {
-  opacity: 0;
-  transform: translateX(-40px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
-}
-
-.reveal-right {
-  opacity: 0;
-  transform: translateX(40px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
-}
-
-.reveal-visible {
-  opacity: 1;
-  transform: translate(0, 0);
-}
-
-/* ══════════════════════════════
-   BASE & DESKTOP (Your Exact Layout)
+   BASE & DESKTOP
 ══════════════════════════════ */
 .heroservices-main {
   height: 100svh;
   width: 100%;
   position: relative;
   overflow: hidden;
+  min-height: 850px;
 }
 
 .heroservices-video-wrapper {
@@ -155,9 +130,19 @@
 }
 
 /* ══════════════════════════════
+   TABLET & BELOW  (≤ 1200px) — dead-zone fix, desktop layout still
+══════════════════════════════ */
+@media screen and (max-width: 1200px) {
+  .textual-content {
+    padding-inline-start: 5rem;
+    padding-block-start: 20rem;
+  }
+}
+
+/* ══════════════════════════════
    TABLET  (≤ 1024px)
 ══════════════════════════════ */
-@media (max-width: 1024px) {
+@media screen and (max-width: 1024px) {
   .textual-content {
     padding-inline-start: 4rem;
     padding-inline-end: 2rem;
@@ -175,9 +160,28 @@
 }
 
 /* ══════════════════════════════
+   STANDARD  (≤ 768px) — large mobile / tablet portrait
+══════════════════════════════ */
+@media screen and (max-width: 768px) {
+  .textual-content {
+    padding-block-start: 5rem;
+  }
+
+  .middle,
+  .bottom,
+  .bottom-pink {
+    font-size: clamp(2.6rem, 10vw, 6rem);
+  }
+
+  .top {
+    margin-bottom: 2.5rem;
+  }
+}
+
+/* ══════════════════════════════
    MOBILE  (≤ 640px)
 ══════════════════════════════ */
-@media (max-width: 640px) {
+@media screen and (max-width: 640px) {
   .textual-content {
     padding-inline: 1.5rem;
     padding-block-start: 2rem;
@@ -247,9 +251,44 @@
 }
 
 /* ══════════════════════════════
+   STANDARD  (≤ 480px) — small mobile
+══════════════════════════════ */
+@media screen and (max-width: 480px) {
+  .textual-content {
+    padding-block-start: 1.75rem;
+    padding-inline: 1.1rem;
+  }
+
+  .top {
+    padding: 0.35rem 0.45rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .top h3 {
+    font-size: 0.62rem;
+  }
+
+  .middle,
+  .bottom,
+  .bottom-pink {
+    font-size: clamp(2.2rem, 11vw, 4rem);
+  }
+
+  .bottom-last {
+    padding-inline-start: 0.8rem;
+    padding-inline-end: 0.8rem;
+    padding-block: 0.8rem;
+  }
+
+  .bottom-last h2 {
+    font-size: 0.78rem;
+  }
+}
+
+/* ══════════════════════════════
    VERY SMALL  (≤ 375px)
 ══════════════════════════════ */
-@media (max-width: 375px) {
+@media screen and (max-width: 375px) {
   .textual-content {
     padding-inline-start: 1rem;
     padding-inline-end: 1rem;
@@ -258,14 +297,14 @@
   .middle,
   .bottom,
   .bottom-pink {
-    font-size: clamp(2.4rem, 11vw, 3.5rem);
+    font-size: clamp(2rem, 11vw, 3.5rem);
   }
 }
 
 /* ══════════════════════════════
    HEIGHT-BASED — only desktop/tablet
 ══════════════════════════════ */
-@media (max-height: 944px) and (min-width: 641px) {
+@media screen and (max-height: 944px) and (min-width: 641px) {
   .textual-content {
     padding-block-start: 12rem;
   }
