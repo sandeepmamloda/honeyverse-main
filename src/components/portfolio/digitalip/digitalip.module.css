@@ -1,7 +1,7 @@
 .digital-main {
   position: relative;
   width: 100%;
-  background-color: #FAFAFA;
+  /* background-color: #FAFAFA; */
   padding-block: 6rem 8rem;
   border-bottom: 1px solid rgba(217, 24, 106, 0.3);
   overflow: hidden;

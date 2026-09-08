@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useRef, useState } from "react";
 import styles from "./corelist.module.css";
 
 const coreItems = [
@@ -45,6 +46,44 @@ const coreItems = [
 ];
 
 const CoreList = () => {
+  const listContainerRef = useRef(null);
+  const [visibleRows, setVisibleRows] = useState(() => new Set());
+
+  useEffect(() => {
+    const container = listContainerRef.current;
+    if (!container) return;
+
+    const rows = container.querySelectorAll(`.${styles["list-row"]}`);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const idx = Number(entry.target.dataset.index);
+            // stagger handled here via JS timeout, NOT via CSS transition-delay,
+            // so hover transitions stay untouched by the reveal stagger.
+            setTimeout(() => {
+              setVisibleRows((prev) => {
+                const next = new Set(prev);
+                next.add(idx);
+                return next;
+              });
+            }, idx * 100);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.2,
+        rootMargin: "0px 0px -10% 0px",
+      }
+    );
+
+    rows.forEach((row) => observer.observe(row));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section className={styles["core-list-main"]}>
       {/* ── HEADER LAYOUT ── */}
@@ -61,7 +100,7 @@ const CoreList = () => {
             <h3>[ 02 // CO-PRODUCTIONS ]</h3>
           </div>
         </div>
-        
+
         <div className={styles["title-wrapper"]}>
           <h1 className={styles["main-title"]}>
             <span className={styles["text-solid"]}>THE</span>{" "}
@@ -71,10 +110,16 @@ const CoreList = () => {
       </div>
 
       {/* ── LIST CONTAINER ── */}
-      <div className={styles["list-container"]}>
-        {coreItems.map((item) => (
-          <div key={item.id} className={styles["list-row"]}>
-            
+      <div className={styles["list-container"]} ref={listContainerRef}>
+        {coreItems.map((item, index) => (
+          <div
+            key={item.id}
+            data-index={index}
+            className={`${styles["list-row"]} ${
+              visibleRows.has(index) ? styles["is-visible"] : ""
+            }`}
+          >
+
             {/* Year Column */}
             <div className={styles["col-year"]}>
               <p>{item.year}</p>
@@ -99,7 +144,7 @@ const CoreList = () => {
                 </svg>
               </div>
             </div>
-            
+
           </div>
         ))}
       </div>

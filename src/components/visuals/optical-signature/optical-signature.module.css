@@ -70,6 +70,8 @@
   margin: 0;
   display: flex;
   column-gap:1rem;
+  flex-wrap:wrap;
+  row-gap:2rem;
 }
 
 .title-fill {
@@ -187,10 +189,57 @@
 }
 
 /* ══════════════════════════════
-   TABLET & BELOW (≤ 1200px) — dead-zone fix, desktop layout still
+   RESPONSIVE MAX-WIDTH SCALING
 ══════════════════════════════ */
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1780px) {
   .optical-main {
+    max-width: 100rem;
+  }
+
+  .main-title {
+    font-size: clamp(2.8rem, 6.6vw, 6rem);
+  }
+
+  .intro-text {
+    font-size: clamp(1.9rem, 2vw, 2.15rem);
+  }
+}
+
+@media screen and (max-width: 1630px) {
+  .optical-main {
+    max-width: 90rem;
+  }
+
+  .main-grid {
+    column-gap: 3.6rem;
+  }
+
+  .header-line {
+    width: 20rem;
+  }
+}
+
+@media screen and (max-width: 1460px) {
+  .optical-main {
+    max-width: 85rem;
+  }
+
+  .main-title {
+    font-size: clamp(2.6rem, 6.2vw, 5.4rem);
+  }
+
+  .spec-label,
+  .spec-value {
+    font-size: 1.2rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 1440px) — Large Laptop / Small Desktop
+══════════════════════════════ */
+@media screen and (max-width: 1440px) {
+  .optical-main {
+    max-width: 82rem;
     padding-inline: 2.5rem;
   }
 
@@ -207,55 +256,76 @@
   }
 }
 
-/* ══════════════════════════════
-   TABLET (≤ 1024px) — existing, kept as-is
-══════════════════════════════ */
-@media (max-width: 1024px) {
+@media screen and (max-width: 1370px) {
   .optical-main {
-    padding-inline: 2rem;
-  }
-  .main-grid {
-    gap: 3rem;
+    max-width: 100%;
   }
 
-  .header-line {
-    width: 12rem;
+  .main-title {
+    font-size: clamp(2.4rem, 5.8vw, 4.8rem);
   }
 
-  .spec-label,
-  .spec-value {
-    font-size: 1.1rem;
+  .intro-text {
+    font-size: clamp(1.7rem, 1.9vw, 2rem);
+  }
+
+  .spec-list {
+    row-gap: 1.9rem;
   }
 
   .icon-badges svg {
-    height: 2.3rem;
-    width: 2.3rem;
+    height: 2.5rem;
+    width: 2.5rem;
   }
 }
 
 /* ══════════════════════════════
-   MOBILE (≤ 768px) — existing, kept as-is
+   STANDARD  (≤ 1280px) — Laptop
 ══════════════════════════════ */
-@media (max-width: 768px) {
+@media screen and (max-width: 1280px) {
+  .optical-main {
+    padding-inline: 2rem;
+  }
+
+  .main-grid {
+    column-gap: 3rem;
+  }
+
+  .header-line {
+    width: 14rem;
+  }
+}
+
+/* ══════════════════════════════
+   TABLET (≤ 1024px)
+   NOTE: stacked mobile layout (jo pehle 768px pe trigger hota tha)
+   ab yahi 1024px breakpoint se hi shuru ho jata hai.
+══════════════════════════════ */
+@media (max-width: 1024px) {
   .optical-main {
     padding-inline: 1.5rem;
     padding-block: 3rem;
   }
+
   .main-title {
     font-size: 3.5rem;
   }
+
   .main-grid {
     flex-direction: column;
     gap: 3rem;
   }
+
   .content-details,
   .image-showcase-wrapper {
     width: 100%;
   }
+
   .header-top {
     flex-wrap: wrap;
     row-gap: 1rem;
   }
+
   .header-line {
     display: none;
   }
@@ -272,6 +342,16 @@
     row-gap: 1.6rem;
   }
 
+  .spec-label,
+  .spec-value {
+    font-size: 1.1rem;
+  }
+
+  .icon-badges svg {
+    height: 2.3rem;
+    width: 2.3rem;
+  }
+
   .grade-badge {
     bottom: 1.2rem;
     left: 0.8rem;
@@ -279,7 +359,65 @@
 }
 
 /* ══════════════════════════════
-   STANDARD (≤ 480px) — small mobile
+   MOBILE (≤ 768px)
+══════════════════════════════ */
+@media (max-width: 768px) {
+  .optical-main {
+    padding-inline: 1.25rem;
+    padding-block: 2.75rem;
+  }
+
+  .main-title {
+    font-size: 2.8rem;
+    column-gap: 0.65rem;
+  }
+
+  .badge-text {
+    padding: 0.4rem 0.7rem;
+  }
+
+  .badge-text h3 {
+    font-size: 0.8rem;
+  }
+
+  .title-wrapper {
+    margin-bottom: 2rem;
+  }
+
+  .intro-text {
+    font-size: 1.45rem;
+  }
+
+  .spec-list {
+    row-gap: 1.4rem;
+  }
+
+  .spec-label,
+  .spec-value {
+    font-size: 0.95rem;
+  }
+
+  .icon-badges {
+    top: 1.2rem;
+    right: 1.2rem;
+    gap: 0.6rem;
+  }
+
+  .icon-badges svg {
+    height: 2rem;
+    width: 2rem;
+  }
+
+  .grade-badge {
+    bottom: 1rem;
+    left: 0.7rem;
+    font-size: 0.68rem;
+    padding: 0.45rem 0.85rem;
+  }
+}
+
+/* ══════════════════════════════
+   STANDARD  (≤ 480px) — Mobile (small)
 ══════════════════════════════ */
 @media screen and (max-width: 480px) {
   .optical-main {
@@ -332,7 +470,7 @@
 }
 
 /* ══════════════════════════════
-   VERY SMALL (≤ 375px)
+   STANDARD  (≤ 375px) — Small mobile devices
 ══════════════════════════════ */
 @media screen and (max-width: 375px) {
   .optical-main {

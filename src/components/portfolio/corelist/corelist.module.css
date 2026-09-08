@@ -92,9 +92,28 @@
   padding-block: 2.5rem;
   padding-inline: 2rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
   cursor: pointer;
   box-sizing: border-box;
+
+  /* ── SCROLL REVEAL: initial hidden state (left → right) ──
+     Uses the standalone `translate` property (not `transform`) so that
+     the entrance slide-in never shares a transition timeline with the
+     hover `scale`. Stagger delay is applied in JS (setTimeout), so no
+     transition-delay lives on this rule — that's what was causing
+     background/scale to lag behind the text color on hover. */
+  opacity: 0;
+  translate: -60px 0;
+  scale: 1;
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              translate 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              background-color 0.3s ease,
+              box-shadow 0.3s ease,
+              scale 0.3s ease;
+}
+
+.list-row.is-visible {
+  opacity: 1;
+  translate: 0 0;
 }
 
 .col-year p {
@@ -187,7 +206,7 @@
 .list-row:hover {
   background-color: #D9186A;
   border-bottom-color: transparent;
-  transform: scale(1.01);
+  scale: 1.01;
   box-shadow: 0 10px 30px rgba(217, 24, 106, 0.2);
 }
 
@@ -298,7 +317,7 @@
   }
 
   .main-title span {
-    line-height: 110%;
+    line-height: 150%;
   }
 
   .text-outline {
@@ -322,7 +341,7 @@
 
   .list-row:hover {
     background-color: transparent;
-    transform: none;
+    scale: 1;
     box-shadow: none;
   }
 
