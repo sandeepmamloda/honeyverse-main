@@ -1,6 +1,5 @@
 "use client";
-
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./teams.module.css";
 
 const headings = [
@@ -9,61 +8,79 @@ const headings = [
   { text: "VISION", style: "solid-alt" },
 ];
 
-/* Fades an element into place the first time it scrolls into view.
-   direction: "up" (fade + rise), "left" (fade in from the left),
-   "right" (fade in from the right). `delay` (ms) staggers siblings. */
+/* ══════════════════════════════
+   REVEAL ANIMATION HELPERS — TIMER BASED
+   Hero section (page ka first section) hai, isliye scroll-into-view wala
+   IntersectionObserver kaam ka nahi — load ke turant baad hi section
+   screen pe hota hai. Isliye shared "ready" timer jo load ke 3000ms
+   baad true hota hai, uske upar har element ka apna stagger delay.
+══════════════════════════════ */
+const HERO_START_DELAY = 3000; // ms
+
+const useDelayedReady = (delayMs = HERO_START_DELAY) => {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setReady(true), delayMs);
+    return () => clearTimeout(timer);
+  }, [delayMs]);
+
+  return ready;
+};
+
+const clipStart = {
+  left: "inset(0 100% 0 0)",
+  right: "inset(0 0 0 100%)",
+  up: "inset(100% 0 0 0)",
+  down: "inset(0 0 100% 0)",
+};
+
 const Reveal = ({
   children,
   className = "",
+  ready = false,
   delay = 0,
   as = "div",
-  direction = "up",
+  direction = "left",
+  duration = 1.1,
+  style: extraStyle = {},
 }) => {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
   const Tag = as;
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.15, rootMargin: "0px 0px -5% 0px" }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  const directionClass =
-    direction === "left"
-      ? styles["reveal-left"]
-      : direction === "right"
-      ? styles["reveal-right"]
-      : styles["reveal-up"];
+  const style = {
+    clipPath: ready ? "inset(0 0 0 0)" : clipStart[direction],
+    WebkitClipPath: ready ? "inset(0 0 0 0)" : clipStart[direction],
+    opacity: ready ? 1 : 0,
+    transitionProperty: "clip-path, -webkit-clip-path, opacity",
+    transitionDuration: `${duration}s, ${duration}s, 0.1s`,
+    transitionTimingFunction: "cubic-bezier(0.83,0,0.17,1)",
+    transitionDelay: `${delay}ms`,
+    willChange: "clip-path, opacity",
+    ...extraStyle,
+  };
 
   return (
-    <Tag
-      ref={ref}
-      className={`${className} ${directionClass} ${
-        visible ? styles["reveal-visible"] : ""
-      }`}
-      style={{ transitionDelay: `${delay}ms` }}
-    >
+    <Tag className={className} style={style}>
       {children}
     </Tag>
   );
 };
 
+/* heading.style -> CSS module class */
+const styleClassMap = {
+  solid: "heroteams-text-solid",
+  outline: "heroteams-text-outline",
+  "solid-alt": "heroteams-text-solid-alt",
+};
+
 const Heroteams = () => {
+  const ready = useDelayedReady(HERO_START_DELAY);
+
   return (
-    <section className={styles["heroteams-main"]}>
+    <section
+      className={styles["heroteams-main"]}
+      style={{ overflowX: "hidden", overflowY: "hidden" }}
+    >
       <div className={styles["heroteams-video-wrapper"]}>
         <video
           className={styles["heroteams-video"]}
@@ -79,41 +96,48 @@ const Heroteams = () => {
       <div className={styles["heroteams-textual-content"]}>
         {/* Badge + Heading — saath mein center mein */}
         <div className={styles["heroteams-headings-group"]}>
-          <Reveal direction="up" delay={0}>
-            <div className={styles["heroteams-top"]}>
-              <h3>[ Our Identity // Vol. 01 ]</h3>
-            </div>
+          <Reveal
+            as="div"
+            ready={ready}
+            direction="left"
+            duration={1.2}
+            delay={0}
+            className={styles["heroteams-top"]}
+          >
+            <h3>[ Our Identity // Vol. 01 ]</h3>
           </Reveal>
 
-          <Reveal direction="up" delay={150}>
-            <h1 className={styles["heroteams-heading-row"]}>
-              {headings.map((heading, index) => (
-                <span
-                  key={index}
-                  className={
-                    index === 2
-                      ? styles["heroteams-text-solid-alt"] // "TELLING" hamesha solid pink rahega
-                      : heading.style === "outline"
-                      ? styles["heroteams-text-outline"]
-                      : styles["heroteams-text-solid"]
-                  }
-                >
-                  {heading.text}
-                </span>
-              ))}
-            </h1>
-          </Reveal>
+          <h1 className={styles["heroteams-heading-row"]}>
+            {headings.map((heading, index) => (
+              <Reveal
+                key={index}
+                as="span"
+                ready={ready}
+                direction="up"
+                duration={1.3}
+                delay={250 + index * 200}
+                className={styles[styleClassMap[heading.style]]}
+              >
+                {heading.text}
+              </Reveal>
+            ))}
+          </h1>
         </div>
 
         {/* Description box — bottom pe */}
-        <div className={styles["heroteams-bottom-last"]}>
-          <Reveal direction="up" delay={300}>
-            <h2>
-              We are Film-Makers of emotion, building worlds that capture the human experience through the lens of cinema.
-            </h2>
-          </Reveal>
-        </div>
-
+        <Reveal
+          as="div"
+          ready={ready}
+          direction="up"
+          duration={1.3}
+          delay={250 + headings.length * 200 + 200}
+          className={styles["heroteams-bottom-last"]}
+        >
+          <h2>
+            We are Film-Makers of emotion, building worlds that capture the
+            human experience through the lens of cinema.
+          </h2>
+        </Reveal>
       </div>
     </section>
   );

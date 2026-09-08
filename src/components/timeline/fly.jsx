@@ -184,6 +184,9 @@ function createSkyBackgroundTexture() {
 
 /* ============================================================
    PARTICLES
+   NOTE: radius + z-depth multiplier increased so star fields
+   spread much farther out from the flight path instead of
+   clustering near the camera.
 ============================================================ */
 
 function createTwinkleField(
@@ -196,6 +199,10 @@ function createTwinkleField(
   const positions = new Float32Array(count * 3);
   const sizes = new Float32Array(count);
   const phases = new Float32Array(count);
+
+  // How much farther (relative to radius) stars are allowed to sit,
+  // so the field reads as "far and wide" rather than a tight sphere.
+  const DEPTH_SPREAD_MULTIPLIER = 2.4;
 
   for (let i = 0; i < count; i++) {
     const r =
@@ -215,7 +222,8 @@ function createTwinkleField(
     positions[i * 3] =
       r *
       Math.sin(phi) *
-      Math.cos(theta);
+      Math.cos(theta) *
+      1.15;
 
     positions[i * 3 + 1] =
       Math.abs(
@@ -225,10 +233,14 @@ function createTwinkleField(
         0.6 +
       10;
 
+    // Wider/deeper star volume:
+    // X is already expanded by the radius, while Z gets an additional
+    // depth multiplier so stars remain visible much farther into the scene.
     positions[i * 3 + 2] =
       r *
       Math.sin(phi) *
-      Math.sin(theta);
+      Math.sin(theta) *
+      DEPTH_SPREAD_MULTIPLIER;
 
     sizes[i] =
       THREE.MathUtils.lerp(
@@ -360,8 +372,8 @@ function createTwinkleField(
 }
 
 function createStarTrailField(
-  count = 180,
-  spread = 55
+  count = 450,
+  spread = 90
 ) {
   const positions =
     new Float32Array(count * 3);
@@ -372,18 +384,22 @@ function createStarTrailField(
   const phases =
     new Float32Array(count);
 
+  // How far back (negative Z) the trailing stars extend.
+  // Increased so the trail reads as reaching far into the distance.
+  const TRAIL_DEPTH = 1200;
+
   for (let i = 0; i < count; i++) {
     positions[i * 3] =
       THREE.MathUtils.randFloatSpread(
-        spread
+        spread * 1.6
       );
 
     positions[i * 3 + 1] =
-      8 +
-      Math.random() * 34;
+      6 +
+      Math.random() * 48;
 
     positions[i * 3 + 2] =
-      -Math.random() * 260;
+      -Math.random() * TRAIL_DEPTH;
 
     sizes[i] =
       THREE.MathUtils.lerp(
@@ -547,7 +563,9 @@ export default function Fly() {
         window.innerWidth /
           window.innerHeight,
         0.1,
-        1000
+        // Far plane pushed out so the now much deeper star fields
+        // don't get clipped by the camera frustum.
+        2200
       );
 
     const renderer =
@@ -586,14 +604,16 @@ export default function Fly() {
         skyTexture;
     }
 
+    // Radii below are boosted (roughly ~2x) versus the original
+    // so stars fill a much wider volume around the flight path.
     const starField =
       createTwinkleField(
-        1400,
-        150,
+        4400,
+        520,
         new THREE.Color(
           0xffd9ec
         ),
-        0.9,
+        5.5,
         2.4
       );
 
@@ -601,12 +621,12 @@ export default function Fly() {
 
     const dustField =
       createTwinkleField(
-        340,
-        75,
+        650,
+        260,
         new THREE.Color(
           0xff6fa8
         ),
-        1.6,
+        2.6,
         3.8
       );
 
@@ -614,12 +634,12 @@ export default function Fly() {
 
     const upperStarField =
       createTwinkleField(
-        1100,
-        260,
+        1800,
+        800,
         new THREE.Color(
           0xffffff
         ),
-        0.45,
+        3,
         1.8
       );
 
@@ -632,8 +652,8 @@ export default function Fly() {
 
     const starTrailField =
       createStarTrailField(
-        220,
-        65
+        450,
+        220
       );
 
     scene.add(
@@ -648,7 +668,7 @@ export default function Fly() {
       new THREE.HemisphereLight(
         0x9fb0ff,
         0x111322,
-        1.35
+        3.35
       )
     );
 
@@ -1999,14 +2019,18 @@ export default function Fly() {
     const CARD_FADE_START_T =
       0.075;
 
-    const CARD_ALPHA_RESPONSE =
-      8.5;
+    // How far BELOW its resting spot the card starts before
+    // rising into place — mirrors the hero title's
+    // "translateY(100%) -> translateY(0)" lineReveal keyframe,
+    // but along the world-up axis (bottom -> top) instead of
+    // the old forward/backward tangent offset.
+    const CARD_RISE_DISTANCE =
+      2.6;
 
-    const CARD_ENTER_DISTANCE =
-      0.65;
-
+    // Slightly slower than before so the rise is clearly
+    // visible rather than snapping into place.
     const CARD_ENTER_RESPONSE =
-      7.5;
+      6.5;
 
     function buildCardMeshes() {
       const total =
@@ -2059,9 +2083,6 @@ export default function Fly() {
 
           mesh.userData.t =
             data.t;
-
-          mesh.userData.alpha =
-            0;
 
           mesh.userData.enter =
             0;
@@ -3116,6 +3137,13 @@ export default function Fly() {
 
       /* ======================================================
          CARDS
+         Bottom -> top reveal, mirroring the hero title's
+         lineReveal keyframe:
+           from { opacity: 0, transform: translateY(100%) }
+           to   { opacity: 1, transform: translateY(0) }
+         Card starts CARD_RISE_DISTANCE below its resting spot
+         and rises straight up (world-up axis) into place while
+         fading in — both driven by the same "enter" progress.
       ====================================================== */
 
       cardMeshes.forEach(
@@ -3156,44 +3184,18 @@ export default function Fly() {
           const enter =
             mesh.userData.enter;
 
-          /*
-            IMPORTANT:
-
-            Card uses its own tangent,
-            so the entrance animation
-            stays attached to its own
-            waypoint.
-          */
-          const cardTangent =
-            curve
-              .getTangentAt(
-                THREE.MathUtils.clamp(
-                  cardT,
-                  0,
-                  0.999
-                )
-              )
-              .normalize();
-
           mesh.position.copy(
             mesh.userData.basePos
           );
 
           mesh.position.addScaledVector(
-            cardTangent,
+            WORLD_UP,
             (
               1 -
               enter
             ) *
-              -CARD_ENTER_DISTANCE
+              -CARD_RISE_DISTANCE
           );
-
-          mesh.position.y +=
-            (
-              1 -
-              enter
-            ) *
-            0.3;
 
           mesh.rotation.set(
             -0.285,
@@ -3201,41 +3203,14 @@ export default function Fly() {
             0
           );
 
-          mesh.scale.setScalar(
-            THREE.MathUtils.lerp(
-              0.84,
-              1,
-              enter
-            )
-          );
-
-          const targetAlpha =
+          mesh.material.opacity =
             enter;
 
-          mesh.userData.alpha +=
-            (
-              targetAlpha -
-              mesh.userData.alpha
-            ) *
-            (
-              1 -
-              Math.exp(
-                -CARD_ALPHA_RESPONSE *
-                  dt
-              )
-            );
-
-          const alpha =
-            mesh.userData.alpha;
-
           mesh.visible =
-            alpha > 0.01;
-
-          mesh.material.opacity =
-            alpha;
+            enter > 0.01;
 
           mesh.material.depthWrite =
-            alpha > 0.5;
+            enter > 0.5;
         }
       );
 

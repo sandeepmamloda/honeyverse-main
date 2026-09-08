@@ -1,5 +1,128 @@
 "use client";
+import { useEffect, useRef, useState } from "react";
 import styles from "./globalpresencs.module.css";
+
+/* Fades an element into place the first time it scrolls into view.
+   "settled" phase pe inline style poora hata di jaati hai — isliye
+   is Reveal ko seedha kisi bhi element (jaise .location-card, jiska
+   apna hover/shimmer CSS transition hai) pe laga sakte hain, bina
+   uski CSS transitions ko permanently override kiye. */
+const Reveal = ({
+  children,
+  className = "",
+  delay = 0,
+  as = "div",
+  direction = "up",
+}) => {
+  const ref = useRef(null);
+  const [phase, setPhase] = useState("hidden");
+  const Tag = as;
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          requestAnimationFrame(() => setPhase("entering"));
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -5% 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const hiddenTransform =
+    direction === "pop"
+      ? "translateY(40px) scale(0.75) rotate(-4deg)"
+      : direction === "left"
+      ? "translateX(-60px) translateY(20px)"
+      : "translateY(50px)";
+
+  let style;
+  if (phase === "settled") {
+    style = undefined;
+  } else {
+    style = {
+      opacity: phase === "entering" ? 1 : 0,
+      transform: phase === "entering" ? "none" : hiddenTransform,
+      transition:
+        direction === "pop"
+          ? "opacity 1.0s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1)"
+          : "opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)",
+      transitionDelay: `${delay}ms`,
+      willChange: "opacity, transform",
+    };
+  }
+
+  return (
+    <Tag
+      ref={ref}
+      className={className}
+      style={style}
+      onTransitionEnd={(e) => {
+        if (phase === "entering" && e.propertyName === "opacity") {
+          setPhase("settled");
+        }
+      }}
+    >
+      {children}
+    </Tag>
+  );
+};
+
+const RevealLetters = ({ text, delay = 0, step = 16, className = "" }) => {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -5% 0px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <span ref={ref} className={className} style={{ display: "inline-block" }}>
+      {text.split("").map((char, i) => (
+        <span
+          key={i}
+          style={{
+            display: "inline-block",
+            overflow: "hidden",
+            lineHeight: 1,
+            verticalAlign: "bottom",
+          }}
+        >
+          <i
+            style={{
+              display: "inline-block",
+              fontStyle: "normal",
+              transform: visible ? "translateY(0%)" : "translateY(115%)",
+              transition: `transform 1.4s cubic-bezier(0.19,1,0.22,1) ${delay + i * step}ms`,
+              willChange: "transform",
+            }}
+          >
+            {char === " " ? "\u00A0" : char}
+          </i>
+        </span>
+      ))}
+    </span>
+  );
+};
 
 const locations = [
   {
@@ -40,10 +163,10 @@ const GlobalPresence = () => {
   return (
     <section className={styles["global-main"]}>
       <div className={styles["global-container"]}>
-        
+
         {/* ── HEADER SECTION ── */}
         <div className={styles["header-section"]}>
-          <div className={styles["globe-icon"]}>
+          <Reveal direction="up" delay={0} className={styles["globe-icon"]}>
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 64 64" fill="none">
               <mask id="path-1-inside-1_278_1065" fill="white">
                 <path d="M0 32C0 14.3269 14.3269 0 32 0C49.6731 0 64 14.3269 64 32C64 49.6731 49.6731 64 32 64C14.3269 64 0 49.6731 0 32Z"/>
@@ -53,18 +176,25 @@ const GlobalPresence = () => {
               <path d="M32 22C29.4322 24.6962 28 28.2767 28 32C28 35.7233 29.4322 39.3038 32 42C34.5678 39.3038 36 35.7233 36 32C36 28.2767 34.5678 24.6962 32 22Z" stroke="#FFCA1A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M22 32H42" stroke="#FFCA1A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-          </div>
-          <h2 className={styles["main-title"]}>GLOBAL PRESENCE</h2>
-          <div className={styles["badge"]}>
+          </Reveal>
+
+          <h2 className={styles["main-title"]}>
+            <RevealLetters text="GLOBAL PRESENCE" delay={150} step={20} />
+          </h2>
+
+          <Reveal direction="up" delay={450} className={styles["badge"]}>
             <span>[ 03 // OPERATIONAL REGIONS ]</span>
-          </div>
+          </Reveal>
         </div>
 
         {/* ── CARDS GRID ── */}
         <div className={styles["cards-grid"]}>
-          {locations.map((loc) => (
-            <div 
-              key={loc.id} 
+          {locations.map((loc, idx) => (
+            <Reveal
+              key={loc.id}
+              as="div"
+              direction="pop"
+              delay={300 + idx * 120}
               className={`${styles["location-card"]} ${loc.isActive ? styles["active"] : ""}`}
             >
               {/* Shimmer sweep layer (same as labs-and-residencies cards) */}
@@ -78,7 +208,7 @@ const GlobalPresence = () => {
                     <path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </div>
-                
+
                 {/* HQ Badge (Only for New York) */}
                 {loc.isHQ && (
                   <div className={styles["hq-badge"]}>HQ</div>
@@ -92,7 +222,7 @@ const GlobalPresence = () => {
                   <p>{loc.coords}</p>
                 </div>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
 

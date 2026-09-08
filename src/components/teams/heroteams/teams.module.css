@@ -5,7 +5,7 @@
   height: 100svh;
   width: 100%;
   position: relative;
-  min-height: 850px;
+  min-height: 900px;
 }
 
 .heroteams-video-wrapper {
@@ -59,7 +59,7 @@
   height: fit-content;
   margin-block-start: 3rem;
 
-  display: flex;       
+  display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: baseline;
@@ -114,27 +114,19 @@
 }
 
 /* ══════════════════════════════
-   TABLET  (≤ 1024px)
+   TABLET & BELOW  (≤ 1200px)
 ══════════════════════════════ */
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1200px) {
   .heroteams-textual-content {
-    padding-inline-start: 4rem;
-    padding-inline-end: 2rem;
-  }
-
-  .heroteams-textual-content .heroteams-heading-row {
-    margin-block-start: 2rem;
-  }
-
-  .heroteams-bottom-last {
-    padding-inline-end: 2rem;
+    padding-inline-start: 5rem;
+    padding-block-start: 20rem;
   }
 }
 
 /* ══════════════════════════════
-   MOBILE  (≤ 767px)
+   MAJOR LAYOUT SWITCH  (≤ 1024px)
 ══════════════════════════════ */
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 1024px) {
   .heroteams-textual-content {
     padding-inline: 1.5rem;
     padding-block-start: 6rem;
@@ -180,11 +172,13 @@
   }
 
   .heroteams-bottom-last {
-    margin-inline-start: 0;
-    max-width: 100%;
+    align-self: center;
+    width: 100%;
+    max-width: 40rem;
+    margin-inline: auto;
     padding-inline-end: 1rem;
     margin-block-start: 0;
-    align-self: stretch;
+    border-left: none;
     border-right: solid 0.3rem rgba(217, 24, 106, 1);
   }
 
@@ -195,23 +189,73 @@
 }
 
 /* ══════════════════════════════
-   VERY SMALL  (≤ 375px)
+   ≤ 768px
 ══════════════════════════════ */
-@media screen and (max-width: 430px) {
+@media screen and (max-width: 768px) {
+  .heroteams-textual-content {
+    padding-block-start: 5rem;
+  }
+
+  .heroteams-textual-content .heroteams-heading-row {
+    font-size: clamp(2.6rem, 10vw, 6rem);
+  }
+
+  .heroteams-top {
+    margin-bottom: 2.5rem;
+  }
+}
+
+/* ══════════════════════════════
+   ≤ 480px
+══════════════════════════════ */
+@media screen and (max-width: 480px) {
+  .heroteams-textual-content {
+    padding-block-start: 4rem;
+    padding-inline: 1.1rem;
+  }
+
+  .heroteams-top {
+    padding: 0.4rem 0.55rem;
+    margin-bottom: 2rem;
+  }
+
+  .heroteams-top h3 {
+    font-size: 0.62rem;
+  }
+
+  .heroteams-textual-content .heroteams-heading-row {
+    font-size: clamp(2.2rem, 11vw, 4rem);
+  }
+
+  .heroteams-bottom-last {
+    padding-inline-start: 0.8rem;
+    padding-inline-end: 0.8rem;
+    padding-block: 0.8rem;
+  }
+
+  .heroteams-bottom-last h2 {
+    font-size: 0.78rem;
+  }
+}
+
+/* ══════════════════════════════
+   ≤ 375px
+══════════════════════════════ */
+@media screen and (max-width: 375px) {
   .heroteams-textual-content {
     padding-inline-start: 1rem;
     padding-inline-end: 1rem;
   }
 
   .heroteams-textual-content .heroteams-heading-row {
-    font-size: clamp(1.8rem, 11vw, 3.5rem);
+    font-size: clamp(2rem, 11vw, 3.5rem);
   }
 }
 
 /* ══════════════════════════════
    HEIGHT-BASED — only desktop/tablet
 ══════════════════════════════ */
-@media screen and (max-height: 944px) and (min-width: 641px) {
+@media screen and (max-height: 944px) and (min-width: 1025px) {
   .heroteams-textual-content {
     padding-block-start: 12rem;
   }
