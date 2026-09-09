@@ -320,7 +320,7 @@
   font-family: "intersemibold";
   font-size: clamp(3rem, 5.5vw, 5.5rem);
   letter-spacing:-0.09rem;
-  color: rgba(217, 24, 106, 0.35);
+  color: rgba(217, 24, 106, 1);
   line-height: 120%;
   text-align: center;
   max-width: 90%;

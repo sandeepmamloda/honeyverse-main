@@ -1,3 +1,5 @@
+"use client";
+import { useEffect, useRef, useState } from "react";
 import styles from "./development-slate.module.css";
 
 const slateItems = [
@@ -35,33 +37,126 @@ const slateItems = [
   },
 ];
 
+/* ══════════════════════════════
+   REVEAL ANIMATION HELPERS — SCROLL BASED
+   Ye section hero nahi hai, isliye IntersectionObserver use karte hain —
+   jab section viewport me aata hai tabhi "ready" true hota hai.
+══════════════════════════════ */
+const useInView = (threshold = 0.15) => {
+  const ref = useRef(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.unobserve(node);
+        }
+      },
+      { threshold }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [threshold]);
+
+  return [ref, inView];
+};
+
+const clipStart = {
+  left: "inset(0 100% 0 0)",
+  right: "inset(0 0 0 100%)",
+  up: "inset(100% 0 0 0)",
+  down: "inset(0 0 100% 0)",
+};
+
+const Reveal = ({
+  children,
+  className = "",
+  ready = false,
+  delay = 0,
+  as = "div",
+  direction = "left",
+  duration = 1.1,
+  style: extraStyle = {},
+}) => {
+  const Tag = as;
+
+  const style = {
+    clipPath: ready ? "inset(0 0 0 0)" : clipStart[direction],
+    WebkitClipPath: ready ? "inset(0 0 0 0)" : clipStart[direction],
+    opacity: ready ? 1 : 0,
+    transitionProperty: "clip-path, -webkit-clip-path, opacity",
+    transitionDuration: `${duration}s, ${duration}s, 0.1s`,
+    transitionTimingFunction: "cubic-bezier(0.83,0,0.17,1)",
+    transitionDelay: `${delay}ms`,
+    willChange: "clip-path, opacity",
+    ...extraStyle,
+  };
+
+  return (
+    <Tag className={className} style={style}>
+      {children}
+    </Tag>
+  );
+};
+
 const DevelopmentSlate = () => {
+  const [headerRef, headerInView] = useInView(0.2);
+  const [tableRef, tableInView] = useInView(0.1);
+
   return (
     <section className={styles["slate-main"]}>
       {/* Background Watermark Image Overlay (Spans 100% viewport wide) */}
       <div className={styles["watermark-wrapper"]}>
-        <img 
-          src="/images/development-slate/development-slate.jpg" 
-          alt="Watermark" 
-          className={styles["watermark-img"]} 
+        <img
+          src="/images/development-slate/development-slate.jpg"
+          alt="Watermark"
+          className={styles["watermark-img"]}
         />
       </div>
 
       {/* Internal Content Wrapper - Handles max-width: 110rem and margin-inline: auto */}
       <div className={styles["slate-content-container"]}>
-        
+
         {/* Top Header Layout */}
-        <div className={styles["slate-header"]}>
+        <div className={styles["slate-header"]} ref={headerRef}>
           <div className={styles["header-left"]}>
-            <div className={styles["badge"]}>
+            <Reveal
+              as="div"
+              ready={headerInView}
+              direction="left"
+              duration={1.2}
+              delay={0}
+              className={styles["badge"]}
+            >
               <h3>[ 02 // DEVELOPMENT ]</h3>
-            </div>
-            <h1 className={styles["main-title"]}>
+            </Reveal>
+
+            <Reveal
+              as="h1"
+              ready={headerInView}
+              direction="up"
+              duration={1.3}
+              delay={200}
+              className={styles["main-title"]}
+            >
               DEVELOPMENT<span className={styles["text-yellow"]}>SLATE</span>
-            </h1>
+            </Reveal>
           </div>
 
-          <div className={styles["header-right"]}>
+          <Reveal
+            as="div"
+            ready={headerInView}
+            direction="up"
+            duration={1.3}
+            delay={400}
+            className={styles["header-right"]}
+          >
             <div className={styles["icon-wrapper"]}>
               <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
                 <path d="M40.3999 11.9999L5.99991 21.9999L4.19991 17.1999C3.59991 14.9999 4.79991 12.7999 6.79991 12.1999L33.7999 4.19991C35.9999 3.59991 38.1999 4.79991 38.7999 6.79991L40.3999 11.9999Z" stroke="#FE9A00" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -73,18 +168,23 @@ const DevelopmentSlate = () => {
             <p className={styles["tracking-notice"]}>
               Confidential internal tracking. Public announcements pending.
             </p>
-          </div>
+          </Reveal>
         </div>
 
         {/* Top Divider Line */}
         <div className={styles["divider-line"]}></div>
 
         {/* Grid Table List Container */}
-        <div className={styles["slate-table"]}>
-          {slateItems.map((item) => (
-            <div 
-              key={item.id} 
-              className={styles["table-row"]} 
+        <div className={styles["slate-table"]} ref={tableRef}>
+          {slateItems.map((item, index) => (
+            <Reveal
+              key={item.id}
+              as="div"
+              ready={tableInView}
+              direction="up"
+              duration={1}
+              delay={index * 120}
+              className={styles["table-row"]}
             >
               {/* Column 1: Status */}
               <div className={styles["col-status"]}>
@@ -106,7 +206,7 @@ const DevelopmentSlate = () => {
                 <span className={styles["label"]}>LOGLINE</span>
                 <p className={styles["logline-text"]}>{item.logline}</p>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
 

@@ -5,7 +5,7 @@
   height: 100svh;
   width: 100%;
   position: relative;
-  min-height: 850px;
+  min-height: 900px;
 }
 
 .herobrands-video-wrapper {
@@ -14,13 +14,13 @@
   position: relative;
 }
 
-.brands-video {
+.herobrands-video {
   height: 100%;
   width: 100%;
   object-fit: cover;
 }
 
-.textual-content {
+.herobrands-textual-content {
   height: 100%;
   width: 100%;
   position: absolute;
@@ -37,14 +37,14 @@
 }
 
 /* ── TOP BADGE ── */
-.top {
+.herobrands-top {
   height: fit-content;
   width: fit-content;
   padding: 0.5rem 0.7rem;
   border: solid 0.01rem rgba(217, 24, 106, 1);
 }
 
-.top h3 {
+.herobrands-top h3 {
   color: rgba(217, 24, 106, 1);
   font-family: "consola";
   font-size: clamp(0.65rem, 1.2vw, 1rem);
@@ -55,11 +55,11 @@
 }
 
 /* ── HEADING ROW ── */
-.textual-content .heading-row {
+.herobrands-textual-content .herobrands-heading-row {
   height: fit-content;
   margin-block-start: 3rem;
 
-  display: flex;       
+  display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: baseline;
@@ -68,34 +68,34 @@
 
   font-family: "boldonse";
   font-size: clamp(3rem, 9vw, 10rem);
-  font-weight:400;
+  font-weight: 400;
   line-height: 140%;
 }
 
-.text-solid {
+.herobrands-text-solid {
   letter-spacing: 0.01rem;
   color: #fff;
 }
 
-.text-outline {
+.herobrands-text-outline {
   letter-spacing: 0.3rem;
   color: transparent;
-  -webkit-text-stroke: 3px #e0195a;
+  -webkit-text-stroke: clamp(1.3px, 0.15vw, 3px) #e0195a;
 }
 
-.text-solid-alt {
+.herobrands-text-solid-alt {
   letter-spacing: 0.01rem;
-  color:rgba(196, 0, 83, 1);
+  color: rgba(196, 0, 83, 1);
 }
 
 /* ── DESCRIPTION BOX ── */
-.bottom-last {
+.herobrands-bottom-last {
   height: fit-content;
   width: fit-content;
   max-width: 40rem;
 
   margin-inline-start: auto;
-  margin-block-start: auto; /* <-- ye important hai */
+  margin-block-start: auto;
 
   background: rgba(255, 255, 255, 0.3);
   border-left: solid 0.3rem rgba(217, 24, 106, 1);
@@ -105,7 +105,7 @@
   padding-block: 1rem;
 }
 
-.bottom-last h2 {
+.herobrands-bottom-last h2 {
   color: rgba(255, 255, 255, 1);
   line-height: 120%;
   font-family: "interbold";
@@ -114,28 +114,20 @@
 }
 
 /* ══════════════════════════════
-   TABLET  (≤ 1024px)
+   TABLET & BELOW  (≤ 1200px)
 ══════════════════════════════ */
-@media screen and (max-width: 1024px) {
-  .textual-content {
-    padding-inline-start: 4rem;
-    padding-inline-end: 2rem;
-  }
-
-  .textual-content .heading-row {
-    margin-block-start: 2rem;
-  }
-
-  .bottom-last {
-    padding-inline-end: 2rem;
+@media screen and (max-width: 1200px) {
+  .herobrands-textual-content {
+    padding-inline-start: 5rem;
+    padding-block-start: 20rem;
   }
 }
 
 /* ══════════════════════════════
-   MOBILE  (≤ 640px)
+   MAJOR LAYOUT SWITCH  (≤ 1024px)
 ══════════════════════════════ */
 @media screen and (max-width: 1024px) {
-  .textual-content {
+  .herobrands-textual-content {
     padding-inline: 1.5rem;
     padding-block-start: 6rem;
     padding-block-end: 2.5rem;
@@ -145,7 +137,7 @@
   }
 
   /* badge + headings ek saath center mein */
-  .headings-group {
+  .herobrands-headings-group {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -153,70 +145,122 @@
     justify-content: center;
   }
 
-  .top {
+  .herobrands-top {
     align-self: center;
     margin-bottom: 3rem;
   }
 
-  .top h3 {
+  .herobrands-top h3 {
     letter-spacing: 0.1rem;
   }
 
-  .textual-content .heading-row {
+  .herobrands-textual-content .herobrands-heading-row {
     margin-block-start: 0;
     margin-inline: auto;
     justify-content: center;
     text-align: center;
   }
 
-  .text-solid,
-  .text-outline,
-  .text-solid-alt {
+  .herobrands-text-solid,
+  .herobrands-text-outline,
+  .herobrands-text-solid-alt {
     line-height: 160%;
   }
 
-  .text-outline {
+  .herobrands-text-outline {
     -webkit-text-stroke-width: 1.5px;
   }
 
-  .bottom-last {
-    margin-inline-start: 0;
-    max-width: 100%;
+  .herobrands-bottom-last {
+    align-self: center;
+    width: 100%;
+    max-width: 40rem;
+    margin-inline: auto;
     padding-inline-end: 1rem;
     margin-block-start: 0;
-    align-self: stretch;
-    border-right:solid 0.3rem rgba(217, 24, 106, 1);
+    /* border-left: none; */
+    border-right: solid 0.3rem rgba(217, 24, 106, 1);
   }
 
-  .bottom-last h2 {
+  .herobrands-bottom-last h2 {
     font-size: clamp(0.8rem, 3.5vw, 1rem);
     text-align: center;
   }
 }
 
 /* ══════════════════════════════
-   VERY SMALL  (≤ 375px)
+   ≤ 768px
+══════════════════════════════ */
+@media screen and (max-width: 768px) {
+  .herobrands-textual-content {
+    padding-block-start: 5rem;
+  }
+
+  .herobrands-textual-content .herobrands-heading-row {
+    font-size: clamp(2.6rem, 10vw, 6rem);
+  }
+
+  .herobrands-top {
+    margin-bottom: 2.5rem;
+  }
+}
+
+/* ══════════════════════════════
+   ≤ 480px
+══════════════════════════════ */
+@media screen and (max-width: 480px) {
+  .herobrands-textual-content {
+    padding-block-start: 4rem;
+    padding-inline: 1.1rem;
+  }
+
+  .herobrands-top {
+    padding: 0.4rem 0.55rem;
+    margin-bottom: 2rem;
+  }
+
+  .herobrands-top h3 {
+    font-size: 0.62rem;
+  }
+
+  .herobrands-textual-content .herobrands-heading-row {
+    font-size: clamp(2.2rem, 11vw, 4rem);
+  }
+
+  .herobrands-bottom-last {
+    padding-inline-start: 0.8rem;
+    padding-inline-end: 0.8rem;
+    padding-block: 0.8rem;
+  }
+
+  .herobrands-bottom-last h2 {
+    font-size: 0.78rem;
+  }
+}
+
+/* ══════════════════════════════
+   ≤ 375px
 ══════════════════════════════ */
 @media screen and (max-width: 375px) {
-  .textual-content {
+  .herobrands-textual-content {
     padding-inline-start: 1rem;
     padding-inline-end: 1rem;
   }
 
-  .textual-content .heading-row {
-    font-size: clamp(2.4rem, 11vw, 3.5rem);
+  .herobrands-textual-content .herobrands-heading-row {
+    font-size: clamp(2rem, 11vw, 3.5rem);
   }
 }
 
 /* ══════════════════════════════
    HEIGHT-BASED — only desktop/tablet
 ══════════════════════════════ */
-@media screen and (max-height: 944px) and (min-width: 641px) {
-  .textual-content {
+@media screen and (max-height: 944px) and (min-width: 1025px) {
+  .herobrands-textual-content {
     padding-block-start: 12rem;
   }
 
-  .textual-content .heading-row {
+  .herobrands-textual-content .herobrands-heading-row {
     margin-block-start: clamp(1rem, 2vh, 3rem);
   }
 }

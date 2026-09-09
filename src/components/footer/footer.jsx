@@ -274,13 +274,38 @@ const Footer = function () {
         return;
       }
 
+      /* ---------------------------------------------
+         FIX: Retina / high-DPI blur fix.
+
+         Previously canvas.width/height were set to
+         the raw CSS pixel size (offsetWidth/Height).
+         On high-DPI screens the browser then stretches
+         that low-res backing store to fill the same
+         CSS box, causing blurry text + video.
+
+         Now we size the backing store to
+         CSS size * devicePixelRatio, and scale the
+         drawing context back down so all the existing
+         drawing code below (which uses `width`/`height`
+         in CSS pixel units) keeps working unchanged.
+      --------------------------------------------- */
+
+      const dpr = window.devicePixelRatio || 1;
+
+      const targetWidth = Math.round(width * dpr);
+      const targetHeight = Math.round(height * dpr);
+
       if (
-        canvas.width !== width ||
-        canvas.height !== height
+        canvas.width !== targetWidth ||
+        canvas.height !== targetHeight
       ) {
-        canvas.width = width;
-        canvas.height = height;
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
       }
+
+      // Reset transform each frame before scaling,
+      // otherwise the scale would compound every frame.
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       let fontSize = height * 0.85;
 

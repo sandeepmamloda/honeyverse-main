@@ -1,3 +1,5 @@
+"use client";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import styles from "./mark.module.css";
 
@@ -25,6 +27,75 @@ const cards = [
   },
 ];
 
+/* ══════════════════════════════
+   REVEAL ANIMATION HELPERS — SCROLL BASED
+   Ye section hero nahi hai (page ke beech wala section), isliye
+   IntersectionObserver use karte hain — jab element viewport me
+   aata hai tabhi "ready" true hota hai.
+══════════════════════════════ */
+const useInView = (threshold = 0.15) => {
+  const ref = useRef(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.unobserve(node);
+        }
+      },
+      { threshold }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [threshold]);
+
+  return [ref, inView];
+};
+
+const clipStart = {
+  left: "inset(0 100% 0 0)",
+  right: "inset(0 0 0 100%)",
+  up: "inset(100% 0 0 0)",
+  down: "inset(0 0 100% 0)",
+};
+
+const Reveal = ({
+  children,
+  className = "",
+  ready = false,
+  delay = 0,
+  as = "div",
+  direction = "up",
+  duration = 1.1,
+  style: extraStyle = {},
+}) => {
+  const Tag = as;
+
+  const style = {
+    clipPath: ready ? "inset(0 0 0 0)" : clipStart[direction],
+    WebkitClipPath: ready ? "inset(0 0 0 0)" : clipStart[direction],
+    opacity: ready ? 1 : 0,
+    transitionProperty: "clip-path, -webkit-clip-path, opacity",
+    transitionDuration: `${duration}s, ${duration}s, 0.1s`,
+    transitionTimingFunction: "cubic-bezier(0.83,0,0.17,1)",
+    transitionDelay: `${delay}ms`,
+    willChange: "clip-path, opacity",
+    ...extraStyle,
+  };
+
+  return (
+    <Tag className={className} style={style}>
+      {children}
+    </Tag>
+  );
+};
+
 const HoneyverseLogo = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -51,29 +122,56 @@ const HoneyverseLogo = () => (
 );
 
 const BrandSection = () => {
+  const [topRef, topInView] = useInView(0.2);
+  const [cardsRef, cardsInView] = useInView(0.1);
+  const [manifestoRef, manifestoInView] = useInView(0.2);
+
   return (
     <section className={styles["brand-main"]}>
 
       {/* ── PART 1: THE MARK ── */}
       <div className={styles["brand-inner"]}>
-        <div className={styles["brand-top"]}>
+        <div className={styles["brand-top"]} ref={topRef}>
           <div className={styles["brand-top-left"]}>
-            <div className={styles["badge"]}>
+            <Reveal
+              as="div"
+              ready={topInView}
+              direction="left"
+              duration={1.2}
+              delay={0}
+              className={styles["badge"]}
+            >
               <span>[ OUR IDENTITY // VOL. 01 ]</span>
-            </div>
-            <div className={styles["mark-heading"]}>
+            </Reveal>
+
+            <Reveal
+              as="div"
+              ready={topInView}
+              direction="up"
+              duration={1.3}
+              delay={200}
+              className={styles["mark-heading"]}
+            >
               <h1>
                 <span className={styles["the"]}>THE </span>
                 <span className={styles["mark"]}>MARK</span>
               </h1>
-            </div>
+            </Reveal>
           </div>
-          <div className={styles["brand-top-right"]}>
+
+          <Reveal
+            as="div"
+            ready={topInView}
+            direction="up"
+            duration={1.3}
+            delay={350}
+            className={styles["brand-top-right"]}
+          >
             <p>
               Our visual identity is rooted in structural brutalism. Stark,
               uncompromising, and designed to leave a lasting impression.
             </p>
-          </div>
+          </Reveal>
         </div>
       </div>
 
@@ -82,9 +180,17 @@ const BrandSection = () => {
 
       {/* ── PART 2: CARDS ── */}
       <div className={styles["brand-inner"]}>
-        <div className={styles["brand-cards"]}>
+        <div className={styles["brand-cards"]} ref={cardsRef}>
           {cards.map((card, i) => (
-            <div key={i} className={styles["card"]}>
+            <Reveal
+              key={i}
+              as="div"
+              ready={cardsInView}
+              direction="up"
+              duration={1.1}
+              delay={i * 150}
+              className={styles["card"]}
+            >
               <div className={`${styles["card-visual"]} ${styles[`card-visual--${card.content}`]}`}>
                 <span className={styles["fig-label"]}>{card.fig}</span>
                 {card.content === "logo" && (
@@ -115,24 +221,46 @@ const BrandSection = () => {
                 <h3>{card.title}</h3>
                 <p>{card.desc}</p>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
 
         {/* ── PART 3: MANIFESTO ── */}
-        <div className={styles["brand-manifesto"]}>
+        <div className={styles["brand-manifesto"]} ref={manifestoRef}>
           <div className={styles["manifesto-intro"]}>
-            <div className={styles["badge"]}>
+            <Reveal
+              as="div"
+              ready={manifestoInView}
+              direction="left"
+              duration={1.2}
+              delay={0}
+              className={styles["badge"]}
+            >
               <span>[ BRAND MANIFESTO // VOL. 02 ]</span>
-            </div>
-            <p>
+            </Reveal>
+
+            <Reveal
+              as="p"
+              ready={manifestoInView}
+              direction="up"
+              duration={1.2}
+              delay={150}
+            >
               The thinking behind how we work guiding how we Write, Direct, and
               produce films.
-            </p>
+            </Reveal>
           </div>
-          <blockquote className={styles["manifesto-quote"]}>
-            “Built to tell meaningful stories, not chase noise. Clear vision. Honest filmmaking. Lasting impact.
-          </blockquote>
+
+          <Reveal
+            as="blockquote"
+            ready={manifestoInView}
+            direction="up"
+            duration={1.3}
+            delay={300}
+            className={styles["manifesto-quote"]}
+          >
+            "Built to tell meaningful stories, not chase noise. Clear vision. Honest filmmaking. Lasting impact.
+          </Reveal>
         </div>
       </div>
 
