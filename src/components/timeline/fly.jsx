@@ -3661,15 +3661,21 @@ function createTwinkleField(
   radius,
   color,
   minSize,
-  maxSize
+  maxSize,
+  colorAlt
 ) {
   const positions = new Float32Array(count * 3);
   const sizes = new Float32Array(count);
   const phases = new Float32Array(count);
+  const freqs = new Float32Array(count);
+  const mixes = new Float32Array(count);
 
   // How much farther (relative to radius) stars are allowed to sit,
   // so the field reads as "far and wide" rather than a tight sphere.
   const DEPTH_SPREAD_MULTIPLIER = 2.4;
+
+  const altColor =
+    colorAlt || color;
 
   for (let i = 0; i < count; i++) {
     const r =
@@ -3692,13 +3698,17 @@ function createTwinkleField(
       Math.cos(theta) *
       1.15;
 
+    // A little extra jitter breaks up the banding that a pure
+    // spherical distribution can create, so the field reads as
+    // scattered dust rather than concentric rings.
     positions[i * 3 + 1] =
       Math.abs(
         r *
           Math.cos(phi)
       ) *
         0.6 +
-      10;
+      8 +
+      Math.random() * 5;
 
     // Wider/deeper star volume:
     // X is already expanded by the radius, while Z gets an additional
@@ -3709,17 +3719,32 @@ function createTwinkleField(
       Math.sin(theta) *
       DEPTH_SPREAD_MULTIPLIER;
 
+    // Bias toward smaller stars with occasional bright standouts,
+    // instead of a flat random spread — reads much more like a
+    // real starfield.
     sizes[i] =
       THREE.MathUtils.lerp(
         minSize,
         maxSize,
-        Math.random()
+        Math.pow(
+          Math.random(),
+          2.2
+        )
       );
 
     phases[i] =
       Math.random() *
       Math.PI *
       2;
+
+    // Per-star twinkle speed so stars don't all pulse in lockstep.
+    freqs[i] =
+      0.6 +
+      Math.random() * 1.3;
+
+    // Per-star color blend between the two supplied hues for
+    // subtle warm/cool variation across the field.
+    mixes[i] = Math.random();
   }
 
   const geometry =
@@ -3749,6 +3774,22 @@ function createTwinkleField(
     )
   );
 
+  geometry.setAttribute(
+    "aFreq",
+    new THREE.BufferAttribute(
+      freqs,
+      1
+    )
+  );
+
+  geometry.setAttribute(
+    "aMix",
+    new THREE.BufferAttribute(
+      mixes,
+      1
+    )
+  );
+
   const material =
     new THREE.ShaderMaterial({
       uniforms: {
@@ -3759,15 +3800,22 @@ function createTwinkleField(
         uColor: {
           value: color,
         },
+
+        uColorAlt: {
+          value: altColor,
+        },
       },
 
       vertexShader: `
         attribute float aSize;
         attribute float aPhase;
+        attribute float aFreq;
+        attribute float aMix;
 
         uniform float uTime;
 
         varying float vTwinkle;
+        varying float vMix;
 
         void main() {
 
@@ -3775,9 +3823,11 @@ function createTwinkleField(
             0.5 +
             0.5 *
             sin(
-              uTime * 1.6 +
+              uTime * 1.6 * aFreq +
               aPhase
             );
+
+          vMix = aMix;
 
           vec4 mvPosition =
             modelViewMatrix *
@@ -3795,8 +3845,10 @@ function createTwinkleField(
 
       fragmentShader: `
         uniform vec3 uColor;
+        uniform vec3 uColorAlt;
 
         varying float vTwinkle;
+        varying float vMix;
 
         void main() {
 
@@ -3806,21 +3858,41 @@ function createTwinkleField(
               vec2(0.5)
             );
 
-          float alpha =
+          // Tight bright core plus a soft outer halo reads much
+          // more like a glowing star than a single flat disc.
+          float core =
             smoothstep(
-              0.5,
+              0.42,
               0.0,
               d
+            );
+
+          float halo =
+            smoothstep(
+              0.5,
+              0.18,
+              d
             ) *
+            0.35;
+
+          float alpha =
+            (core + halo) *
             (
-              0.35 +
-              0.65 *
+              0.32 +
+              0.68 *
               vTwinkle
+            );
+
+          vec3 color =
+            mix(
+              uColor,
+              uColorAlt,
+              vMix
             );
 
           gl_FragColor =
             vec4(
-              uColor,
+              color,
               alpha
             );
         }
@@ -4006,6 +4078,12 @@ export default function Fly() {
   const sectionRef =
     useRef(null);
 
+  const startPromptRef =
+    useRef(null);
+
+  const endPromptRef =
+    useRef(null);
+
   useEffect(() => {
     const canvas =
       canvasRef.current;
@@ -4016,6 +4094,12 @@ export default function Fly() {
     if (!canvas || !section) {
       return;
     }
+
+    const startPromptEl =
+      startPromptRef.current;
+
+    const endPromptEl =
+      endPromptRef.current;
 
     /* ========================================================
        SCENE
@@ -4905,10 +4989,19 @@ export default function Fly() {
 
     /*
       ============================================================
-      UPDATED CARD TEXTURE — light/pink card with outlined year
-      above it, matching the reference layout (image 1). Opaque
-      panel fill instead of a dark translucent one, so this reads
-      correctly on a white / light page background.
+      CARD TEXTURE — light/pink card with outlined year above it.
+
+      Upgrades vs. the previous version:
+        - soft drop shadow under the panel for real depth
+        - blurred outer glow ring using theme.ring (was unused before)
+        - subtle top-to-bottom gradient panel instead of flat fill
+        - a colored "spine" accent bar on the side given by
+          theme.corner ("tl" = left spine, "tr" = right spine),
+          so that field is finally put to use
+        - index badge is now a rounded pill chip
+        - title gets a faint drop shadow for legibility/depth
+        - bottom strip gets a matching accent tint + a small
+          glowing status dot, tying the whole card to its theme
       ============================================================
     */
     function makeCardTexture(
@@ -4935,7 +5028,6 @@ export default function Fly() {
       const YELLOW = "#ffd400";
       const DARK_TEXT =
         "rgba(20,16,20,0.78)";
-      const CARD_BG = "#fdf0f4";
 
       const theme =
         CARD_THEMES[
@@ -4967,44 +5059,146 @@ export default function Fly() {
 
       ctx.restore();
 
-      /* ---- CARD PANEL ---- */
+      /* ---- CARD PANEL GEOMETRY ---- */
       const cardTop = YEAR_ZONE_H;
       const cardHeight =
         h - cardTop - 20;
+      const cardX = PAD * 0.4;
+      const cardW =
+        w - PAD * 0.8;
+      const cardRadius = 22;
 
+      /* ---- DROP SHADOW ---- */
       ctx.save();
 
       roundRectPath(
         ctx,
-        PAD * 0.4,
+        cardX,
         cardTop,
-        w - PAD * 0.8,
+        cardW,
         cardHeight,
-        22
+        cardRadius
       );
 
-      ctx.fillStyle = CARD_BG;
+      ctx.shadowColor =
+        "rgba(10,4,10,0.45)";
+      ctx.shadowBlur = 46;
+      ctx.shadowOffsetY = 22;
+      ctx.fillStyle =
+        "rgba(10,4,10,1)";
       ctx.fill();
 
-      ctx.lineWidth = 2.5;
-      ctx.strokeStyle = theme.accent;
+      ctx.restore();
+
+      /* ---- BLURRED OUTER GLOW RING (theme.ring) ---- */
+      ctx.save();
+
+      roundRectPath(
+        ctx,
+        cardX - 5,
+        cardTop - 5,
+        cardW + 10,
+        cardHeight + 10,
+        cardRadius + 5
+      );
+
+      ctx.strokeStyle =
+        theme.ring;
+      ctx.lineWidth = 14;
+
+      if (ctx.filter !== undefined) {
+        ctx.filter =
+          "blur(10px)";
+      }
+
       ctx.stroke();
 
       ctx.restore();
 
-      const innerPad = PAD;
-      let y = cardTop + 78;
-
-      /* index label top-right */
+      /* ---- CARD PANEL (gradient fill) ---- */
       ctx.save();
 
-      ctx.textAlign = "right";
+      roundRectPath(
+        ctx,
+        cardX,
+        cardTop,
+        cardW,
+        cardHeight,
+        cardRadius
+      );
 
-      ctx.font =
-        '700 22px "JetBrains Mono", monospace';
+      const panelGrad =
+        ctx.createLinearGradient(
+          0,
+          cardTop,
+          0,
+          cardTop + cardHeight
+        );
+
+      panelGrad.addColorStop(
+        0,
+        "#fff5f8"
+      );
+
+      panelGrad.addColorStop(
+        0.55,
+        "#fdeaf0"
+      );
+
+      panelGrad.addColorStop(
+        1,
+        "#f9dbe6"
+      );
 
       ctx.fillStyle =
-        "rgba(40,30,35,0.35)";
+        panelGrad;
+
+      ctx.fill();
+
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle =
+        theme.accent;
+      ctx.stroke();
+
+      ctx.restore();
+
+      /* ---- ACCENT SPINE (uses theme.corner: tl = left, tr = right) ---- */
+      ctx.save();
+
+      const spineW = 7;
+      const spineInset = 14;
+      const spineX =
+        theme.corner === "tl"
+          ? cardX + spineInset
+          : cardX +
+            cardW -
+            spineInset -
+            spineW;
+
+      roundRectPath(
+        ctx,
+        spineX,
+        cardTop + 26,
+        spineW,
+        cardHeight - 52,
+        spineW / 2
+      );
+
+      ctx.fillStyle =
+        theme.accent;
+      ctx.globalAlpha = 0.85;
+      ctx.fill();
+
+      ctx.restore();
+
+      const innerPad =
+        PAD +
+        (spineW + spineInset - 8);
+
+      let y = cardTop + 78;
+
+      /* index badge, top-right, as a rounded pill chip */
+      ctx.save();
 
       const idxLabel =
         String(
@@ -5016,11 +5210,61 @@ export default function Fly() {
           "0"
         );
 
+      ctx.font =
+        '700 22px "JetBrains Mono", monospace';
+
+      const idxTextWidth =
+        ctx.measureText(
+          idxLabel
+        ).width;
+
+      const chipPadX = 18;
+      const chipH = 42;
+      const chipW =
+        idxTextWidth +
+        chipPadX * 2;
+
+      const chipX =
+        cardX +
+        cardW -
+        innerPad * 0.55 -
+        chipW;
+
+      const chipY =
+        cardTop + 24;
+
+      roundRectPath(
+        ctx,
+        chipX,
+        chipY,
+        chipW,
+        chipH,
+        chipH / 2
+      );
+
+      ctx.fillStyle =
+        "rgba(20,10,16,0.06)";
+      ctx.fill();
+
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle =
+        "rgba(20,10,16,0.18)";
+      ctx.stroke();
+
+      ctx.fillStyle =
+        "rgba(40,30,35,0.55)";
+      ctx.textAlign = "left";
+      ctx.textBaseline =
+        "middle";
+
       ctx.fillText(
         idxLabel,
-        w - innerPad,
-        cardTop + 46
+        chipX + chipPadX,
+        chipY + chipH / 2 + 1
       );
+
+      ctx.textBaseline =
+        "alphabetic";
 
       ctx.restore();
 
@@ -5085,8 +5329,13 @@ export default function Fly() {
 
       y += 62;
 
-      /* title (yellow, bold) */
+      /* title (yellow, bold, soft shadow for depth) */
       ctx.save();
+
+      ctx.shadowColor =
+        "rgba(0,0,0,0.18)";
+      ctx.shadowBlur = 10;
+      ctx.shadowOffsetY = 4;
 
       ctx.fillStyle = YELLOW;
 
@@ -5094,7 +5343,10 @@ export default function Fly() {
         '900 62px "Archivo Black", sans-serif';
 
       const maxWidth =
-        w - innerPad * 2;
+        w -
+        innerPad -
+        (w - (cardX + cardW)) -
+        PAD * 0.4;
 
       const lineHeight = 68;
 
@@ -5175,14 +5427,20 @@ export default function Fly() {
         cardHeight -
         stripH -
         30;
+      const stripX = innerPad;
+      const stripW =
+        w -
+        innerPad -
+        (w - (cardX + cardW)) -
+        PAD * 0.4;
 
       ctx.save();
 
       roundRectPath(
         ctx,
-        innerPad,
+        stripX,
         stripY,
-        w - innerPad * 2,
+        stripW,
         stripH,
         14
       );
@@ -5212,6 +5470,45 @@ export default function Fly() {
 
       ctx.clip();
 
+      /* faint accent tint so the strip echoes the card's theme color */
+      const accentTint =
+        ctx.createLinearGradient(
+          stripX,
+          0,
+          stripX + stripW,
+          0
+        );
+
+      accentTint.addColorStop(
+        0,
+        "rgba(0,0,0,0)"
+      );
+
+      accentTint.addColorStop(
+        theme.corner === "tl"
+          ? 0
+          : 1,
+        theme.ring
+      );
+
+      accentTint.addColorStop(
+        theme.corner === "tl"
+          ? 0.35
+          : 0.65,
+        "rgba(0,0,0,0)"
+      );
+
+      ctx.globalAlpha = 0.22;
+      ctx.fillStyle =
+        accentTint;
+      ctx.fillRect(
+        stripX,
+        stripY,
+        stripW,
+        stripH
+      );
+      ctx.globalAlpha = 1;
+
       for (
         let i = 0;
         i < 220;
@@ -5224,9 +5521,9 @@ export default function Fly() {
         ctx.beginPath();
 
         ctx.arc(
-          innerPad +
+          stripX +
             Math.random() *
-              (w - innerPad * 2),
+              stripW,
           stripY +
             Math.random() *
               stripH,
@@ -5237,6 +5534,60 @@ export default function Fly() {
 
         ctx.fill();
       }
+
+      ctx.restore();
+
+      /* small glowing status dot, top-right of the strip */
+      ctx.save();
+
+      const dotX =
+        stripX + stripW - 24;
+      const dotY = stripY + 22;
+
+      const dotGlow =
+        ctx.createRadialGradient(
+          dotX,
+          dotY,
+          0,
+          dotX,
+          dotY,
+          14
+        );
+
+      dotGlow.addColorStop(
+        0,
+        theme.accent
+      );
+
+      dotGlow.addColorStop(
+        1,
+        "rgba(0,0,0,0)"
+      );
+
+      ctx.fillStyle =
+        dotGlow;
+
+      ctx.beginPath();
+      ctx.arc(
+        dotX,
+        dotY,
+        14,
+        0,
+        Math.PI * 2
+      );
+      ctx.fill();
+
+      ctx.fillStyle =
+        theme.accent;
+      ctx.beginPath();
+      ctx.arc(
+        dotX,
+        dotY,
+        4,
+        0,
+        Math.PI * 2
+      );
+      ctx.fill();
 
       ctx.restore();
 
@@ -5255,7 +5606,7 @@ export default function Fly() {
           data.meta &&
           data.meta[0]
         ) || "",
-        innerPad + 20,
+        stripX + 20,
         stripY + stripH - 24
       );
 
@@ -5266,7 +5617,7 @@ export default function Fly() {
           data.meta &&
           data.meta[1]
         ) || "",
-        w - innerPad - 20,
+        stripX + stripW - 44,
         stripY + stripH - 24
       );
 
@@ -5641,6 +5992,14 @@ export default function Fly() {
     let currentT = 0;
 
     let flightComplete = false;
+
+    // Track whether the "scroll to start" prompt has already
+    // been dismissed, and whether the "end of timeline" prompt
+    // has already been revealed, so we only touch the DOM once
+    // per transition instead of every frame.
+    let startPromptHidden = false;
+
+    let endPromptShown = false;
 
     const SCROLL_SENSITIVITY =
       0.000045;
@@ -6123,14 +6482,53 @@ export default function Fly() {
       }
 
       /* ======================================================
+         SCROLL PROMPT / END PROMPT
+         "Scroll to start the timeline" fades out the moment the
+         user starts scrolling. "End of timeline" fades in once
+         the flight is locked complete. Each only fires once.
+      ====================================================== */
+
+      if (
+        !startPromptHidden &&
+        scrollTargetT > 0.001
+      ) {
+        startPromptHidden = true;
+
+        if (startPromptEl) {
+          startPromptEl.classList.add(
+            "fly-prompt-hidden"
+          );
+        }
+      }
+
+      if (
+        !endPromptShown &&
+        flightComplete
+      ) {
+        endPromptShown = true;
+
+        if (endPromptEl) {
+          endPromptEl.classList.add(
+            "fly-prompt-visible"
+          );
+        }
+      }
+
+      /* ======================================================
          REVEAL
+         The line fades in once scrolling begins, same as before.
+         Once the flight is complete it fades back out again —
+         mirroring the "not there yet" state from before the
+         journey started.
       ====================================================== */
 
       const revealTarget =
-        scrollTargetT >
-        REVEAL_THRESHOLD
-          ? 1
-          : 0;
+        flightComplete
+          ? 0
+          : scrollTargetT >
+            REVEAL_THRESHOLD
+            ? 1
+            : 0;
 
       revealAlpha +=
         (
@@ -7047,6 +7445,91 @@ export default function Fly() {
           height: 100%;
           display: block;
         }
+
+        /* ============================================================
+           SCROLL / END PROMPTS
+        ============================================================ */
+
+        .fly-prompt {
+          position: absolute;
+          left: 50%;
+          z-index: 20;
+          color: #ffe9f2;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          text-transform: uppercase;
+          text-align: center;
+          pointer-events: none;
+          text-shadow: 0 2px 18px rgba(255, 46, 147, 0.45);
+        }
+
+        .fly-prompt-start {
+          bottom: 46px;
+          transform: translate(-50%, 0);
+          letter-spacing: 0.16em;
+          font-size: 13px;
+          opacity: 1;
+          transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .fly-prompt-start::after {
+          content: "";
+          display: block;
+          margin: 16px auto 0;
+          width: 1px;
+          height: 36px;
+          background: linear-gradient(
+            to bottom,
+            rgba(255, 233, 242, 0.95),
+            rgba(255, 233, 242, 0)
+          );
+          animation: fly-scroll-bounce 1.7s ease-in-out infinite;
+        }
+
+        .fly-prompt-start.fly-prompt-hidden {
+          opacity: 0;
+          transform: translate(-50%, 14px);
+        }
+
+        .fly-prompt-end {
+          top: 50%;
+          transform: translate(-50%, -46%) scale(0.94);
+          letter-spacing: 0.22em;
+          font-size: 26px;
+          opacity: 0;
+          transition: opacity 1s ease 0.15s, transform 1s ease 0.15s;
+        }
+
+        .fly-prompt-end::before {
+          content: "";
+          display: block;
+          margin: 0 auto 18px;
+          width: 64px;
+          height: 1px;
+          background: linear-gradient(
+            to right,
+            rgba(255, 233, 242, 0),
+            rgba(255, 233, 242, 0.9),
+            rgba(255, 233, 242, 0)
+          );
+        }
+
+        .fly-prompt-end.fly-prompt-visible {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1);
+        }
+
+        @keyframes fly-scroll-bounce {
+          0%,
+          100% {
+            transform: scaleY(0.55);
+            opacity: 0.35;
+          }
+          50% {
+            transform: scaleY(1);
+            opacity: 1;
+          }
+        }
       `}</style>
 
       <section
@@ -7058,6 +7541,20 @@ export default function Fly() {
           ref={canvasRef}
           className="fly-canvas"
         />
+
+        <div
+          ref={startPromptRef}
+          className="fly-prompt fly-prompt-start"
+        >
+          Scroll to start the timeline
+        </div>
+
+        <div
+          ref={endPromptRef}
+          className="fly-prompt fly-prompt-end"
+        >
+          End of timeline
+        </div>
       </section>
     </>
   );
