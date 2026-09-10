@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import styles from "./heroblueprint.module.css";
 
 const headings = [
@@ -72,6 +73,13 @@ const Reveal = ({
 
 const Heroblueprint = ({ onReturnToGallery }) => {
   const ready = useDelayedReady(HERO_START_DELAY);
+  const router = useRouter(); // ── NEW
+
+  // ── NEW: directly navigate to gallery page on click ──
+  const handleReturnClick = () => {
+    if (onReturnToGallery) onReturnToGallery(); // purana callback bhi chalega agar diya ho
+    router.push("/gallery"); // ← apna actual gallery route yahan daalo
+  };
 
   return (
     <section className={styles["heroblueprint-main"]}>
@@ -91,7 +99,7 @@ const Heroblueprint = ({ onReturnToGallery }) => {
           <Reveal
             as="button"
             type="button"
-            onClick={onReturnToGallery}
+            onClick={handleReturnClick}
             ready={ready}
             direction="left"
             duration={1.2}

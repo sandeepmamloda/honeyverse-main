@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import styles from "./corelist.module.css";
 
 const coreItems = [
@@ -10,6 +11,10 @@ const coreItems = [
     type: "FEATURE FILM",
     director: "DIR. ALFONSO CUARÓN",
     studio: "A24 / LUMIÈRE",
+    videoUrl: "/videos/awards/awards.mp4",
+    duration: "12 min.",
+    category: "Feature Film",
+    description: "A visually striking short film exploring the intersection of light and shadow.",
   },
   {
     id: 2,
@@ -18,6 +23,10 @@ const coreItems = [
     type: "DOCUSERIES",
     director: "DIR. JANE CAMPION",
     studio: "HBO MAX",
+    videoUrl: "/videos/awards/awards.mp4",
+    duration: "18 min.",
+    category: "Docuseries",
+    description: "An unflinching look at ambition, power, and the cost of progress.",
   },
   {
     id: 3,
@@ -26,6 +35,10 @@ const coreItems = [
     type: "FEATURE FILM",
     director: "DIR. DENIS VILLENEUVE",
     studio: "WARNER BROS.",
+    videoUrl: "/videos/awards/awards.mp4",
+    duration: "15 min.",
+    category: "Feature Film",
+    description: "A sweeping visual narrative of power and legacy.",
   },
   {
     id: 4,
@@ -34,6 +47,10 @@ const coreItems = [
     type: "LIMITED SERIES",
     director: "DIR. CARY FUKUNAGA",
     studio: "NETFLIX",
+    videoUrl: "/videos/awards/awards.mp4",
+    duration: "20 min.",
+    category: "Limited Series",
+    description: "A tense exploration of a nation on the brink.",
   },
   {
     id: 5,
@@ -42,10 +59,15 @@ const coreItems = [
     type: "FEATURE FILM",
     director: "DIR. AMARA DIALLO",
     studio: "LUMIÈRE ORIGINALS",
+    videoUrl: "/videos/awards/awards.mp4",
+    duration: "14 min.",
+    category: "Feature Film",
+    description: "A raw, cinematic journey through ambition and consequence.",
   },
 ];
 
 const CoreList = () => {
+  const router = useRouter();
   const listContainerRef = useRef(null);
   const [visibleRows, setVisibleRows] = useState(() => new Set());
 
@@ -60,8 +82,6 @@ const CoreList = () => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const idx = Number(entry.target.dataset.index);
-            // stagger handled here via JS timeout, NOT via CSS transition-delay,
-            // so hover transitions stay untouched by the reveal stagger.
             setTimeout(() => {
               setVisibleRows((prev) => {
                 const next = new Set(prev);
@@ -84,12 +104,26 @@ const CoreList = () => {
     return () => observer.disconnect();
   }, []);
 
+  // ── NEW: row click → navigate to video player with query params ──
+  const handleRowClick = (item) => {
+    const params = new URLSearchParams({
+      url: encodeURIComponent(item.videoUrl),
+      title: encodeURIComponent(item.title),
+      director: encodeURIComponent(item.director.replace(/^DIR\.\s*/i, "")),
+      year: encodeURIComponent(item.year),
+      duration: encodeURIComponent(item.duration || ""),
+      category: encodeURIComponent(item.category || item.type || ""),
+      description: encodeURIComponent(item.description || ""),
+    });
+
+    router.push(`/video-player?${params.toString()}`);
+  };
+
   return (
     <section className={styles["core-list-main"]}>
       {/* ── HEADER LAYOUT ── */}
       <div className={styles["header-top"]}>
         <div className={styles["badge-wrapper"]}>
-          {/* Custom SVG Icon */}
           <svg className={styles["badge-icon"]} xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
             <path d="M10.417 8.07288C10.4173 7.93412 10.4545 7.79793 10.5248 7.67832C10.5951 7.55871 10.6961 7.45999 10.8172 7.39231C10.9383 7.32463 11.0753 7.29044 11.2141 7.29325C11.3528 7.29606 11.4883 7.33577 11.6066 7.4083L15.4232 9.75101C15.537 9.8209 15.6309 9.91879 15.6961 10.0353C15.7613 10.1518 15.7955 10.2831 15.7955 10.4166C15.7955 10.5501 15.7613 10.6814 15.6961 10.7979C15.6309 10.9145 15.537 11.0124 15.4232 11.0823L11.6066 13.426C11.4881 13.4986 11.3525 13.5383 11.2135 13.5411C11.0746 13.5438 10.9375 13.5094 10.8163 13.4415C10.6951 13.3736 10.5942 13.2745 10.524 13.1546C10.4538 13.0347 10.4169 12.8983 10.417 12.7593V8.07288Z" stroke="#C40053" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
             <path d="M12.5 17.7084V21.875" stroke="#C40053" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
@@ -118,6 +152,12 @@ const CoreList = () => {
             className={`${styles["list-row"]} ${
               visibleRows.has(index) ? styles["is-visible"] : ""
             }`}
+            onClick={() => handleRowClick(item)}   // ── NEW: click to open video player
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") handleRowClick(item);
+            }}
           >
 
             {/* Year Column */}

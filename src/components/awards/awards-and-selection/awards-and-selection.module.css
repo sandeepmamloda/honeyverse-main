@@ -11,6 +11,7 @@
   max-width:110rem;
   padding-inline:2rem;
   margin-inline:auto;
+  overflow:hidden;
 }
 
 /* ══════════════════════════════

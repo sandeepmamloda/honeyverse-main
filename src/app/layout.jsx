@@ -52,8 +52,10 @@ export default function RootLayout({ children }) {
 
         {children}
 
-        {/* Footer will NOT load on "/" and "/timeline" */}
-        {pathname !== "/" && pathname !== "/timeline" && <Footer />}
+        {/* Footer will NOT load on "/", "/timeline" and "/video-player" */}
+        {pathname !== "/" &&
+          pathname !== "/timeline" &&
+          pathname !== "/video-player" && <Footer />}
       </body>
     </html>
   );

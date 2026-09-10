@@ -1,66 +1,5 @@
-// import styles from "./heroawards.module.css";
-
-// const headings = [
-//   { text: "CRITICAL", style: "solid" },
-//   { text: "ACCLAIM", style: "outline" },
-// ];
-
-// const Heroawards = () => {
-//   return (
-//     <section className={styles["heroawards-main"]}>
-//       <div className={styles["heroawards-video-wrapper"]}>
-//         <video
-//           className={styles["awards-video"]}
-//           autoPlay
-//           muted
-//           loop
-//           playsInline
-//         >
-//           <source src="/videos/awards/awards.mp4" type="video/mp4" />
-//         </video>
-//       </div>
-
-//       <div className={styles["textual-content"]}>
-//         {/* Badge + Heading — saath mein center mein */}
-//         <div className={styles["headings-group"]}>
-//           <div className={styles["top"]}>
-//             <h3>[ Our Identity // Vol. 01 ]</h3>
-//           </div>
-
-//           <h1 className={styles["heading-row"]}>
-//             {headings.map((heading, index) => (
-//               <span
-//                 key={index}
-//                 className={
-//                   heading.style === "outline"
-//                     ? styles["text-outline"]
-//                     : styles["text-solid"]
-//                 }
-//               >
-//                 {heading.text}
-//               </span>
-//             ))}
-//           </h1>
-//         </div>
-
-//         {/* Description box — bottom pe */}
-//         <div className={styles["bottom-last"]}>
-//           <h2>
-//             Recognition from the world's most prestigious institutions. A testament to our uncompromising vision and narrative rigor.
-//           </h2>
-//         </div>
-
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default Heroawards;
-
-// ============================================================changes==================================================================
 "use client";
-
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./heroawards.module.css";
 
 const headings = [
@@ -68,61 +7,78 @@ const headings = [
   { text: "ACCLAIM", style: "outline" },
 ];
 
-/* Fades an element into place the first time it scrolls into view.
-   direction: "up" (fade + rise), "left" (fade in from the left),
-   "right" (fade in from the right). `delay` (ms) staggers siblings. */
+/* ══════════════════════════════
+   REVEAL ANIMATION HELPERS — TIMER BASED
+   Hero section (page ka first section) hai, isliye scroll-into-view wala
+   IntersectionObserver kaam ka nahi — load ke turant baad hi section
+   screen pe hota hai. Isliye shared "ready" timer jo load ke 3000ms
+   baad true hota hai, uske upar har element ka apna stagger delay.
+══════════════════════════════ */
+const HERO_START_DELAY = 3000; // ms
+
+const useDelayedReady = (delayMs = HERO_START_DELAY) => {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setReady(true), delayMs);
+    return () => clearTimeout(timer);
+  }, [delayMs]);
+
+  return ready;
+};
+
+const clipStart = {
+  left: "inset(0 100% 0 0)",
+  right: "inset(0 0 0 100%)",
+  up: "inset(100% 0 0 0)",
+  down: "inset(0 0 100% 0)",
+};
+
 const Reveal = ({
   children,
   className = "",
+  ready = false,
   delay = 0,
   as = "div",
-  direction = "up",
+  direction = "left",
+  duration = 1.1,
+  style: extraStyle = {},
 }) => {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
   const Tag = as;
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.15, rootMargin: "0px 0px -5% 0px" }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  const directionClass =
-    direction === "left"
-      ? styles["reveal-left"]
-      : direction === "right"
-      ? styles["reveal-right"]
-      : styles["reveal-up"];
+  const style = {
+    clipPath: ready ? "inset(0 0 0 0)" : clipStart[direction],
+    WebkitClipPath: ready ? "inset(0 0 0 0)" : clipStart[direction],
+    opacity: ready ? 1 : 0,
+    transitionProperty: "clip-path, -webkit-clip-path, opacity",
+    transitionDuration: `${duration}s, ${duration}s, 0.1s`,
+    transitionTimingFunction: "cubic-bezier(0.83,0,0.17,1)",
+    transitionDelay: `${delay}ms`,
+    willChange: "clip-path, opacity",
+    ...extraStyle,
+  };
 
   return (
-    <Tag
-      ref={ref}
-      className={`${className} ${directionClass} ${
-        visible ? styles["reveal-visible"] : ""
-      }`}
-      style={{ transitionDelay: `${delay}ms` }}
-    >
+    <Tag className={className} style={style}>
       {children}
     </Tag>
   );
 };
 
+/* heading.style -> CSS module class */
+const styleClassMap = {
+  solid: "text-solid",
+  outline: "text-outline",
+};
+
 const Heroawards = () => {
+  const ready = useDelayedReady(HERO_START_DELAY);
+
   return (
-    <section className={styles["heroawards-main"]}>
+    <section
+      className={styles["heroawards-main"]}
+      style={{ overflowX: "hidden", overflowY: "hidden" }}
+    >
       <div className={styles["heroawards-video-wrapper"]}>
         <video
           className={styles["awards-video"]}
@@ -138,39 +94,48 @@ const Heroawards = () => {
       <div className={styles["textual-content"]}>
         {/* Badge + Heading — saath mein center mein */}
         <div className={styles["headings-group"]}>
-          <Reveal direction="up" delay={0}>
-            <div className={styles["top"]}>
-              <h3>[ Our Identity // Vol. 01 ]</h3>
-            </div>
+          <Reveal
+            as="div"
+            ready={ready}
+            direction="left"
+            duration={1.2}
+            delay={0}
+            className={styles["top"]}
+          >
+            <h3>[ Our Identity // Vol. 01 ]</h3>
           </Reveal>
 
-          <Reveal direction="up" delay={150}>
-            <h1 className={styles["heading-row"]}>
-              {headings.map((heading, index) => (
-                <span
-                  key={index}
-                  className={
-                    heading.style === "outline"
-                      ? styles["text-outline"]
-                      : styles["text-solid"]
-                  }
-                >
-                  {heading.text}
-                </span>
-              ))}
-            </h1>
-          </Reveal>
+          <h1 className={styles["heading-row"]}>
+            {headings.map((heading, index) => (
+              <Reveal
+                key={index}
+                as="span"
+                ready={ready}
+                direction="up"
+                duration={1.3}
+                delay={250 + index * 200}
+                className={styles[styleClassMap[heading.style]]}
+              >
+                {heading.text}
+              </Reveal>
+            ))}
+          </h1>
         </div>
 
         {/* Description box — bottom pe */}
-        <div className={styles["bottom-last"]}>
-          <Reveal direction="up" delay={300}>
-            <h2>
-              Recognition from the world's most prestigious institutions. A testament to our uncompromising vision and narrative rigor.
-            </h2>
-          </Reveal>
-        </div>
-
+        <Reveal
+          as="div"
+          ready={ready}
+          direction="up"
+          duration={1.3}
+          delay={250 + headings.length * 200 + 200}
+          className={styles["bottom-last"]}
+        >
+          <h2>
+            Recognition from the world's most prestigious institutions. A
+            testament to our uncompromising vision and narrative rigor.
+          </h2>
+        </Reveal>
       </div>
     </section>
   );

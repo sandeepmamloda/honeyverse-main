@@ -15,6 +15,7 @@ const navLinks = [
   { label: "Code", href: "/code" },
   { label: "News", href: "/news" },
   { label: "Contact Us", href: "/contact-us" },
+  { label: "timeline", href: "/timeline" },
 ];
 
 /* Images correspond 1:1 to the 11 menu items by index (stack carousel) */
@@ -29,7 +30,8 @@ const stackImages = [
   { src: "/images/header/menu/Gallery.jpg", alt: "Gallery" },
   { src: "/images/header/menu/Code.jpg", alt: "Code" },
   { src: "/images/header/menu/News.jpg", alt: "News" },
-  { src: "/images/header/menu/Contact.jpg", alt: "Contact Us" },
+  { src: "/images/header/menu/contact-us.jpg", alt: "Contact Us" },
+  { src: "/images/header/menu/timeline.jpg", alt: "timeline" },
 ];
 
 const total = stackImages.length;
