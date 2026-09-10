@@ -1,12 +1,31 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import styles from "./footer.module.css";
 
+/* Same destinations as the header nav (navbar.jsx) — kept as real hrefs
+   instead of "#" placeholders so footer links actually route. Regrouped
+   into 3 columns of 4 to keep the original 3-column footer layout. */
 const footerLinks = [
-  ["BRAND", "AWARDS", "SERVICES"],
-  ["TEAMS", "WORK", "VISUAL"],
-  ["GALLERY", "CODE", "NEWS", "TIMELINE"],
+  [
+    { label: "HOME", href: "/" },
+    { label: "AWARDS", href: "/awards" },
+    { label: "BRAND", href: "/brand" },
+    { label: "TEAMS", href: "/teams" },
+  ],
+  [
+    { label: "PORTFOLIO", href: "/portfolio" },
+    { label: "SERVICES", href: "/services" },
+    { label: "VISUAL", href: "/visuals" },
+    { label: "GALLERY", href: "/gallery" },
+  ],
+  [
+    { label: "CODE", href: "/code" },
+    { label: "NEWS", href: "/news" },
+    { label: "CONTACT US", href: "/contact-us" },
+    { label: "TIMELINE", href: "/timeline" },
+  ],
 ];
 
 /* =========================================================
@@ -99,6 +118,7 @@ const Reveal = ({
 const Footer = function () {
   const canvasRef = useRef(null);
   const videoRef = useRef(null);
+  const router = useRouter();
 
   /*
     IMPORTANT:
@@ -288,9 +308,21 @@ const Footer = function () {
          drawing context back down so all the existing
          drawing code below (which uses `width`/`height`
          in CSS pixel units) keeps working unchanged.
+
+         MOBILE BLUR FIX: phones commonly report a
+         devicePixelRatio of 2.5–3. At that ratio the
+         canvas backing store becomes much bigger than
+         the source video's actual resolution, so
+         drawImage() has to upscale the video beyond its
+         native pixels — that upscaling is what reads as
+         "blurry" inside the HONEYVERSE text on mobile,
+         even though the glyph edges themselves are sharp.
+         Capping the ratio we scale by keeps the backing
+         store from demanding more resolution than the
+         video source can actually provide.
       --------------------------------------------- */
 
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
       const targetWidth = Math.round(width * dpr);
       const targetHeight = Math.round(height * dpr);
@@ -396,6 +428,12 @@ const Footer = function () {
 
   const brandRevealPercent =
     (1 - eased) * 100;
+
+  /* =========================================================
+     BRAND CLICK → HOME
+  ========================================================= */
+
+  const goHome = () => router.push("/");
 
   /* =========================================================
      JSX
@@ -507,8 +545,8 @@ const Footer = function () {
                 delay={220 + i * 110}
               >
                 {col.map((link) => (
-                  <a key={link} href="#">
-                    {link}
+                  <a key={link.href} href={link.href}>
+                    {link.label}
                   </a>
                 ))}
               </Reveal>
@@ -518,12 +556,29 @@ const Footer = function () {
 
         {/* =================================================
             BIG TEXT + VIDEO
+
+            Clicking anywhere on the HONEYVERSE brand block
+            now navigates home. Kept as a div (not <a>) since
+            it wraps a <video> + <canvas>, not inline text —
+            role/tabIndex/onKeyDown make it keyboard-accessible
+            the same way a link would be.
         ================================================= */}
 
         <div
           className={styles["footer-brand"]}
           style={{
             clipPath: `inset(0 ${brandRevealPercent}% 0 0)`,
+            cursor: "pointer",
+          }}
+          onClick={goHome}
+          role="link"
+          tabIndex={0}
+          aria-label="Go to homepage"
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              goHome();
+            }
           }}
         >
           <video
