@@ -58,6 +58,7 @@
 /* ── BIG TITLE ── */
 .title-wrapper {
   width: fit-content;
+  max-width: 100%;
   margin-bottom: 3rem;
 }
 
@@ -70,6 +71,8 @@
   letter-spacing: 0.02em;
   margin: 0;
   color: #FCD116;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 /* ── GALLERY GRID (accordion hover strip) ── */
@@ -317,6 +320,17 @@
   .gallery-item:hover .gallery-image,
   .gallery-item.active .gallery-image {
     transform: none;
+  }
+}
+
+/* ── Narrow phones: title wraps to two lines here (clamp bottoms out at
+   3rem while the viewport is too narrow to fit "THE LOOKBOOK" on one
+   line), and line-height: 1 from the base rule makes the wrapped lines
+   crowd/overlap each other. Loosening it just at this breakpoint fixes
+   that without touching anything else. ── */
+@media (max-width: 555px) {
+  .main-title {
+    line-height: 140%;
   }
 }
 
