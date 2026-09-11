@@ -1,28 +1,37 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./hero.module.css";
 import Image from "next/image";
 
 /* ══════════════════════════════
-   REVEAL ANIMATION HELPERS — TIMER BASED
-   Ye bhi hero section hai (page ka first section), isliye scroll-into-view
-   wala IntersectionObserver yaha kaam ka nahi — page load ke turant baad
-   hi section screen pe hota hai. Isliye ek shared "ready" timer use karte
-   hain jo load ke thodi der baad true hota hai, aur uske upar har element
-   ka apna stagger delay hota hai.
+   REVEAL ANIMATION HELPERS — SCROLL BASED
+   Ye section ab page ka 1st section nahi hai — ye 3 sections ke baad
+   aata hai, isliye page load hote hi ye viewport se bahar hota hai.
+   Isliye timer ki jagah IntersectionObserver use kar rahe hain: jab
+   user scroll karke section ko dekhta hai, tabhi "ready" true hota hai
+   aur reveal animation trigger hoti hai (sirf ek baar).
 ══════════════════════════════ */
-const HERO_START_DELAY = 100; // ms — page load ke kitni der baad animation shuru ho
-
-const useDelayedReady = (delayMs = HERO_START_DELAY) => {
+const useInViewOnce = (options = { threshold: 0.25 }) => {
+  const ref = useRef(null);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setReady(true), delayMs);
-    return () => clearTimeout(timer);
-  }, [delayMs]);
+    const node = ref.current;
+    if (!node) return;
 
-  return ready;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setReady(true);
+        observer.unobserve(node);
+      }
+    }, options);
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [options]);
+
+  return [ref, ready];
 };
 
 const clipStart = {
@@ -66,20 +75,13 @@ const Reveal = ({
 const headlineWords = ["ENTER", "THE", "VERSE"];
 
 export default function Hero() {
-  const ready = useDelayedReady(HERO_START_DELAY);
+  const [sectionRef, ready] = useInViewOnce({ threshold: 0.25 });
 
   return (
-    <section className={styles.wrapper}>
+    <section ref={sectionRef} className={styles.wrapper}>
 
-      {/* ══ SINGLE BACKGROUND VIDEO ════════════════════ */}
-      <Reveal
-        as="div"
-        ready={ready}
-        direction="up"
-        duration={1.4}
-        delay={0}
-        className={styles.screen}
-      >
+      {/* ══ SINGLE BACKGROUND VIDEO — no animation, static ══ */}
+      <div className={styles.screen}>
         <video
           autoPlay
           muted
@@ -91,9 +93,9 @@ export default function Hero() {
           <source src="/videos/home/first.mp4" type="video/mp4" />
         </video>
         <div className={styles.vignette} />
-      </Reveal>
+      </div>
 
-      {/* ══ HEADLINE ═══════════════════════════════════ */}
+      {/* ══ HEADLINE — only text animates ═══════════════ */}
       <div className={styles.headline}>
         <h1 className={styles.h1}>
           {headlineWords.map((word, index) => (
@@ -122,22 +124,15 @@ export default function Hero() {
         </Reveal>
       </div>
 
-      {/* ══ FOOTER ═════════════════════════════════════ */}
-      <Reveal
-        as="footer"
-        ready={ready}
-        direction="up"
-        duration={1}
-        delay={1200}
-        className={styles.bottom}
-      >
+      {/* ══ FOOTER — no animation, static ═══════════════ */}
+      <footer className={styles.bottom}>
         <div className={styles.logoRow}>
           <span className={styles.logoBox}>
             <Image className={styles.logoImg} src="/images/home/c.png" alt="Logo" fill />
           </span>
           <span className={styles.year}>2026</span>
         </div>
-      </Reveal>
+      </footer>
 
     </section>
   );

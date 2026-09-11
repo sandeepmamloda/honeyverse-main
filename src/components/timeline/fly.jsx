@@ -2018,6 +2018,29 @@ export default function Fly() {
       return anchor;
     }
 
+    /*
+      ============================================================
+      CARD ORIENTATION — FIXED, MANUAL X TILT
+      ============================================================
+      Cards no longer track the path's tangent OR the camera. Each
+      card is placed at its anchor position and left at a fixed
+      rotation, set once in buildCardMeshes and never touched again
+      in animate(). It just sits there — no dynamic re-orientation
+      at all.
+
+      To manually tilt every card on its X axis, change the value
+      below. It's in RADIANS, not degrees:
+        radians = degrees * (Math.PI / 180)
+
+      Quick reference:
+        0.1   ≈  5.7°
+        0.2   ≈ 11.5°
+        0.3   ≈ 17.2°
+       -0.2   ≈ -11.5° (tilts the opposite way)
+    */
+    const CARD_ROTATION_X =
+      0;
+
     const CARD_FADE_START_T =
       0.075;
 
@@ -2088,8 +2111,10 @@ export default function Fly() {
           mesh.userData.enter =
             0;
 
+          // Initial rotation. The card is re-oriented toward the
+          // camera in animate() using lookAt().
           mesh.rotation.set(
-            -0.285,
+            CARD_ROTATION_X,
             0,
             0
           );
@@ -2998,58 +3023,48 @@ export default function Fly() {
          CHASE CAMERA
       ====================================================== */
 
+      // Camera stays directly behind the helicopter.
+      // It follows the helicopter's position, but NEVER inherits
+      // the helicopter's pitch or roll. Only horizontal yaw is used.
       const cameraT =
-        t -
-        CHASE_DISTANCE /
-          CURVE_LENGTH;
+        THREE.MathUtils.clamp(
+          t,
+          0,
+          0.999
+        );
 
-      let desiredCamPos;
+      const helicopterTangent =
+        curve
+          .getTangentAt(cameraT)
+          .normalize();
 
-      if (cameraT < 0) {
-        const startPoint =
-          curve.getPointAt(0);
+      // Ignore vertical movement so the camera remains level.
+      helicopterTangent.y = 0;
 
-        const startTangent =
-          curve
-            .getTangentAt(0)
-            .normalize();
-
-        desiredCamPos =
-          startPoint
-            .clone()
-            .addScaledVector(
-              startTangent,
-              cameraT *
-                CURVE_LENGTH
-            );
+      if (helicopterTangent.lengthSq() < 1e-8) {
+        helicopterTangent.set(0, 0, -1);
       } else {
-        desiredCamPos =
-          curve.getPointAt(
-            Math.min(
-              cameraT,
-              0.999
-            )
-          );
+        helicopterTangent.normalize();
       }
+
+      const desiredCamPos =
+        pos
+          .clone()
+          .addScaledVector(
+            helicopterTangent,
+            -CHASE_DISTANCE
+          );
 
       desiredCamPos.addScaledVector(
         WORLD_UP,
         CHASE_HEIGHT
       );
 
-      const lookT =
-        THREE.MathUtils.clamp(
-          cameraT +
-            CAMERA_LOOK_AHEAD /
-              CURVE_LENGTH,
-          0,
-          0.999
-        );
-
+      // Look only at the helicopter's horizontal position.
+      // This keeps the camera upright instead of following the
+      // helicopter's X/Z rotation or pitch.
       cameraLookTarget.copy(
-        curve.getPointAt(
-          lookT
-        )
+        pos
       );
 
       cameraLookTarget.addScaledVector(
@@ -3217,11 +3232,10 @@ export default function Fly() {
             ) *
             0.3;
 
-          mesh.rotation.set(
-            -0.285,
-            0,
-            0
-          );
+          // Make every card look directly at the camera.
+          // lookAt() is used so the card always faces the camera
+          // regardless of where the camera is along the flight line.
+          mesh.lookAt(camera.position);
 
           mesh.scale.setScalar(
             THREE.MathUtils.lerp(
