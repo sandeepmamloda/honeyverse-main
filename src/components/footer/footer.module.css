@@ -122,6 +122,7 @@
   justify-content: space-between;
   padding-inline: 6rem;
   padding-block-end: 5rem;
+  opacity:1!important;
 }
 
 .footer-bottom span {

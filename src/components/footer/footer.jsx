@@ -622,8 +622,8 @@ const Footer = function () {
               styles["footer-bottom-links"]
             }
           >
-            <a href="#">PRIVACY</a>
-            <a href="#">TERMS</a>
+            <a href="/privacy-policy">PRIVACY</a>
+            <a href="/privacy-policy">TERMS</a>
           </div>
         </Reveal>
       </footer>
