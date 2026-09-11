@@ -199,9 +199,8 @@ const Navbar = function () {
                       href={item.href}
                       className={`${styles["nav-item"]} ${index === activeIndex ? styles["active"] : ""}`}
                       onMouseEnter={() => handleHover(index)}
-                      onClick={(e) => {
-                        if (isMobile && index !== activeIndex) {
-                          e.preventDefault();
+                      onClick={() => {
+                        if (isMobile) {
                           goTo(index);
                         }
                       }}
