@@ -1,0 +1,196 @@
+.wrapper {
+    width: 100%;
+    max-width: 106.4rem;
+    margin-inline: auto;
+    padding: 6rem 2rem 9.6rem;
+    display: flex;
+    gap: 6rem;
+    align-items: flex-start;
+    font-family: "interregular";
+}
+
+/* ── Sidebar ── */
+.sidebar {
+    width: 18rem;
+    flex-shrink: 0;
+    position: sticky;
+    top: 3rem;
+}
+
+.contents {
+    font-family: "interblack";
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: 0.04rem;
+    text-transform: uppercase;
+    color: rgba(148, 163, 184, 1);
+    margin-bottom: 1.6rem;
+}
+
+.sidebarList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebarItem {
+    border-top: 0.012rem solid rgba(229, 229, 229, 1);
+}
+
+.sidebarItem:last-child {
+    border-bottom: 0.012rem solid rgba(229, 229, 229, 1);
+}
+
+.sidebarLink {
+    display: block;
+    padding: 1rem 0 1rem 1rem;
+    color: rgba(236, 72, 153, 0.7);
+    text-decoration: none;
+    font-family: "interregular";
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.02rem;
+    line-height: 130%;
+    border-left: 0.18rem solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.sidebarLink:hover {
+    color: rgba(217, 24, 106, 1);
+    border-left-color: rgba(229, 229, 229, 1);
+}
+
+.sidebarLinkActive {
+    color: rgba(245, 158, 11, 1);
+    font-weight: 700;
+    border-left-color: rgba(217, 24, 106, 1);
+}
+
+/* ── Main ── */
+.main {
+    flex: 1;
+    max-width: 56rem;
+}
+
+.intro {
+    font-family: "interregular";
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.9;
+    color: rgba(30, 30, 30, 1);
+    margin-bottom: 5rem;
+    letter-spacing: 0%;
+}
+
+/* ── Section ── */
+.section {
+    margin-bottom: 5rem;
+    padding-bottom: 5rem;
+    border-bottom: 0.012rem solid rgba(229, 229, 229, 1);
+}
+
+.section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.sectionTitle {
+    font-family: "interblack";
+    font-size: 2rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    color: rgba(217, 24, 106, 1);
+    margin: 0 0 2rem 0;
+}
+
+.section p {
+    font-family: "interregular";
+    font-size: 0.96rem;
+    line-height: 1.9;
+    color: rgba(30, 30, 30, 1);
+    margin-bottom: 1rem;
+    letter-spacing: 0%;
+    font-weight: 400;
+}
+
+.section p:last-child { margin-bottom: 0; }
+
+.section b {
+    font-family: "interregular";
+    font-weight: 700;
+    color: rgba(217, 24, 106, 1);
+    letter-spacing: 0%;
+}
+
+.section ul {
+    margin: 1.4rem 0;
+    padding-left: 1.4rem;
+}
+
+.section li {
+    font-family: "interregular";
+    font-size: 0.96rem;
+    font-weight: 400;
+    line-height: 1.9;
+    color: rgba(30, 30, 30, 1);
+    margin-bottom: 0.6rem;
+    letter-spacing: 0%;
+}
+
+/* ── Link ── */
+.link {
+    font-family: "interregular";
+    color: rgba(59, 91, 219, 1);
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 0%;
+}
+
+.link:hover { text-decoration: underline; }
+
+/* ── Footnote ── */
+.footnote {
+    margin-top: 2.4rem !important;
+    font-size: 0.8rem !important;
+    color: rgba(148, 163, 184, 1) !important;
+    font-style: italic;
+}
+
+/* ── Responsive ── */
+@media screen and (max-width: 1730px) {
+    .wrapper { max-width: 90rem; }
+}
+
+@media screen and (max-width: 1360px) {
+    .wrapper { max-width: 75rem; gap: 4rem; }
+    .sidebar { width: 15rem; }
+    .sectionTitle { font-size: 1.7rem; }
+}
+
+@media screen and (max-width: 1100px) {
+    .wrapper { gap: 3rem; }
+    .sidebar { width: 13rem; }
+}
+
+@media screen and (max-width: 900px) {
+    .wrapper {
+        flex-direction: column;
+        padding: 3rem 1.2rem 5rem;
+        gap: 2.4rem;
+    }
+    .sidebar {
+        position: static;
+        width: 100%;
+    }
+    .main { max-width: 100%; }
+    .intro { font-size: 0.9rem; margin-bottom: 3rem; }
+    .sectionTitle { font-size: 1.5rem; }
+    .section p,
+    .section li { font-size: 0.88rem; }
+}
+
+@media screen and (max-width: 600px) {
+    .sectionTitle { font-size: 1.35rem; }
+    .section { margin-bottom: 3rem; padding-bottom: 3rem; }
+}
