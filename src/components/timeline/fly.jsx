@@ -2235,6 +2235,8 @@ export default function Fly() {
 
       event.preventDefault();
 
+      dismissScrollHint();
+
       const delta =
         normalizeWheelDelta(
           event
@@ -2259,6 +2261,83 @@ export default function Fly() {
       {
         passive: false,
       }
+    );
+
+    /* ========================================================
+       SCROLL HINT OVERLAY
+       Shown on mount, before the user has interacted at all.
+       Faded + removed on the first real scroll/touch/key input,
+       and never shown again for this mount.
+    ======================================================== */
+
+    const hintEl =
+      document.createElement(
+        "div"
+      );
+
+    hintEl.className =
+      "fly-scroll-hint";
+
+    hintEl.innerHTML = `
+      <span class="fly-scroll-hint-icon">
+        <span class="fly-scroll-hint-wheel"></span>
+      </span>
+      <span class="fly-scroll-hint-text">SCROLL TO EXPLORE</span>
+    `;
+
+    section.appendChild(
+      hintEl
+    );
+
+    let hintDismissed = false;
+
+    function dismissScrollHint() {
+      if (hintDismissed) {
+        return;
+      }
+
+      hintDismissed = true;
+
+      hintEl.classList.add(
+        "fly-scroll-hint-hidden"
+      );
+
+      window.setTimeout(
+        () => {
+          if (hintEl.parentNode) {
+            hintEl.parentNode.removeChild(
+              hintEl
+            );
+          }
+        },
+        600
+      );
+    }
+
+    function handleHintKeydown(
+      event
+    ) {
+      const scrollKeys = [
+        "ArrowDown",
+        "ArrowUp",
+        "PageDown",
+        "PageUp",
+        " ",
+        "Spacebar",
+      ];
+
+      if (
+        scrollKeys.includes(
+          event.key
+        )
+      ) {
+        dismissScrollHint();
+      }
+    }
+
+    window.addEventListener(
+      "keydown",
+      handleHintKeydown
     );
 
     /* ========================================================
@@ -2296,6 +2375,8 @@ export default function Fly() {
       ) {
         return;
       }
+
+      dismissScrollHint();
 
       const currentY =
         event.touches[0].clientY;
@@ -3341,6 +3422,11 @@ export default function Fly() {
       );
 
       window.removeEventListener(
+        "keydown",
+        handleHintKeydown
+      );
+
+      window.removeEventListener(
         "touchstart",
         handleTouchStart
       );
@@ -3354,6 +3440,12 @@ export default function Fly() {
         "touchend",
         handleTouchEnd
       );
+
+      if (hintEl.parentNode) {
+        hintEl.parentNode.removeChild(
+          hintEl
+        );
+      }
 
       cardMeshes.forEach(
         (mesh) => {
@@ -3459,6 +3551,103 @@ export default function Fly() {
           width: 100%;
           height: 100%;
           display: block;
+        }
+
+        /* ========================================================
+           SCROLL HINT
+           Pink/yellow brutalist-cinematic style, matching the
+           Lumière palette. Centered near the bottom of the
+           viewport, above the canvas (z-index 20 > canvas 10).
+        ======================================================== */
+
+        .fly-scroll-hint {
+          position: fixed;
+          left: 50%;
+          bottom: 6vh;
+          transform: translateX(-50%);
+
+          z-index: 20;
+
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 14px;
+
+          pointer-events: none;
+
+          opacity: 1;
+          transition: opacity 0.55s ease, transform 0.55s ease;
+
+          animation: fly-hint-float 2.2s ease-in-out infinite;
+        }
+
+        .fly-scroll-hint-hidden {
+          opacity: 0 !important;
+          transform: translateX(-50%) translateY(12px) !important;
+          animation: none !important;
+        }
+
+        .fly-scroll-hint-icon {
+          width: 30px;
+          height: 48px;
+
+          border: 2px solid #ffd400;
+          border-radius: 16px;
+
+          display: flex;
+          justify-content: center;
+          padding-top: 8px;
+
+          background: rgba(10, 5, 15, 0.35);
+          backdrop-filter: blur(2px);
+        }
+
+        .fly-scroll-hint-wheel {
+          width: 4px;
+          height: 8px;
+          border-radius: 2px;
+          background: #ff2e93;
+
+          animation: fly-hint-wheel 1.6s ease-in-out infinite;
+        }
+
+        .fly-scroll-hint-text {
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 13px;
+          letter-spacing: 0.22em;
+
+          color: #ffffff;
+          text-shadow: 0 0 12px rgba(255, 46, 147, 0.65);
+        }
+
+        @keyframes fly-hint-float {
+          0%,
+          100% {
+            transform: translateX(-50%) translateY(0);
+          }
+          50% {
+            transform: translateX(-50%) translateY(-8px);
+          }
+        }
+
+        @keyframes fly-hint-wheel {
+          0% {
+            transform: translateY(0);
+            opacity: 1;
+          }
+          70% {
+            transform: translateY(14px);
+            opacity: 0;
+          }
+          71% {
+            transform: translateY(0);
+            opacity: 0;
+          }
+          100% {
+            transform: translateY(0);
+            opacity: 1;
+          }
         }
       `}</style>
 
