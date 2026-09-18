@@ -299,7 +299,11 @@
     aspect-ratio: 3 / 4;
   }
 }
-
+@media (max-width:390px){
+  .heading-row{
+    line-height:170%;
+  }
+}
 /* Small Mobile */
 @media screen and (max-width: 360px) {
   .visualmapping-main {
