@@ -6,17 +6,17 @@ import styles from "./visualmapping.module.css";
 const panels = [
   {
     label: "PANEL_01",
-    src: "/images/visual-mapping/panel-01.jpg",
+    src: "/images/blueprint/visualmapping/visualmapping.jpg",
     alt: "Storyboard panel one — hand sketching character pose",
   },
   {
     label: "PANEL_02",
-    src: "/images/visual-mapping/panel-02.jpg",
+    src: "/images/blueprint/visualmapping/visualmapping.jpg",
     alt: "Storyboard panel two — hand sketching character pose",
   },
   {
     label: "PANEL_03",
-    src: "/images/visual-mapping/panel-03.jpg",
+    src: "/images/blueprint/visualmapping/visualmapping.jpg",
     alt: "Storyboard panel three — hand sketching character pose",
   },
 ];
@@ -75,7 +75,7 @@ const Reveal = ({
 
   const style = {
     clipPath: visible ? "inset(0 0 0 0)" : clipStart[direction],
-    WebkitClipPath: visible ? "inset(0 0 0 0)" : clipStart[direction],
+    WebkitClipPath: visible ? "inset(-20px -20px -20px -20px)" : clipStart[direction],
     opacity: visible ? 1 : 0,
     transitionProperty: "clip-path, -webkit-clip-path, opacity",
     transitionDuration: `${duration}s, ${duration}s, 0.1s`,
