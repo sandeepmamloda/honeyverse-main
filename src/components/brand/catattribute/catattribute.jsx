@@ -5,24 +5,24 @@ import styles from "./catattribute.module.css";
 const defaultAttributes = [
   {
     index: "01 //",
-    heading: "EMOTIONAL",
+    heading: "Emotional",
     outline: false,
     highlight: "Visceral, melancholic, triumphant.",
     paragraphs: [
-      "We want our audience to feel the cold of the rain and the warmth of the sun in every frame.",
-      "Our films strike a chord that resonates in the quiet moments—the lingering glance, the breath before speaking, the empty room.",
+      "Funny, tender, a little unhinged.",
+      "We want you to laugh at the same scene that makes you cry.",
     ],
     image: "/images/brand/emotional.jpg",
     alt: "Emotional",
   },
   {
     index: "02 //",
-    heading: "VISUAL",
+    heading: "Visual",
     outline: true,
     highlight: "High contrast, motivated lighting.",
     paragraphs: [
-      "A commitment to shooting on film whenever possible. We embrace grain, texture, and deep, saturated shadows.",
-      "Every frame is a painting; every cut has a purpose, grounding the fantastical in raw reality.",
+      "Color, texture and specificity.",
+      "Every frame should feel like somewhere you've actually been.",
     ],
     image: "/images/brand/visual.jpg",
     alt: "Visual",

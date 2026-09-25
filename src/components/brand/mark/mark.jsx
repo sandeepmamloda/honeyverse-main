@@ -8,22 +8,22 @@ const cards = [
     fig: "FIG. A",
     bg: "dark",
     content: "logo",
-    title: "LOGO ARCHITECTURE",
-    desc: "Built on a strict 12-column mathematical grid. No curves, no compromises.",
+    title: "The Logo",
+    desc: "[Honey to describe the final logo once the designer delivers it]",
   },
   {
     fig: "FIG. B",
     bg: "texture",
     content: "typo",
-    title: "TYPOGRAPHIC SYSTEM",
-    desc: "Heavy weights, negative tracking. Information hierarchy driven by stark scale contrast.",
+    title: "Type",
+    desc: "Bold headlines, plenty of air, and scale that tells you what matters first.",
   },
   {
     fig: "FIG. C",
     bg: "color",
     content: "palette",
-    title: "COLOR PALETTE",
-    desc: "Absolute black vs. saffron. Maximum contrast. Used to direct the eye, never merely to decorate.",
+    title: "Color",
+    desc: "Black #121212, hot pink #d8186a and [gold hex]. Pink is for emphasis, never decoration.",
   },
 ];
 
@@ -152,10 +152,10 @@ const BrandSection = () => {
               delay={200}
               className={styles["mark-heading"]}
             >
-              <h1>
-                <span className={styles["the"]}>THE </span>
-                <span className={styles["mark"]}>MARK</span>
-              </h1>
+              <h2>
+                <span className={styles["the"]}>The </span>
+                <span className={styles["mark"]}>Mark</span>
+              </h2>
             </Reveal>
           </div>
 
@@ -168,8 +168,8 @@ const BrandSection = () => {
             className={styles["brand-top-right"]}
           >
             <p>
-              Our visual identity is rooted in structural brutalism. Stark,
-              uncompromising, and designed to leave a lasting impression.
+              Hot pink, black and gold. Maximalist on purpose.
+              Our look is loud so the stories can be honest.
             </p>
           </Reveal>
         </div>
@@ -236,7 +236,7 @@ const BrandSection = () => {
               delay={0}
               className={styles["badge"]}
             >
-              <span>[ BRAND MANIFESTO // VOL. 02 ]</span>
+              <span>[ Brand Manifesto ]</span>
             </Reveal>
 
             <Reveal
@@ -246,8 +246,7 @@ const BrandSection = () => {
               duration={1.2}
               delay={150}
             >
-              The thinking behind how we work guiding how we Write, Direct, and
-              produce films.
+              How we write, direct and produce.
             </Reveal>
           </div>
 
@@ -259,7 +258,7 @@ const BrandSection = () => {
             delay={300}
             className={styles["manifesto-quote"]}
           >
-            "Built to tell meaningful stories, not chase noise. Clear vision. Honest filmmaking. Lasting impact.
+            Built to tell the stories we were told were too niche. Clear vision. Honest filmmaking. Lasting impact.
           </Reveal>
         </div>
       </div>

@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import styles from "./herobrand.module.css";
 
 const headings = [
-  { text: "VISUAL", style: "solid" },
-  { text: "STORY", style: "outline" },
-  { text: "TELLING", style: "solid-alt" },
+  { text: "Visual", style: "solid" },
+  { text: "Storytelling", style: "outline" },
+  // { text: "TELLING", style: "solid-alt" },
 ];
 
 /* ══════════════════════════════
@@ -104,7 +104,7 @@ const Herobrands = () => {
             delay={0}
             className={styles["herobrands-top"]}
           >
-            <h3>[ Our Identity // Vol. 01 ]</h3>
+            <h3>[ Our Identity ]</h3>
           </Reveal>
 
           <h1 className={styles["herobrands-heading-row"]}>
@@ -119,6 +119,7 @@ const Herobrands = () => {
                 className={styles[styleClassMap[heading.style]]}
               >
                 {heading.text}
+                {index < headings.length - 1 && " "}
               </Reveal>
             ))}
           </h1>
@@ -134,8 +135,9 @@ const Herobrands = () => {
           className={styles["herobrands-bottom-last"]}
         >
           <h2>
-            We are Film-Makers of emotion, building worlds that capture the
-            human experience through the lens of cinema.
+            We make films about women who are done
+            performing, and we make them look as good as
+            they feel.
           </h2>
         </Reveal>
       </div>

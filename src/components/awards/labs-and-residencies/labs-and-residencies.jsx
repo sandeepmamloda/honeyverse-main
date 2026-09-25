@@ -5,25 +5,25 @@ import styles from "./labs-and-residencies.module.css";
 
 const labsData = [
   {
-    years: "2023 / 2025",
-    name: "SUNDANCE DIRECTORS LAB",
-    description: "FELLOWSHIP & FEATURE FILM PROGRAM",
+    years: "2023",
+    name: "Cine Qua Non Storylines Lab",
+    description: "Happy Baisakhi!",
   },
   {
-    years: "2022 / 2024",
-    name: "FILM INDEPENDENT",
-    description: "PRODUCING LAB & FAST TRACK",
+    years: "[Year]",
+    name: "Torino Film Lab Extended",
+    description: "[confirm]",
   },
   {
-    years: "2021",
-    name: "BERLINALE TALENTS",
-    description: "INTERNATIONAL CO-PRODUCTION MARKET",
+    years: "[Year]",
+    name: "NALIP Women in Diverse Media Lab",
+    description: "[confirm]",
   },
-  {
-    years: "2020",
-    name: "TRIBECA FILM INSTITUTE",
-    description: "ALL ACCESS GRANT & RESIDENCY",
-  },
+  // {
+  //   years: "2020",
+  //   name: "TRIBECA FILM INSTITUTE",
+  //   description: "ALL ACCESS GRANT & RESIDENCY",
+  // },
 ];
 
 /* Fades an element into place the first time it scrolls into view.
@@ -134,8 +134,8 @@ const LabsAndResidencies = function () {
 
         <Reveal direction="up" delay={150}>
           <h2 className={styles["labs-title"]}>
-            <span className={styles["labs-title-solid"]}>LABS & </span>
-            <span className={styles["labs-title-outline"]}>RESIDENCIES</span>
+            <span className={styles["labs-title-solid"]}>Labs and</span>
+            <span className={styles["labs-title-outline"]}> Development</span>
           </h2>
         </Reveal>
       </div>

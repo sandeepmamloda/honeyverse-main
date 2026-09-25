@@ -90,7 +90,7 @@ const Decade = () => {
           delay={0}
           className={styles["badge"]}
         >
-          <span>[ 01. // HISTORY ]</span>
+          <span>[ 01 // Where it started ]</span>
         </Reveal>
 
         <Reveal
@@ -106,7 +106,7 @@ const Decade = () => {
             paddingBlock: "0.12em",
           }}
         >
-          A DECADE
+          A Decade In
         </Reveal>
 
         <div className={styles["decade-text"]}>
@@ -118,9 +118,10 @@ const Decade = () => {
             delay={400}
             className={styles["text-bold"]}
           >
-            It started with a single roll of 35mm film and an impossible idea.
-            Our founders believed that cinema wasn't just entertainment—it was
-            the most profound empathy engine ever created.
+            Honeyverse started in film school with a stubborn
+            idea: that the women we grew up around, our
+            aunties, our best friends, ourselves, deserved to be
+            the leads.
           </Reveal>
           <Reveal
             as="p"
@@ -130,10 +131,10 @@ const Decade = () => {
             delay={550}
             className={styles["text-light"]}
           >
-            For a decade, we have championed visionary directors and distinct
-            voices, shaping narratives that linger long after the credits roll.
-            We don't just produce movies; we forge experiences that connect us
-            to our shared humanity.
+            After an MFA at NYU Tisch and a Best
+            Short win for HEER at the London South Asian Film
+            Festival, Honey B. Singh built Honeyverse to keep
+            making those stories, on screen and online.
           </Reveal>
         </div>
       </div>
@@ -181,12 +182,12 @@ const Decade = () => {
               <path d="M17 7V17H7" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
-          <h2 className={styles["themes-title"]}>THE SPACES BETWEEN</h2>
+          <h2 className={styles["themes-title"]}>The Spaces Between</h2>
           <p className={styles["themes-desc"]}>
-            Resilience. Identity. The space between the stars. We are drawn to
-            stories of ordinary people in extraordinary circumstances, the
-            friction between nature and technology, and the universal quest for
-            belonging.
+            Friendship, family, festivals and freedom. We're
+            drawn to women caught between the lives they
+            were promised and the ones they actually want,
+            and we find the comedy in that gap.
           </p>
         </Reveal>
       </div>

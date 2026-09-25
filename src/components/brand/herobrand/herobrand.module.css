@@ -46,7 +46,7 @@
 
 .herobrands-top h3 {
   color: rgba(217, 24, 106, 1);
-  font-family: "consola";
+  font-family: "consola", monospace;
   font-size: clamp(0.65rem, 1.2vw, 1rem);
   line-height: 100%;
   letter-spacing: 0.2rem;
@@ -66,10 +66,11 @@
   column-gap: 0.75rem;
   row-gap: 0.2rem;
 
-  font-family: "boldonse";
+  font-family: "boldonse", sans-serif;
   font-size: clamp(3rem, 9vw, 10rem);
   font-weight: 400;
   line-height: 140%;
+  text-transform: uppercase;
 }
 
 .herobrands-text-solid {
@@ -108,7 +109,7 @@
 .herobrands-bottom-last h2 {
   color: rgba(255, 255, 255, 1);
   line-height: 120%;
-  font-family: "interbold";
+  font-family: "interbold", sans-serif;
   font-size: clamp(0.85rem, 1.5vw, 1.6rem);
   font-weight: normal;
 }
@@ -125,10 +126,27 @@
 
 /* ══════════════════════════════
    MAJOR LAYOUT SWITCH  (≤ 1024px)
+
+   HEADLINE FIT FIX:
+   "STORYTELLING" Boldonse font me ~8.77em chaudi hai (bahut wide font).
+   Pehle font-size sirf vw ke hisaab se badhta tha (9vw / 10vw / 11vw) aur
+   letter-spacing fixed rem me tha, isliye ~545px se chhoti screen par
+   ye word viewport se bahar nikal jaata tha (aur overflow hidden usse
+   kaat deta tha).
+
+   Ab:
+     --hb-pad : section ke left/right padding (breakpoint ke hisaab se)
+     --hb-fit : jo maximum font-size me "STORYTELLING" exactly fit ho jaaye
+                = (100vw - 2*pad) / 9.4
+                9.4 = 8.77em (word) + 12 * 0.025em (letter-spacing) + ~3% safety
+   font-size = min( purana clamp , --hb-fit )  -> ab kabhi overflow nahi.
 ══════════════════════════════ */
 @media screen and (max-width: 1024px) {
   .herobrands-textual-content {
-    padding-inline: 1.5rem;
+    --hb-pad: 1.5rem;
+    --hb-fit: calc((100vw - 2 * var(--hb-pad)) / 9.4);
+
+    padding-inline: var(--hb-pad);
     padding-block-start: 6rem;
     padding-block-end: 2.5rem;
     align-items: center;
@@ -143,6 +161,7 @@
     align-items: center;
     flex: 1;
     justify-content: center;
+    max-width: 100%;
   }
 
   .herobrands-top {
@@ -159,6 +178,8 @@
     margin-inline: auto;
     justify-content: center;
     text-align: center;
+    max-width: 100%;
+    font-size: min(clamp(3rem, 9vw, 10rem), var(--hb-fit));
   }
 
   .herobrands-text-solid,
@@ -167,7 +188,9 @@
     line-height: 160%;
   }
 
+  /* letter-spacing ab em me, taaki font ke saath scale ho */
   .herobrands-text-outline {
+    letter-spacing: 0.025em;
     -webkit-text-stroke-width: 1.5px;
   }
 
@@ -197,7 +220,7 @@
   }
 
   .herobrands-textual-content .herobrands-heading-row {
-    font-size: clamp(2.6rem, 10vw, 6rem);
+    font-size: min(clamp(2.6rem, 10vw, 6rem), var(--hb-fit));
   }
 
   .herobrands-top {
@@ -210,8 +233,9 @@
 ══════════════════════════════ */
 @media screen and (max-width: 480px) {
   .herobrands-textual-content {
+    --hb-pad: 1.1rem;
     padding-block-start: 4rem;
-    padding-inline: 1.1rem;
+    padding-inline: var(--hb-pad);
   }
 
   .herobrands-top {
@@ -224,7 +248,7 @@
   }
 
   .herobrands-textual-content .herobrands-heading-row {
-    font-size: clamp(2.2rem, 11vw, 4rem);
+    font-size: min(clamp(2.2rem, 11vw, 4rem), var(--hb-fit));
   }
 
   .herobrands-bottom-last {
@@ -243,12 +267,13 @@
 ══════════════════════════════ */
 @media screen and (max-width: 375px) {
   .herobrands-textual-content {
-    padding-inline-start: 1rem;
-    padding-inline-end: 1rem;
+    --hb-pad: 1rem;
+    padding-inline-start: var(--hb-pad);
+    padding-inline-end: var(--hb-pad);
   }
 
   .herobrands-textual-content .herobrands-heading-row {
-    font-size: clamp(2rem, 11vw, 3.5rem);
+    font-size: min(clamp(2rem, 11vw, 3.5rem), var(--hb-fit));
   }
 }
 

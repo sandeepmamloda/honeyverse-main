@@ -1,0 +1,268 @@
+/* ══════════════════════════════
+   SECTION
+══════════════════════════════ */
+.edu-section {
+  width: 100%;
+  background-color: transparent;
+  padding-block: 3rem;
+  padding-inline: 2rem;
+  font-family: "interbold", sans-serif;
+  line-height: 100%;
+  max-width: 110rem;
+  margin-inline: auto;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* ══════════════════════════════
+   HEADER
+══════════════════════════════ */
+.edu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-block-end: 3rem;
+}
+
+.edu-header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.edu-icon {
+  flex-shrink: 0;
+  color: #FE9A00;
+}
+
+.edu-title {
+  margin: 0;
+  font-family: "interblack", "interbold", sans-serif;
+  font-size: 3rem;
+  color: #f5c200;
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 100%;
+  text-transform: uppercase;
+}
+
+.edu-tag {
+  font-family: "consola", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08rem;
+  color: #000;
+  text-transform: uppercase;
+  line-height: 100%;
+  white-space: nowrap;
+}
+
+/* ══════════════════════════════
+   LIST
+══════════════════════════════ */
+.edu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Awards ke rows clickable the; ye sirf info hai, isliye pointer nahi */
+.edu-row {
+  display: flex;
+  align-items: center;
+  column-gap: 6rem;
+  padding-block: 3rem;
+  padding-inline-end: 2rem;
+  border-bottom: 1px solid rgba(217, 24, 106, 0.2);
+  transition: background 0.2s ease;
+}
+
+/* ══════════════════════════════
+   YEAR
+══════════════════════════════ */
+.edu-year {
+  font-family: "consola", monospace;
+  font-size: 1.1rem;
+  color: #111;
+  min-width: 3.5rem;
+  letter-spacing: 0.02rem;
+  line-height: 100%;
+  transition: color 0.2s ease;
+}
+
+/* ══════════════════════════════
+   CENTER — degree
+══════════════════════════════ */
+.edu-center {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.edu-degree {
+  margin: 0;
+  font-family: "interblack", "interbold", sans-serif;
+  font-size: 2rem;
+  color: #f5c200;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  line-height: 100%;
+  overflow-wrap: anywhere;
+  transition: color 0.2s ease;
+}
+
+/* ══════════════════════════════
+   RIGHT — institution (no arrow)
+══════════════════════════════ */
+.edu-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4rem;
+  min-width: 14rem;
+  max-width: 22rem;
+}
+
+.edu-label {
+  font-family: "consola", monospace;
+  font-size: 0.73rem;
+  letter-spacing: 0.05rem;
+  color: #000;
+  text-transform: uppercase;
+  line-height: 100%;
+}
+
+.edu-school {
+  font-family: "interbold", sans-serif;
+  font-size: clamp(0.75rem, 1.2vw, 0.95rem);
+  color: #f5c200;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  text-align: right;
+  line-height: 120%;
+  transition: color 0.2s ease;
+}
+
+/* Hover sirf un devices par jahan hover hota hai (touch par atakta nahi) */
+@media (hover: hover) {
+  .edu-row:hover {
+    background: rgba(217, 24, 106, 0.03);
+  }
+  .edu-row:hover .edu-year,
+  .edu-row:hover .edu-degree,
+  .edu-row:hover .edu-school {
+    color: rgba(217, 24, 106, 1);
+  }
+}
+
+/* ══════════════════════════════
+   CONTAINER BREAKPOINTS
+══════════════════════════════ */
+@media screen and (max-width: 1780px) {
+  .edu-section { max-width: 100rem; }
+}
+@media screen and (max-width: 1630px) {
+  .edu-section { max-width: 90rem; }
+}
+@media screen and (max-width: 1460px) {
+  .edu-section { max-width: 85rem; }
+}
+@media screen and (max-width: 1440px) {
+  .edu-section { max-width: 82rem; }
+}
+@media screen and (max-width: 1370px) {
+  .edu-section { max-width: 100%; }
+}
+
+/* ── ≤1280px : Laptop ── */
+@media screen and (max-width: 1280px) {
+  .edu-row { column-gap: 4rem; }
+  .edu-right { min-width: 12rem; }
+}
+
+/* ── ≤1024px : Tablet ── */
+@media screen and (max-width: 1024px) {
+  .edu-section { padding-inline: 2.5rem; }
+  .edu-right { min-width: 10rem; }
+}
+
+/* ── ≤768px : Tablet (portrait) ── */
+@media screen and (max-width: 768px) {
+  .edu-section {
+    padding-inline: 1.75rem;
+    padding-block: 2.5rem;
+  }
+  .edu-row {
+    column-gap: 2.5rem;
+    padding-block: 2rem;
+  }
+  .edu-title { font-size: 2.4rem; }
+  .edu-degree { font-size: 1.7rem; }
+  .edu-right { min-width: 8rem; }
+}
+
+/* ── ≤640px : Mobile ── */
+@media screen and (max-width: 640px) {
+  .edu-section {
+    padding-inline: 1.25rem;
+    padding-block: 2rem;
+  }
+  .edu-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .edu-icon { color: rgba(217, 24, 106, 1); }
+
+  .edu-row {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-block: 1.5rem;
+    padding-inline-end: 0;
+    gap: 0.5rem;
+  }
+  .edu-year {
+    font-size: 1rem;
+    color: #d9186a;
+    margin-bottom: 0.2rem;
+  }
+  .edu-center {
+    width: 100%;
+    gap: 0.2rem;
+  }
+  .edu-degree {
+    font-size: 1.6rem;
+    line-height: 1.1;
+  }
+  /* Mobile par institution left-aligned, degree ke neeche */
+  .edu-right {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    margin-top: 0.8rem;
+    align-items: flex-start;
+  }
+  .edu-school {
+    font-size: 0.9rem;
+    color: #d9186a;
+    text-align: left;
+  }
+}
+
+/* ── ≤480px ── */
+@media screen and (max-width: 480px) {
+  .edu-title { font-size: 2.1rem; }
+  .edu-degree { font-size: 1.4rem; }
+  .edu-tag { font-size: 0.68rem; }
+  .edu-school { font-size: 0.82rem; }
+}
+
+/* ── ≤375px ── */
+@media screen and (max-width: 375px) {
+  .edu-title { font-size: 1.9rem; }
+  .edu-degree { font-size: 1.3rem; }
+  .edu-year { font-size: 0.9rem; }
+  .edu-school { font-size: 0.75rem; }
+}

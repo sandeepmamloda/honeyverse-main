@@ -49,6 +49,7 @@
   white-space: nowrap;
   margin-block-start: 1.5rem;
   margin-block-end: 3rem;
+  text-transform:uppercase;
 }
 
 .decade-text {

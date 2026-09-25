@@ -64,6 +64,7 @@
   line-height: 100%;
   letter-spacing: .1rem;
   color: rgba(255, 202, 26, 1);
+  text-transform:uppercase;
 }
 
 .attr-heading-outline {

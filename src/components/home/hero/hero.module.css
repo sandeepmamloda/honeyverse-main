@@ -1,13 +1,13 @@
 /* ═══════════════════════════════════════════════
-   HERO  —  single video, static layout
+   HERO  —  single video, intro → outro swap
    ═══════════════════════════════════════════════ */
 
 .wrapper {
+  position: relative;
+  overflow: hidden;
   block-size: 100svh;
   min-block-size: 550px;
   inline-size: 100%;
-  position: relative;
-  overflow: hidden;
   background: #000;
 }
 
@@ -20,10 +20,17 @@
 .bg {
   position: absolute;
   inset: 0;
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
+  /* second video ke crossfade ke liye (Hero.jsx ke VIDEO_FADE_MS se match) */
+  transition: opacity 1.2s cubic-bezier(0.83, 0, 0.17, 1);
+}
+
+/* Second video swap hone tak invisible */
+.bgHidden {
+  opacity: 0;
 }
 
 .vignette {
@@ -38,49 +45,224 @@
 }
 
 /* ════════════════════════════════════════════════
-   HEADLINE
+   HEADLINE (container)
    ════════════════════════════════════════════════ */
 .headline {
   position: absolute;
   inset: 0;
+  z-index: 10;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 10;
-  pointer-events: none;
+  overflow: hidden;
   padding-block: 4.5rem 3.5rem;
   padding-inline: 1.5rem;
-  overflow: hidden;
+  pointer-events: none;
 }
 
+/* ════════════════════════════════════════════════
+   STAGE — intro & outro ek hi cell me stack
+   ════════════════════════════════════════════════ */
+.stage {
+  display: grid;
+  place-items: center;
+  inline-size: 100%;
+}
+
+.intro,
+.outro {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Intro smooth exit: upar jaate hue fade + blur out */
+.intro {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+  transition:
+    opacity 0.9s cubic-bezier(0.83, 0, 0.17, 1),
+    transform 0.9s cubic-bezier(0.83, 0, 0.17, 1),
+    filter 0.9s cubic-bezier(0.83, 0, 0.17, 1),
+    visibility 0s linear 0.9s;
+}
+
+.introOut {
+  opacity: 0;
+  transform: translateY(-40px);
+  filter: blur(6px);
+  visibility: hidden;
+}
+
+/* Outro: swap hone tak hidden; active hone par buttons clickable */
+.outro {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.outroActive {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* ════════════════════════════════════════════════
+   INTRO TEXT — "Enter the Verse"
+   ════════════════════════════════════════════════ */
 .h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: rgba(217, 24, 106, 1);
-  font-family: "boldonse";
+  margin-top: 8rem;
+  font-family: "boldonse", sans-serif;
+  font-weight: 400;
   font-size: clamp(2.2rem, min(9vw, 11vh), 8.5rem);
   line-height: 130%;
   letter-spacing: 0.3rem;
   text-align: center;
-  font-weight: 400;
-  margin-top: 8rem;
+  color: rgba(217, 24, 106, 1);
 }
 
 .h1 span {
   display: block;
+  text-transform: uppercase;
 }
 
 .sub {
-  color: #fff;
   margin-block-start: 1.2rem;
-  font-family: "inriasansbold";
+  max-inline-size: 55ch;
+  font-family: "inriasansbold", sans-serif;
   font-size: clamp(0.85rem, min(1.8vw, 2.4vh), 1.5rem);
   line-height: 1.3;
-  text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
-  max-inline-size: 55ch;
   text-align: center;
+  color: #fff;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+}
+
+/* ════════════════════════════════════════════════
+   OUTRO — "Most Days Out" (glass card)
+   ════════════════════════════════════════════════ */
+.glassCard {
+  box-sizing: border-box;
+  inline-size: min(829px, 100%);
+  min-block-size: 361px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 92px;
+  padding: 40px 56px;
+  border-radius: 16px;
+  text-align: left;
+
+  /* glass */
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+
+  /* card ka apna fade-in */
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.9s cubic-bezier(0.83, 0, 0.17, 1),
+    transform 0.9s cubic-bezier(0.83, 0, 0.17, 1);
+}
+
+.glassIn {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.2s;
+}
+
+.outroText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  inline-size: 100%;
+}
+
+.outroTitle {
+  margin: 0;
+  /* NOTE: agar "intersemibold" @font-face weight 600 ke saath declare hai
+     to font-weight 600 karo; agar 400 ke saath hai (jaise baaki fonts) to
+     400 hi rakho, warna browser fake-bold bana dega. */
+  font-family: "intersemibold", "Inter", sans-serif;
+  font-weight: 400;
+  font-size: clamp(2.25rem, min(10.5vw, 15vh), 6rem);
+  line-height: 1;
+  letter-spacing: -0.08em;
+  text-transform: uppercase;
+  color: rgba(208, 68, 176, 1);
+}
+
+.outroSub {
+  margin: 0;
+  font-family: "inriaserif", "Inria Serif", Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(1rem, 2.9vw, 1.5rem);
+  line-height: 1;
+  letter-spacing: 0;
+  color: #fff;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.25);
+}
+
+.ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+}
+
+.btnPrimary,
+.btnGhost {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 44px;
+  border-radius: 300px;
+  font-family: "intermedium", "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1;
+  letter-spacing: 0;
+  color: rgba(255, 255, 255, 1);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.btnPrimary {
+  gap: 10px;
+  padding: 12px 20px 12px 28px;
+  background: rgba(217, 24, 106, 1);
+}
+
+.btnGhost {
+  padding: 12px 28px;
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.btnPrimary:hover,
+.btnGhost:hover {
+  transform: translateY(-2px);
+}
+
+.btnGhost:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.btnPrimary:focus-visible,
+.btnGhost:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
 }
 
 /* ════════════════════════════════════════════════
@@ -89,51 +271,50 @@
 .bottom {
   position: absolute;
   inset-block-end: 0;
-  inline-size: 100%;
   z-index: 20;
   display: flex;
   justify-content: center;
+  inline-size: 100%;
   padding-block: 1.6rem;
 }
 
 .logoRow {
   display: flex;
-  column-gap: 0.7rem;
   align-items: center;
+  column-gap: 0.7rem;
 }
-.logoBox {
-  block-size: 1.3rem; inline-size: 1.3rem;
-  position: relative; display: flex;
-}
-.logoImg {
-  height: 100% !important;
-  width:  100% !important;
-  position: static !important;
-}
-.year {
-  color: #fff;
-  font-family: "interregular";
+
+.copyMark {
+  font-family: "interregular", sans-serif;
   font-size: 1.1rem;
   line-height: 1;
+  color: #fff;
+}
+
+.year {
+  font-family: "interregular", sans-serif;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: #fff;
 }
 
 /* ════════════════════════════════════════════════
-   RESPONSIVE — WIDTH (actual breakpoints)
+   RESPONSIVE (largest → smallest)
    ════════════════════════════════════════════════ */
 
 /* ── ≤1440px : Large Laptop / Small Desktop ── */
 @media (max-width: 1440px) {
   .h1 {
-    font-size: clamp(3rem, min(8.5vw, 10.5vh), 7.5rem);
     margin-top: 7rem;
+    font-size: clamp(3rem, min(8.5vw, 10.5vh), 7.5rem);
   }
 }
 
 /* ── ≤1280px : Laptop ── */
 @media (max-width: 1280px) {
   .h1 {
-    font-size: clamp(2.6rem, min(8vw, 10vh), 6.5rem);
     margin-top: 6rem;
+    font-size: clamp(2.6rem, min(8vw, 10vh), 6.5rem);
   }
   .sub {
     font-size: clamp(0.95rem, min(1.9vw, 2.3vh), 1.35rem);
@@ -141,11 +322,11 @@
 }
 
 /* ── ≤1024px : Tablet (landscape) ── */
-@media (max-width: 1280px) {
+@media (max-width: 1024px) {
   .h1 {
+    margin-top: 5rem;
     font-size: clamp(2.2rem, min(7vw, 9vh), 5.5rem);
     letter-spacing: 0.2rem;
-    margin-top: 5rem;
   }
   .sub {
     font-size: clamp(0.9rem, min(2vw, 2.2vh), 1.2rem);
@@ -155,96 +336,120 @@
 /* ── ≤768px : Tablet (portrait) ── */
 @media (max-width: 768px) {
   .h1 {
+    margin-top: 4rem;
     font-size: clamp(2rem, min(9vw, 8.5vh), 4.2rem);
     letter-spacing: 0.16rem;
-    margin-top: 4rem;
   }
   .sub {
     font-size: clamp(0.85rem, min(2.6vw, 2vh), 1rem);
   }
 }
 
-/* ── ≤600px : Mobile (large) ── */
-@media (max-width: 600px) {
-  .h1 {
-    font-size: clamp(1.8rem, min(11vw, 9vh), 3.2rem);
-    letter-spacing: 0.12rem;
-    margin-top: 3rem;
-  }
-  .sub {
-    font-size: clamp(0.8rem, min(3.5vw, 2vh), 0.9rem);
-    margin-block-start: 0.8rem;
-  }
-  .bottom { padding-block: 1rem; }
-  .logoBox { block-size: 1rem; inline-size: 1rem; }
-  .year { font-size: 0.95rem; }
-}
-
-/* ── ≤480px : Mobile (small) ── */
-@media (max-width: 480px) {
-  .h1 {
-    font-size: clamp(1.5rem, min(12vw, 8vh), 2.4rem);
-    letter-spacing: 0.08rem;
-    margin-top: 2rem;
-  }
-  .sub {
-    font-size: clamp(0.75rem, min(4vw, 1.8vh), 0.85rem);
-    margin-block-start: 0.6rem;
-  }
-  .bottom { padding-block: 0.8rem; }
-  .logoBox { block-size: 0.9rem; inline-size: 0.9rem; }
-  .year { font-size: 0.85rem; }
-}
-
-/* ── ≤375px : Small mobile devices (e.g. iPhone SE) ── */
-@media (max-width: 375px) {
-  .h1 {
-    font-size: clamp(1.3rem, min(13vw, 7.5vh), 2rem);
-    letter-spacing: 0.05rem;
-    margin-top: 1.5rem;
-  }
-  .sub {
-    font-size: clamp(0.7rem, min(4.2vw, 1.7vh), 0.8rem);
-  }
-  .bottom { padding-block: 0.7rem; }
-  .logoBox { block-size: 0.8rem; inline-size: 0.8rem; }
-  .year { font-size: 0.78rem; }
-}
-
-/* ════════════════════════════════════════════════
-   RESPONSIVE — HEIGHT
-   ════════════════════════════════════════════════ */
-
+/* ── Short viewports (height based) ── */
 @media (max-height: 700px) {
   .headline {
     padding-block: 3.5rem 3rem;
   }
   .h1 {
+    margin-top: 3rem;
     font-size: clamp(1.8rem, min(8vw, 9vh), 5rem);
     letter-spacing: 0.15rem;
-    margin-top: 3rem;
   }
   .sub {
     margin-block-start: 0.7rem;
     font-size: clamp(0.75rem, min(1.6vw, 2vh), 1.1rem);
   }
+  .glassCard {
+    min-block-size: 0;
+    gap: 36px;
+    padding: 28px 40px;
+  }
+  .outroTitle {
+    font-size: clamp(2rem, min(9vw, 11vh), 4.5rem);
+  }
+  .outroSub {
+    font-size: clamp(0.9rem, min(2.4vw, 3vh), 1.25rem);
+  }
   .bottom { padding-block: 0.8rem; }
 }
 
-@media (max-height: 480px) {
+/* ── ≤600px : Mobile (large) ── */
+@media (max-width: 600px) {
+  .h1 {
+    margin-top: 3rem;
+    font-size: clamp(1.8rem, min(11vw, 9vh), 3.2rem);
+    letter-spacing: 0.12rem;
+  }
+  .sub {
+    margin-block-start: 0.8rem;
+    font-size: clamp(0.8rem, min(3.5vw, 2vh), 0.9rem);
+  }
+  .glassCard {
+    min-block-size: 0;
+    gap: 40px;
+    padding: 24px 20px;
+  }
+  .outroTitle {
+    font-size: clamp(1.75rem, 9.5vw, 3rem);
+  }
+  .outroSub {
+    font-size: 1rem;
+    line-height: 1.25;
+  }
+  .ctaRow { gap: 12px; }
+  .btnPrimary {
+    padding: 10px 16px 10px 22px;
+    font-size: 14px;
+  }
+  .btnGhost {
+    padding: 10px 22px;
+    font-size: 14px;
+  }
+  .bottom { padding-block: 1rem; }
+  .copyMark { font-size: 0.95rem; }
+  .year { font-size: 0.95rem; }
+}
+
+/* ── ≤480px : Mobile (small) — duplicate rules merge kar diye
+      (pehle .h1/.sub/.bottom do baar the, baad wale values hi apply hote the) ── */
+@media (max-width: 480px) {
   .headline {
     padding-block: 2rem 1.8rem;
   }
   .h1 {
+    margin-top: 1rem;
     font-size: clamp(1.4rem, min(6vw, 7vh), 3rem);
     letter-spacing: 0.08rem;
-    margin-top: 1rem;
   }
   .sub {
     margin-block-start: 0.5rem;
     font-size: clamp(0.68rem, min(1.4vw, 1.7vh), 0.85rem);
   }
   .bottom { padding-block: 0.6rem; }
-  .logoBox { block-size: 0.85rem; inline-size: 0.85rem; }
+  .copyMark { font-size: 0.8rem; }
   .year { font-size: 0.8rem; }
+}
+
+/* ── ≤375px : Small mobile devices (e.g. iPhone SE) ── */
+@media (max-width: 375px) {
+  .h1 {
+    margin-top: 1.5rem;
+    font-size: clamp(1.3rem, min(13vw, 7.5vh), 2rem);
+    letter-spacing: 0.05rem;
+  }
+  .sub {
+    font-size: clamp(0.7rem, min(4.2vw, 1.7vh), 0.8rem);
+  }
+  .bottom { padding-block: 0.7rem; }
+  .copyMark { font-size: 0.78rem; }
+  .year { font-size: 0.78rem; }
+}
+
+/* ── Reduced motion: swap instant ho jaaye ── */
+@media (prefers-reduced-motion: reduce) {
+  .intro,
+  .bg,
+  .glassCard {
+    transition: none;
+  }
 }

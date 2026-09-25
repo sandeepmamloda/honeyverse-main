@@ -5,35 +5,35 @@ import styles from "./awards-and-selection.module.css";
 
 const awardsData = [
   {
-    year: "2025",
-    festival: "Cannes Film Festival",
-    award: "Palme d'Or Nominee",
-    project: "The Spaces Between",
+    year: "2016",
+    festival: "London South Asian Film Festival",
+    award: "· Best Short· Project:",
+    project: "HEER",
   },
-  {
-    year: "2024",
-    festival: "Venice Biennale",
-    award: "Silver Lion",
-    project: "Echoes of Rain",
-  },
-  {
-    year: "2024",
-    festival: "Sundance",
-    award: "Grand Jury Prize",
-    project: "Midnight Sun",
-  },
-  {
-    year: "2023",
-    festival: "TIFF",
-    award: "People's Choice",
-    project: "Neon Horizons",
-  },
-  {
-    year: "2022",
-    festival: "Berlinale",
-    award: "Golden Bear Nominee",
-    project: "Steel & Glass",
-  },
+  // {
+  //   year: "2024",
+  //   festival: "Venice Biennale",
+  //   award: "Silver Lion",
+  //   project: "Echoes of Rain",
+  // },
+  // {
+  //   year: "2024",
+  //   festival: "Sundance",
+  //   award: "Grand Jury Prize",
+  //   project: "Midnight Sun",
+  // },
+  // {
+  //   year: "2023",
+  //   festival: "TIFF",
+  //   award: "People's Choice",
+  //   project: "Neon Horizons",
+  // },
+  // {
+  //   year: "2022",
+  //   festival: "Berlinale",
+  //   award: "Golden Bear Nominee",
+  //   project: "Steel & Glass",
+  // },
 ];
 
 /* Fades an element into place the first time it scrolls into view.
@@ -151,7 +151,7 @@ const AwardsAndSelection = function () {
       <div className={styles["aws-header"]}>
         <Reveal className={styles["aws-header-left"]} direction="left" delay={0}>
           <TrophyIcon className={styles["aws-icon"]} />
-          <h2 className={styles["aws-title"]}>AWARDS & SELECTIONS</h2>
+          <h2 className={styles["aws-title"]}>Awards and Selections</h2>
         </Reveal>
         <Reveal direction="right" delay={200}>
           <span className={styles["aws-tag"]}>[ THE LAURELS ]</span>

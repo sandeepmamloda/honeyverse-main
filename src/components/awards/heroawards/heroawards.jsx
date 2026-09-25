@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import styles from "./heroawards.module.css";
 
 const headings = [
-  { text: "CRITICAL", style: "solid" },
-  { text: "ACCLAIM", style: "outline" },
+  { text: "Critical", style: "solid" },
+  { text: "Acclaim", style: "outline" },
 ];
 
 /* ══════════════════════════════
@@ -102,7 +102,7 @@ const Heroawards = () => {
             delay={0}
             className={styles["top"]}
           >
-            <h3>[ Our Identity // Vol. 01 ]</h3>
+            <h3>[ Recognition ]</h3>
           </Reveal>
 
           <h1 className={styles["heading-row"]}>
@@ -117,6 +117,7 @@ const Heroawards = () => {
                 className={styles[styleClassMap[heading.style]]}
               >
                 {heading.text}
+                {index < headings.length - 1 && " "}
               </Reveal>
             ))}
           </h1>
@@ -132,8 +133,8 @@ const Heroawards = () => {
           className={styles["bottom-last"]}
         >
           <h2>
-            Recognition from the world's most prestigious institutions. A
-            testament to our uncompromising vision and narrative rigor.
+            Festivals, labs and programs that backed our
+            stories early, and the ones we're building toward.
           </h2>
         </Reveal>
       </div>

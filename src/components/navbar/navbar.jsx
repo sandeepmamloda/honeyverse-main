@@ -398,7 +398,7 @@ const Navbar = function () {
               alt="Honeyverse Logo"
               width={0}
               height={0}
-              sizes="100vw"
+              sizes="(max-width: 400px) 96px, (max-width: 768px) 112px, 160px"
               priority
               className={styles["header-logo-img"]}
             />
