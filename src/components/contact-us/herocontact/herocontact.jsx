@@ -93,7 +93,7 @@ const Herocontact = () => {
       style={{ overflowX: "hidden", overflowY: "hidden" }}
     >
       <div className={styles["herocontact-video-wrapper"]}>
-        {/* <video
+        <video
           className={styles["contact-video"]}
           autoPlay
           muted
@@ -101,7 +101,7 @@ const Herocontact = () => {
           playsInline
         >
           <source src="/videos/contact-us/contact-us.mp4" type="video/mp4" />
-        </video> */}
+        </video>
       </div>
 
       <div className={styles["textual-content"]}>

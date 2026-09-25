@@ -73,7 +73,7 @@ const Heroportfolio = () => {
   return (
     <section className={styles["heroawards-main"]}>
       <div className={styles["heroawards-video-wrapper"]}>
-        {/* <video
+        <video
           className={styles["awards-video"]}
           autoPlay
           muted
@@ -81,7 +81,7 @@ const Heroportfolio = () => {
           playsInline
         >
           <source src="/videos/awards/awards.mp4" type="video/mp4" />
-        </video> */}
+        </video>
       </div>
 
       <div className={styles["textual-content"]}>

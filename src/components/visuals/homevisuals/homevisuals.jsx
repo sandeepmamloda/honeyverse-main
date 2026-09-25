@@ -72,7 +72,7 @@ const Herovisuals = () => {
   return (
     <section className={styles["herovisuals-main"]}>
       <div className={styles["herovisuals-video-wrapper"]}>
-        {/* <video
+        <video
           className={styles["herovisuals-video"]}
           autoPlay
           muted
@@ -80,7 +80,7 @@ const Herovisuals = () => {
           playsInline
         >
           <source src="/videos/visuals/visuals.mp4" type="video/mp4" />
-        </video> */}
+        </video>
       </div>
 
       <div className={styles["textual-content"]}>
