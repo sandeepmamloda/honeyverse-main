@@ -82,7 +82,7 @@ const Herobrands = () => {
       style={{ overflowX: "hidden", overflowY: "hidden" }}
     >
       <div className={styles["herobrands-video-wrapper"]}>
-        <video
+        {/* <video
           className={styles["herobrands-video"]}
           autoPlay
           muted
@@ -90,7 +90,7 @@ const Herobrands = () => {
           playsInline
         >
           <source src="/videos/awards/awards.mp4" type="video/mp4" />
-        </video>
+        </video> */}
       </div>
 
       <div className={styles["herobrands-textual-content"]}>

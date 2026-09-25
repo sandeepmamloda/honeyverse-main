@@ -172,7 +172,7 @@ const Herocode = () => {
       <div className={styles["herocode-video-wrapper"]}>
         {/* Decorative background video — aria-hidden keeps it out of
             the accessibility tree without changing anything visual */}
-        <video
+        {/* <video
           ref={videoRef}
           className={styles["code-video"]}
           autoPlay
@@ -183,7 +183,7 @@ const Herocode = () => {
           aria-hidden="true"
         >
           <source src="/videos/code/code.mp4" type="video/mp4" />
-        </video>
+        </video> */}
       </div>
 
       <div className={styles["textual-content"]}>
