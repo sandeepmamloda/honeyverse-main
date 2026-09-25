@@ -44,7 +44,7 @@ export default function RootLayout({ children }) {
           backgroundColor: "rgba(255, 249, 255, 1)",
         }}
       >
-        {/* <Saturnbackground /> */}
+        <Saturnbackground />
 
         <Loader />
 
