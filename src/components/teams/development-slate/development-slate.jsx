@@ -9,7 +9,7 @@ const slateItems = [
     title: "THE ARCHITECTURE OF SILENCE",
     tags: "SCI-FI / DRAMA",
     director: "DIR. MATEO ROSTOVA",
-    logline: "In a world where sound is weaponized, a deaf architect must design a sanctuary that defies physics before the ruling class silences the resistance forever.",
+    logline: "Happy Baisakhi! · Feature · Comedy · Dir. Honey B. Singh · Status: Pre-production · Four childhood best friends return to their hometown of Brampton to celebrate Baisakhi, a festive weekend that leads to them finally admitting uncomfortable truths, revisiting memories and forging new relationships.",
   },
   {
     id: 2,
@@ -17,24 +17,24 @@ const slateItems = [
     title: "NEON HORIZONS",
     tags: "NEO-NOIR / THRILLER",
     director: "DIR. CELINE VARGA",
-    logline: "A disgraced detective navigates the neon-soaked underbelly of a hyper-capitalist metropolis to find a missing heiress who doesn't want to be found.",
+    logline: "BRIE! · Feature · Romantic comedy · Dir. Honey B. Singh · Status: In development · A second- generation Sikh-Italian cheesemaker fights to save her family's farm in Northern Italy, and falls for the man sent to sell it.",
   },
-  {
-    id: 3,
-    status: "IN DEVELOPMENT",
-    title: "BLOOD & GOLD",
-    tags: "HISTORICAL EPIC",
-    director: "DIR. AMARA DIALLO",
-    logline: "The untold story of the 14th-century West African empire and the fierce female warriors who defended it against insurmountable odds.",
-  },
-  {
-    id: 4,
-    status: "FESTIVAL RUN",
-    title: "ECHOES OF RAIN",
-    tags: "DRAMA / ROMANCE",
-    director: "DIR. JULIAN VANCE",
-    logline: "Two strangers trapped in a Tokyo transit station during a historic typhoon discover a shared trauma that binds them across time.",
-  },
+  // {
+  //   id: 3,
+  //   status: "IN DEVELOPMENT",
+  //   title: "BLOOD & GOLD",
+  //   tags: "HISTORICAL EPIC",
+  //   director: "DIR. AMARA DIALLO",
+  //   logline: "The untold story of the 14th-century West African empire and the fierce female warriors who defended it against insurmountable odds.",
+  // },
+  // {
+  //   id: 4,
+  //   status: "FESTIVAL RUN",
+  //   title: "ECHOES OF RAIN",
+  //   tags: "DRAMA / ROMANCE",
+  //   director: "DIR. JULIAN VANCE",
+  //   logline: "Two strangers trapped in a Tokyo transit station during a historic typhoon discover a shared trauma that binds them across time.",
+  // },
 ];
 
 /* ══════════════════════════════
@@ -134,7 +134,7 @@ const DevelopmentSlate = () => {
               delay={0}
               className={styles["badge"]}
             >
-              <h3>[ 02 // DEVELOPMENT ]</h3>
+              <h3>[ In Development ]</h3>
             </Reveal>
 
             <Reveal
@@ -145,7 +145,7 @@ const DevelopmentSlate = () => {
               delay={200}
               className={styles["main-title"]}
             >
-              DEVELOPMENT<span className={styles["text-yellow"]}>SLATE</span>
+              The <span className={styles["text-yellow"]}>Slate</span>
             </Reveal>
           </div>
 

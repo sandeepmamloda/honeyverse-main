@@ -102,6 +102,7 @@
   flex-wrap: wrap;       /* Naye dynamic cards row wise split karne ke liye */
   gap: 3.5rem;
   width: 100%;
+  justify-content:center;
 }
 
 .member-card {

@@ -73,18 +73,18 @@ const Reveal = ({
 const turnkeyItems = [
   {
     id: 1,
-    title: "DEVELOPMENT & FINANCING",
-    desc: "Packaging talent, securing gap financing, and structuring domestic/international tax credits.",
+    title: "Branded content",
+    desc: "Concept, script and production for brands reaching diaspora and expat women.",
   },
   {
     id: 2,
-    title: "POST-PRODUCTION MATRIX",
-    desc: "In-house editing suites, HDR color grading (DaVinci Resolve Advanced Panel), and full 7.1.4 Dolby Atmos mixing.",
+    title: "Social strategy",
+    desc: "Content pillars, calendars and platform-native formats for TikTok, Instagram and Substack.",
   },
   {
     id: 3,
-    title: "DISTRIBUTION STRATEGY",
-    desc: "Festival targeting, sales agency partnerships, and direct-to-platform architectural delivery.",
+    title: "Creative direction",
+    desc: "Look, voice and campaign ideas for launches and events.",
   },
 ];
 
@@ -102,14 +102,14 @@ const TurnkeyList = () => {
             <path d="M20.833 3.125H4.16634C3.01575 3.125 2.08301 4.05774 2.08301 5.20833V15.625C2.08301 16.7756 3.01575 17.7083 4.16634 17.7083H20.833C21.9836 17.7083 22.9163 16.7756 22.9163 15.625V5.20833C22.9163 4.05774 21.9836 3.125 20.833 3.125Z" stroke="#C40053" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
           <div className={styles["badge-text"]}>
-            <h3>[ 02 // EXECUTION ]</h3>
+            <h3>[ 02 // For Brands ]</h3>
           </div>
         </Reveal>
 
         <Reveal as="span" direction="left" delay={150} duration={1.2} className={styles["header-line"]} />
 
         <Reveal as="div" direction="up" delay={250} duration={1.2} className={styles["title-wrapper"]}>
-          <h1 className={styles["main-title"]}>TURNKEY</h1>
+          <h2 className={styles["main-title"]}>Branded and Social</h2>
         </Reveal>
       </div>
 
@@ -119,11 +119,11 @@ const TurnkeyList = () => {
         {/* Left Side Content Column */}
         <div className={styles["content-details"]}>
           <Reveal as="div" direction="left" delay={150} duration={1.1} className={styles["sub-title-wrapper"]}>
-            <h2 className={styles["sub-title"]}>SCRIPT TO SCREEN</h2>
+            <h3 className={styles["sub-title"]}>Script to Screen</h3>
           </Reveal>
 
           <Reveal as="p" direction="left" delay={230} duration={1.1} className={styles["intro-text"]}>
-            We don't just supply gear; we supply the entire structural framework. Our turnkey packaging solutions take raw IP and guide it through financing, physical production, and complex post-production pipelines.
+            Short-form content that sounds like a person, not a press release.
           </Reveal>
 
           {/* Left Solid Border Highlight Strip via container wrapper */}
@@ -138,7 +138,7 @@ const TurnkeyList = () => {
                 className={styles["list-row"]}
               >
                 <div className={styles["item-header"]}>
-                  <h3 className={styles["item-title"]}>{item.title}</h3>
+                  <h4 className={styles["item-title"]}>{item.title}</h4>
                 </div>
                 <p className={styles["item-desc"]}>{item.desc}</p>
               </Reveal>

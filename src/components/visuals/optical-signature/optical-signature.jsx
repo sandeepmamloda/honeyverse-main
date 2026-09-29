@@ -3,10 +3,10 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./optical-signature.module.css";
 
 const specRows = [
-  { label: "COLOR SPACE",     value: "REC.2020 / ACES"          },
-  { label: "GRAIN STRUCTURE", value: "35MM KODAK EMULATION"      },
-  { label: "ASPECT RATIOS",   value: "2.39:1 / 1.33:1"           },
-  { label: "CONTRAST",        value: "AGGRESSIVE"                },
+  { label: "Palette",     value: "Hot pink, gold and deep black"          },
+  { label: "Texture", value: "Grain, camcorder and phone footage mixed with cinema"      },
+  { label: "Framing",   value: "[Honey to confirm aspect ratio]"           },
+  { label: "Mood",        value: "Warm, bright, nostalgic"                },
 ];
 
 /* ══════════════════════════════
@@ -152,7 +152,7 @@ const OpticalSignature = () => {
             <path d="M20.833 3.125H4.16634C3.01575 3.125 2.08301 4.05774 2.08301 5.20833V15.625C2.08301 16.7756 3.01575 17.7083 4.16634 17.7083H20.833C21.9836 17.7083 22.9163 16.7756 22.9163 15.625V5.20833C22.9163 4.05774 21.9836 3.125 20.833 3.125Z" stroke="#C40053" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
           <div className={styles["badge-text"]}>
-            <h3>[ 01 // FRAMEWORK ]</h3>
+            <h3>[ 01 // Framework ]</h3>
           </div>
         </Reveal>
         <Reveal as="span" direction="left" delay={200} duration={1.3} className={styles["header-line"]} />
@@ -160,10 +160,10 @@ const OpticalSignature = () => {
 
       {/* ── BIG TITLE ── */}
       <div className={styles["title-wrapper"]}>
-        <h1 className={styles["main-title"]}>
+        <h2 className={styles["main-title"]}>
           <RevealWords
             as="span"
-            text="OPTICAL"
+            text="Our"
             className={styles["title-fill"]}
             direction="up"
             baseDelay={100}
@@ -171,13 +171,13 @@ const OpticalSignature = () => {
           />
           <RevealWords
             as="span"
-            text="SIGNATURE"
+            text="Signature"
             className={styles["title-outline"]}
             direction="up"
             baseDelay={280}
             step={90}
           />
-        </h1>
+        </h2>
       </div>
 
       {/* ── MAIN CONTENT SPLIT GRID ── */}
@@ -187,7 +187,9 @@ const OpticalSignature = () => {
         <div className={styles["content-details"]}>
           <RevealWords
             as="p"
-            text="Our visual language is uncompromised. We favor true blacks, high-contrast ratios, and motivated lighting that dictates psychological weight."
+            text="We shoot the suburbs, kitchens, gurdwaras and
+            festival grounds most films skip, and we make
+            them look like the main event."
             className={styles["intro-text"]}
             direction="up"
             baseDelay={150}

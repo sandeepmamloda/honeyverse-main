@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import styles from "./teams.module.css";
 
 const headings = [
-  { text: "THE", style: "solid" },
-  { text: "COLLECTIVE", style: "outline" },
-  { text: "VISION", style: "solid-alt" },
+  { text: "The", style: "solid" },
+  { text: "Collective", style: "outline" },
+  { text: "Vision", style: "solid-alt" },
 ];
 
 /* ══════════════════════════════
@@ -104,7 +104,7 @@ const Heroteams = () => {
             delay={0}
             className={styles["heroteams-top"]}
           >
-            <h3>[ Our Identity // Vol. 01 ]</h3>
+            <h3>[ The People ]</h3>
           </Reveal>
 
           <h1 className={styles["heroteams-heading-row"]}>
@@ -119,6 +119,7 @@ const Heroteams = () => {
                 className={styles[styleClassMap[heading.style]]}
               >
                 {heading.text}
+                {index < headings.length - 1 && " "}
               </Reveal>
             ))}
           </h1>
@@ -134,8 +135,8 @@ const Heroteams = () => {
           className={styles["heroteams-bottom-last"]}
         >
           <h2>
-            We are Film-Makers of emotion, building worlds that capture the
-            human experience through the lens of cinema.
+            A small team with a big universe. We bring in the
+            right collaborators for every story.
           </h2>
         </Reveal>
       </div>

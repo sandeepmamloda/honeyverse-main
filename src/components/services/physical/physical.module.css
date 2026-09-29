@@ -47,6 +47,7 @@
   font-weight: 400;
   margin: 0;
   white-space: nowrap;
+  text-transform:uppercase;
 }
 
 /* thin underline below the badge — ab fluid, container se bahar nahi jayega */
@@ -192,17 +193,17 @@
 /* ══════════════════════════════
    RESPONSIVE MAX-WIDTH SCALING
 ══════════════════════════════ */
-@media screen and (max-width: 1780px) {
+@media (max-width: 1780px) {
   .physical-main {
     max-width: 100rem;
   }
 }
-@media screen and (max-width: 1630px) {
+@media (max-width: 1630px) {
   .physical-main {
     max-width: 90rem;
   }
 }
-@media screen and (max-width: 1460px) {
+@media (max-width: 1460px) {
   .physical-main {
     max-width: 85rem;
   }
@@ -211,13 +212,13 @@
 /* ══════════════════════════════
    STANDARD  (≤ 1440px) — Large Laptop / Small Desktop
 ══════════════════════════════ */
-@media screen and (max-width: 1440px) {
+@media (max-width: 1440px) {
   .physical-main {
     max-width: 82rem;
   }
 }
 
-@media screen and (max-width: 1370px) {
+@media (max-width: 1370px) {
   .physical-main {
     max-width: 100%;
   }
@@ -226,7 +227,7 @@
 /* ══════════════════════════════
    STANDARD  (≤ 1280px) — Laptop
 ══════════════════════════════ */
-@media screen and (max-width: 1280px) {
+@media (max-width: 1280px) {
   .main-grid {
     column-gap: 3rem;
   }
@@ -254,7 +255,7 @@
 /* ══════════════════════════════
    STANDARD  (≤ 768px) — Tablet (portrait) / Mobile
 ══════════════════════════════ */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .physical-main {
     padding-inline: 1.5rem;
     padding-block: 3rem;
@@ -286,11 +287,10 @@
     right: 1rem; /* Mobile standard padding tweak */
   }
 }
-
 /* ══════════════════════════════
    STANDARD  (≤ 480px) — Mobile (small)
 ══════════════════════════════ */
-@media screen and (max-width: 480px) {
+@media (max-width: 480px) {
   .physical-main {
     padding-inline: 1.1rem;
     padding-block: 2.4rem;
@@ -333,11 +333,15 @@
     font-size: 0.8rem;
   }
 }
-
+@media (max-width:450px){
+  .main-title{
+    font-size: clamp(1.8rem, 11vw, 2.4rem);
+  }
+}
 /* ══════════════════════════════
    STANDARD  (≤ 375px) — Small mobile devices
 ══════════════════════════════ */
-@media screen and (max-width: 375px) {
+@media (max-width: 375px) {
   .physical-main {
     padding-inline: 0.85rem;
   }
@@ -356,5 +360,11 @@
 
   .item-desc {
     font-size: 0.75rem;
+  }
+}
+
+@media (max-width:365px){
+  .main-title{
+    font-size: clamp(1.4rem, 11vw, 1.8rem);
   }
 }

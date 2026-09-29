@@ -35,42 +35,12 @@ function createSkyBackgroundTexture() {
   ctx.fillRect(0, 0, w, h);
 
   const nebulae = [
-    {
-      x: 0.2,
-      y: 0.22,
-      r: 0.5,
-      color: "rgba(255,255,255,0.28)",
-    },
-    {
-      x: 0.8,
-      y: 0.15,
-      r: 0.42,
-      color: "rgba(255,120,190,0.35)",
-    },
-    {
-      x: 0.55,
-      y: 0.4,
-      r: 0.55,
-      color: "rgba(255,80,170,0.30)",
-    },
-    {
-      x: 0.32,
-      y: 0.62,
-      r: 0.48,
-      color: "rgba(255,190,220,0.25)",
-    },
-    {
-      x: 0.72,
-      y: 0.58,
-      r: 0.4,
-      color: "rgba(200,50,140,0.28)",
-    },
-    {
-      x: 0.5,
-      y: 0.85,
-      r: 0.55,
-      color: "rgba(255,150,190,0.30)",
-    },
+    { x: 0.2, y: 0.22, r: 0.5, color: "rgba(255,255,255,0.28)" },
+    { x: 0.8, y: 0.15, r: 0.42, color: "rgba(255,120,190,0.35)" },
+    { x: 0.55, y: 0.4, r: 0.55, color: "rgba(255,80,170,0.30)" },
+    { x: 0.32, y: 0.62, r: 0.48, color: "rgba(255,190,220,0.25)" },
+    { x: 0.72, y: 0.58, r: 0.4, color: "rgba(200,50,140,0.28)" },
+    { x: 0.5, y: 0.85, r: 0.55, color: "rgba(255,150,190,0.30)" },
   ];
 
   nebulae.forEach((n) => {
@@ -131,23 +101,11 @@ function createSkyBackgroundTexture() {
     const isLight = Math.random() > 0.5;
 
     ctx.fillStyle = isLight
-      ? `rgba(255,255,255,${(
-          Math.random() * 0.06
-        ).toFixed(3)})`
-      : `rgba(120,20,70,${(
-          Math.random() * 0.06
-        ).toFixed(3)})`;
+      ? `rgba(255,255,255,${(Math.random() * 0.06).toFixed(3)})`
+      : `rgba(120,20,70,${(Math.random() * 0.06).toFixed(3)})`;
 
     ctx.beginPath();
-
-    ctx.arc(
-      gx,
-      gy,
-      r,
-      0,
-      Math.PI * 2
-    );
-
+    ctx.arc(gx, gy, r, 0, Math.PI * 2);
     ctx.fill();
   }
 
@@ -160,15 +118,8 @@ function createSkyBackgroundTexture() {
     w * 0.78
   );
 
-  vignette.addColorStop(
-    0,
-    "rgba(0,0,0,0)"
-  );
-
-  vignette.addColorStop(
-    1,
-    "rgba(50,5,35,0.32)"
-  );
+  vignette.addColorStop(0, "rgba(0,0,0,0)");
+  vignette.addColorStop(1, "rgba(50,5,35,0.32)");
 
   ctx.fillStyle = vignette;
   ctx.fillRect(0, 0, w, h);
@@ -189,13 +140,7 @@ function createSkyBackgroundTexture() {
    clustering near the camera.
 ============================================================ */
 
-function createTwinkleField(
-  count,
-  radius,
-  color,
-  minSize,
-  maxSize
-) {
+function createTwinkleField(count, radius, color, minSize, maxSize) {
   const positions = new Float32Array(count * 3);
   const sizes = new Float32Array(count);
   const phases = new Float32Array(count);
@@ -205,327 +150,217 @@ function createTwinkleField(
   const DEPTH_SPREAD_MULTIPLIER = 2.4;
 
   for (let i = 0; i < count; i++) {
-    const r =
-      radius *
-      (0.6 + Math.random() * 0.4);
+    const r = radius * (0.6 + Math.random() * 0.4);
 
-    const theta =
-      Math.random() *
-      Math.PI *
-      2;
+    const theta = Math.random() * Math.PI * 2;
 
-    const phi =
-      Math.acos(
-        THREE.MathUtils.randFloatSpread(2)
-      );
+    const phi = Math.acos(THREE.MathUtils.randFloatSpread(2));
 
-    positions[i * 3] =
-      r *
-      Math.sin(phi) *
-      Math.cos(theta) *
-      1.15;
+    positions[i * 3] = r * Math.sin(phi) * Math.cos(theta) * 1.15;
 
-    positions[i * 3 + 1] =
-      Math.abs(
-        r *
-          Math.cos(phi)
-      ) *
-        0.6 +
-      10;
+    positions[i * 3 + 1] = Math.abs(r * Math.cos(phi)) * 0.6 + 10;
 
     // Wider/deeper star volume:
     // X is already expanded by the radius, while Z gets an additional
     // depth multiplier so stars remain visible much farther into the scene.
     positions[i * 3 + 2] =
-      r *
-      Math.sin(phi) *
-      Math.sin(theta) *
-      DEPTH_SPREAD_MULTIPLIER;
+      r * Math.sin(phi) * Math.sin(theta) * DEPTH_SPREAD_MULTIPLIER;
 
-    sizes[i] =
-      THREE.MathUtils.lerp(
-        minSize,
-        maxSize,
-        Math.random()
-      );
+    sizes[i] = THREE.MathUtils.lerp(minSize, maxSize, Math.random());
 
-    phases[i] =
-      Math.random() *
-      Math.PI *
-      2;
+    phases[i] = Math.random() * Math.PI * 2;
   }
 
-  const geometry =
-    new THREE.BufferGeometry();
+  const geometry = new THREE.BufferGeometry();
 
-  geometry.setAttribute(
-    "position",
-    new THREE.BufferAttribute(
-      positions,
-      3
-    )
-  );
+  geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute("aSize", new THREE.BufferAttribute(sizes, 1));
+  geometry.setAttribute("aPhase", new THREE.BufferAttribute(phases, 1));
 
-  geometry.setAttribute(
-    "aSize",
-    new THREE.BufferAttribute(
-      sizes,
-      1
-    )
-  );
+  const material = new THREE.ShaderMaterial({
+    uniforms: {
+      uTime: { value: 0 },
+      uColor: { value: color },
+    },
 
-  geometry.setAttribute(
-    "aPhase",
-    new THREE.BufferAttribute(
-      phases,
-      1
-    )
-  );
+    vertexShader: `
+      attribute float aSize;
+      attribute float aPhase;
 
-  const material =
-    new THREE.ShaderMaterial({
-      uniforms: {
-        uTime: {
-          value: 0,
-        },
+      uniform float uTime;
 
-        uColor: {
-          value: color,
-        },
-      },
+      varying float vTwinkle;
 
-      vertexShader: `
-        attribute float aSize;
-        attribute float aPhase;
+      void main() {
 
-        uniform float uTime;
+        vTwinkle =
+          0.5 +
+          0.5 *
+          sin(
+            uTime * 1.6 +
+            aPhase
+          );
 
-        varying float vTwinkle;
+        vec4 mvPosition =
+          modelViewMatrix *
+          vec4(position, 1.0);
 
-        void main() {
+        gl_PointSize =
+          aSize *
+          (300.0 / -mvPosition.z);
 
-          vTwinkle =
-            0.5 +
-            0.5 *
-            sin(
-              uTime * 1.6 +
-              aPhase
-            );
+        gl_Position =
+          projectionMatrix *
+          mvPosition;
+      }
+    `,
 
-          vec4 mvPosition =
-            modelViewMatrix *
-            vec4(position, 1.0);
+    fragmentShader: `
+      uniform vec3 uColor;
 
-          gl_PointSize =
-            aSize *
-            (300.0 / -mvPosition.z);
+      varying float vTwinkle;
 
-          gl_Position =
-            projectionMatrix *
-            mvPosition;
-        }
-      `,
+      void main() {
 
-      fragmentShader: `
-        uniform vec3 uColor;
+        float d =
+          length(
+            gl_PointCoord -
+            vec2(0.5)
+          );
 
-        varying float vTwinkle;
+        float alpha =
+          smoothstep(
+            0.5,
+            0.0,
+            d
+          ) *
+          (
+            0.35 +
+            0.65 *
+            vTwinkle
+          );
 
-        void main() {
+        gl_FragColor =
+          vec4(
+            uColor,
+            alpha
+          );
+      }
+    `,
 
-          float d =
-            length(
-              gl_PointCoord -
-              vec2(0.5)
-            );
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+  });
 
-          float alpha =
-            smoothstep(
-              0.5,
-              0.0,
-              d
-            ) *
-            (
-              0.35 +
-              0.65 *
-              vTwinkle
-            );
-
-          gl_FragColor =
-            vec4(
-              uColor,
-              alpha
-            );
-        }
-      `,
-
-      transparent: true,
-      depthWrite: false,
-      blending:
-        THREE.AdditiveBlending,
-    });
-
-  return new THREE.Points(
-    geometry,
-    material
-  );
+  return new THREE.Points(geometry, material);
 }
 
-function createStarTrailField(
-  count = 450,
-  spread = 90
-) {
-  const positions =
-    new Float32Array(count * 3);
-
-  const sizes =
-    new Float32Array(count);
-
-  const phases =
-    new Float32Array(count);
+function createStarTrailField(count = 450, spread = 90) {
+  const positions = new Float32Array(count * 3);
+  const sizes = new Float32Array(count);
+  const phases = new Float32Array(count);
 
   // How far back (negative Z) the trailing stars extend.
   // Increased so the trail reads as reaching far into the distance.
   const TRAIL_DEPTH = 1200;
 
   for (let i = 0; i < count; i++) {
-    positions[i * 3] =
-      THREE.MathUtils.randFloatSpread(
-        spread * 1.6
-      );
+    positions[i * 3] = THREE.MathUtils.randFloatSpread(spread * 1.6);
 
-    positions[i * 3 + 1] =
-      6 +
-      Math.random() * 48;
+    positions[i * 3 + 1] = 6 + Math.random() * 48;
 
-    positions[i * 3 + 2] =
-      -Math.random() * TRAIL_DEPTH;
+    positions[i * 3 + 2] = -Math.random() * TRAIL_DEPTH;
 
-    sizes[i] =
-      THREE.MathUtils.lerp(
-        0.5,
-        1.8,
-        Math.random()
-      );
+    sizes[i] = THREE.MathUtils.lerp(0.5, 1.8, Math.random());
 
-    phases[i] =
-      Math.random() *
-      Math.PI *
-      2;
+    phases[i] = Math.random() * Math.PI * 2;
   }
 
-  const geometry =
-    new THREE.BufferGeometry();
+  const geometry = new THREE.BufferGeometry();
 
-  geometry.setAttribute(
-    "position",
-    new THREE.BufferAttribute(
-      positions,
-      3
-    )
-  );
+  geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute("aSize", new THREE.BufferAttribute(sizes, 1));
+  geometry.setAttribute("aPhase", new THREE.BufferAttribute(phases, 1));
 
-  geometry.setAttribute(
-    "aSize",
-    new THREE.BufferAttribute(
-      sizes,
-      1
-    )
-  );
+  const material = new THREE.ShaderMaterial({
+    uniforms: {
+      uTime: { value: 0 },
+    },
 
-  geometry.setAttribute(
-    "aPhase",
-    new THREE.BufferAttribute(
-      phases,
-      1
-    )
-  );
+    vertexShader: `
+      attribute float aSize;
+      attribute float aPhase;
 
-  const material =
-    new THREE.ShaderMaterial({
-      uniforms: {
-        uTime: {
-          value: 0,
-        },
-      },
+      uniform float uTime;
 
-      vertexShader: `
-        attribute float aSize;
-        attribute float aPhase;
+      varying float vAlpha;
 
-        uniform float uTime;
+      void main() {
 
-        varying float vAlpha;
+        vec3 p = position;
 
-        void main() {
+        float pulse =
+          0.65 +
+          0.35 *
+          sin(
+            uTime * 1.4 +
+            aPhase
+          );
 
-          vec3 p = position;
+        vec4 mv =
+          modelViewMatrix *
+          vec4(p, 1.0);
 
-          float pulse =
-            0.65 +
-            0.35 *
-            sin(
-              uTime * 1.4 +
-              aPhase
-            );
+        gl_PointSize =
+          aSize *
+          pulse *
+          (340.0 / -mv.z);
 
-          vec4 mv =
-            modelViewMatrix *
-            vec4(p, 1.0);
+        vAlpha = pulse;
 
-          gl_PointSize =
-            aSize *
-            pulse *
-            (340.0 / -mv.z);
+        gl_Position =
+          projectionMatrix *
+          mv;
+      }
+    `,
 
-          vAlpha = pulse;
+    fragmentShader: `
+      varying float vAlpha;
 
-          gl_Position =
-            projectionMatrix *
-            mv;
-        }
-      `,
+      void main() {
 
-      fragmentShader: `
-        varying float vAlpha;
+        float d =
+          length(
+            gl_PointCoord -
+            vec2(0.5)
+          );
 
-        void main() {
+        float a =
+          smoothstep(
+            0.5,
+            0.0,
+            d
+          ) *
+          vAlpha *
+          0.65;
 
-          float d =
-            length(
-              gl_PointCoord -
-              vec2(0.5)
-            );
+        gl_FragColor =
+          vec4(
+            1.0,
+            0.78,
+            0.92,
+            a
+          );
+      }
+    `,
 
-          float a =
-            smoothstep(
-              0.5,
-              0.0,
-              d
-            ) *
-            vAlpha *
-            0.65;
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+  });
 
-          gl_FragColor =
-            vec4(
-              1.0,
-              0.78,
-              0.92,
-              a
-            );
-        }
-      `,
-
-      transparent: true,
-      depthWrite: false,
-      blending:
-        THREE.AdditiveBlending,
-    });
-
-  return new THREE.Points(
-    geometry,
-    material
-  );
+  return new THREE.Points(geometry, material);
 }
 
 /* ============================================================
@@ -533,18 +368,14 @@ function createStarTrailField(
 ============================================================ */
 
 export default function Fly() {
-  const canvasRef =
-    useRef(null);
+  const canvasRef = useRef(null);
 
-  const sectionRef =
-    useRef(null);
+  const sectionRef = useRef(null);
 
   useEffect(() => {
-    const canvas =
-      canvasRef.current;
+    const canvas = canvasRef.current;
 
-    const section =
-      sectionRef.current;
+    const section = sectionRef.current;
 
     if (!canvas || !section) {
       return;
@@ -554,167 +385,102 @@ export default function Fly() {
        SCENE
     ======================================================== */
 
-    const scene =
-      new THREE.Scene();
+    const scene = new THREE.Scene();
 
-    const camera =
-      new THREE.PerspectiveCamera(
-        60,
-        window.innerWidth /
-          window.innerHeight,
-        0.1,
-        // Far plane pushed out so the now much deeper star fields
-        // don't get clipped by the camera frustum.
-        2200
-      );
-
-    const renderer =
-      new THREE.WebGLRenderer({
-        canvas,
-        antialias: true,
-        alpha: true,
-      });
-
-    renderer.setPixelRatio(
-      Math.min(
-        window.devicePixelRatio || 1,
-        2
-      )
+    const camera = new THREE.PerspectiveCamera(
+      60,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      // Far plane pushed out so the now much deeper star fields
+      // don't get clipped by the camera frustum.
+      2200
     );
 
-    renderer.setSize(
-      window.innerWidth,
-      window.innerHeight
-    );
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: true,
+      alpha: true,
+    });
 
-    renderer.setClearColor(
-      0x05070d,
-      1
-    );
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    renderer.setClearColor(0x05070d, 1);
 
     /* ========================================================
        BACKGROUND
     ======================================================== */
 
-    const skyTexture =
-      createSkyBackgroundTexture();
+    const skyTexture = createSkyBackgroundTexture();
 
     if (skyTexture) {
-      scene.background =
-        skyTexture;
+      scene.background = skyTexture;
     }
 
     // Radii below are boosted (roughly ~2x) versus the original
     // so stars fill a much wider volume around the flight path.
-    const starField =
-      createTwinkleField(
-        2400,
-        520,
-        new THREE.Color(
-          0xffd9ec
-        ),
-        0.9,
-        2.4
-      );
+    const starField = createTwinkleField(
+      2400,
+      520,
+      new THREE.Color(0xffd9ec),
+      0.9,
+      2.4
+    );
 
     scene.add(starField);
 
-    const dustField =
-      createTwinkleField(
-        650,
-        260,
-        new THREE.Color(
-          0xff6fa8
-        ),
-        1.6,
-        3.8
-      );
+    const dustField = createTwinkleField(
+      650,
+      260,
+      new THREE.Color(0xff6fa8),
+      1.6,
+      3.8
+    );
 
     scene.add(dustField);
 
-    const upperStarField =
-      createTwinkleField(
-        1800,
-        800,
-        new THREE.Color(
-          0xffffff
-        ),
-        0.45,
-        1.8
-      );
-
-    upperStarField.position.y =
-      18;
-
-    scene.add(
-      upperStarField
+    const upperStarField = createTwinkleField(
+      1800,
+      800,
+      new THREE.Color(0xffffff),
+      0.45,
+      1.8
     );
 
-    const starTrailField =
-      createStarTrailField(
-        450,
-        220
-      );
+    upperStarField.position.y = 18;
 
-    scene.add(
-      starTrailField
-    );
+    scene.add(upperStarField);
+
+    const starTrailField = createStarTrailField(450, 220);
+
+    scene.add(starTrailField);
 
     /* ========================================================
        LIGHTS
     ======================================================== */
 
-    scene.add(
-      new THREE.HemisphereLight(
-        0x9fb0ff,
-        0x111322,
-        1.35
-      )
-    );
+    scene.add(new THREE.HemisphereLight(0x9fb0ff, 0x111322, 1.35));
 
-    const rim =
-      new THREE.DirectionalLight(
-        0xffc18f,
-        1.65
-      );
+    const rim = new THREE.DirectionalLight(0xffc18f, 1.65);
 
-    rim.position.set(
-      -6,
-      8,
-      -4
-    );
+    rim.position.set(-6, 8, -4);
 
     scene.add(rim);
 
-    const key =
-      new THREE.DirectionalLight(
-        0xffffff,
-        1.15
-      );
+    const key = new THREE.DirectionalLight(0xffffff, 1.15);
 
-    key.position.set(
-      5,
-      10,
-      6
-    );
+    key.position.set(5, 10, 6);
 
     scene.add(key);
 
-    const planeGlow =
-      new THREE.PointLight(
-        0xffd400,
-        2.2,
-        16,
-        2
-      );
+    const planeGlow = new THREE.PointLight(0xffd400, 2.2, 16, 2);
 
-    scene.add(
-      planeGlow
-    );
+    scene.add(planeGlow);
 
     /* ========================================================
        WIDE FLIGHT PATH
-       
+
        IMPORTANT:
        The path is intentionally much wider
        than the viewport.
@@ -730,263 +496,155 @@ export default function Fly() {
     const Z_STEP = -5.4;
 
     /*
-      OLD:
-        27
+      OLD: 27
+      NEW: 55
 
-      NEW:
-        55
-
-      This creates a much wider
-      left/right sweep.
+      This creates a much wider left/right sweep.
     */
     const MAIN_CURVE_AMPLITUDE = 55;
 
     /*
-      Secondary movement adds
-      organic variation without
-      making the curve jagged.
+      Secondary movement adds organic variation
+      without making the curve jagged.
     */
     const SECONDARY_AMPLITUDE = 12;
 
     /*
-      Multiple large bends throughout
-      the complete route.
+      Multiple large bends throughout the complete route.
     */
     const LONG_CURVE_FREQUENCY = 2.15;
 
-    for (
-      let i = 0;
-      i < TOTAL_WP;
-      i++
-    ) {
-      const u =
-        i /
-        (TOTAL_WP - 1);
+    for (let i = 0; i < TOTAL_WP; i++) {
+      const u = i / (TOTAL_WP - 1);
 
-      const z =
-        i *
-        Z_STEP;
+      const z = i * Z_STEP;
 
       /*
-        Envelope keeps the beginning
-        and end centered while allowing
-        the middle of the journey to
-        become extremely wide.
+        Envelope keeps the beginning and end centered while
+        allowing the middle of the journey to become extremely wide.
       */
-      const envelope =
-        Math.sin(
-          Math.PI * u
-        );
+      const envelope = Math.sin(Math.PI * u);
 
       /*
         Main large sweeping curve.
       */
-      const primaryCurve =
-        Math.sin(
-          u *
-            Math.PI *
-            LONG_CURVE_FREQUENCY -
-            0.18
-        );
+      const primaryCurve = Math.sin(
+        u * Math.PI * LONG_CURVE_FREQUENCY - 0.18
+      );
 
       /*
         Secondary broad movement.
       */
       const secondaryCurve =
-        Math.sin(
-          u *
-            Math.PI *
-            0.86 +
-            0.8
-        ) *
-        SECONDARY_AMPLITUDE;
+        Math.sin(u * Math.PI * 0.86 + 0.8) * SECONDARY_AMPLITUDE;
 
       /*
-        Small additional long-wave
-        movement for a more natural
-        continuous route.
+        Small additional long-wave movement for a more
+        natural continuous route.
       */
-      const tertiaryCurve =
-        Math.sin(
-          u *
-            Math.PI *
-            3.25 +
-            1.15
-        ) *
-        4.5;
+      const tertiaryCurve = Math.sin(u * Math.PI * 3.25 + 1.15) * 4.5;
 
       const x =
         envelope *
-        (
-          primaryCurve *
-            MAIN_CURVE_AMPLITUDE +
+        (primaryCurve * MAIN_CURVE_AMPLITUDE +
           secondaryCurve +
-          tertiaryCurve
-        );
+          tertiaryCurve);
 
-      waypoints.push(
-        new THREE.Vector3(
-          x,
-          0,
-          z
-        )
-      );
+      waypoints.push(new THREE.Vector3(x, 0, z));
     }
 
     /*
-      Always start and finish
-      directly in the center.
+      Always start and finish directly in the center.
     */
     waypoints[0].x = 0;
 
-    waypoints[
-      TOTAL_WP - 1
-    ].x = 0;
+    waypoints[TOTAL_WP - 1].x = 0;
 
-    const curve =
-      new THREE.CatmullRomCurve3(
-        waypoints,
-        false,
-        "centripetal",
-        0.42
-      );
+    const curve = new THREE.CatmullRomCurve3(
+      waypoints,
+      false,
+      "centripetal",
+      0.42
+    );
 
     /*
-      Very high arc length resolution
-      keeps movement smooth even across
-      these large bends.
+      Very high arc length resolution keeps movement smooth
+      even across these large bends.
     */
-    curve.arcLengthDivisions =
-      4000;
+    curve.arcLengthDivisions = 4000;
 
-    const CURVE_LENGTH =
-      curve.getLength();
+    const CURVE_LENGTH = curve.getLength();
 
     /* ========================================================
        FLIGHT LINE
     ======================================================== */
 
-    const TUBULAR_SEGMENTS =
-      1600;
+    const TUBULAR_SEGMENTS = 1600;
 
-    const RADIAL_SEGMENTS =
-      8;
+    const RADIAL_SEGMENTS = 8;
 
-    const lineGeo =
-      new THREE.TubeGeometry(
-        curve,
-        TUBULAR_SEGMENTS,
-        0.05,
-        RADIAL_SEGMENTS,
-        false
-      );
-
-    const RING_COUNT =
-      TUBULAR_SEGMENTS + 1;
-
-    const VERTS_PER_RING =
-      RADIAL_SEGMENTS + 1;
-
-    const lineColorArray =
-      new Float32Array(
-        RING_COUNT *
-          VERTS_PER_RING *
-          3
-      );
-
-    const lineColorAttr =
-      new THREE.BufferAttribute(
-        lineColorArray,
-        3
-      );
-
-    lineGeo.setAttribute(
-      "color",
-      lineColorAttr
+    const lineGeo = new THREE.TubeGeometry(
+      curve,
+      TUBULAR_SEGMENTS,
+      0.05,
+      RADIAL_SEGMENTS,
+      false
     );
 
-    const lineCore =
-      new THREE.Mesh(
-        lineGeo,
-        new THREE.MeshBasicMaterial({
-          vertexColors: true,
-          transparent: true,
-          opacity: 0,
-          depthWrite: false,
-        })
-      );
+    const RING_COUNT = TUBULAR_SEGMENTS + 1;
 
-    lineCore.position.y =
-      -0.55;
+    const VERTS_PER_RING = RADIAL_SEGMENTS + 1;
+
+    const lineColorArray = new Float32Array(
+      RING_COUNT * VERTS_PER_RING * 3
+    );
+
+    const lineColorAttr = new THREE.BufferAttribute(lineColorArray, 3);
+
+    lineGeo.setAttribute("color", lineColorAttr);
+
+    const lineCore = new THREE.Mesh(
+      lineGeo,
+      new THREE.MeshBasicMaterial({
+        vertexColors: true,
+        transparent: true,
+        opacity: 0,
+        depthWrite: false,
+      })
+    );
+
+    lineCore.position.y = -0.55;
 
     lineCore.visible = false;
 
     scene.add(lineCore);
 
-    const LINE_COLOR_AHEAD =
-      new THREE.Color(
-        0xffd400
-      );
+    const LINE_COLOR_AHEAD = new THREE.Color(0xffd400);
 
-    const LINE_COLOR_PASSED =
-      new THREE.Color(
-        0xff2e93
-      );
+    const LINE_COLOR_PASSED = new THREE.Color(0xff2e93);
 
-    function updateLineProgressColor(
-      currentT
-    ) {
-      const arr =
-        lineColorAttr.array;
+    function updateLineProgressColor(currentT) {
+      const arr = lineColorAttr.array;
 
-      const safeT =
-        THREE.MathUtils.clamp(
-          currentT,
-          0,
-          1
-        );
+      const safeT = THREE.MathUtils.clamp(currentT, 0, 1);
 
-      for (
-        let ring = 0;
-        ring < RING_COUNT;
-        ring++
-      ) {
-        const u =
-          ring /
-          TUBULAR_SEGMENTS;
+      for (let ring = 0; ring < RING_COUNT; ring++) {
+        const u = ring / TUBULAR_SEGMENTS;
 
-        const color =
-          u <= safeT
-            ? LINE_COLOR_PASSED
-            : LINE_COLOR_AHEAD;
+        const color = u <= safeT ? LINE_COLOR_PASSED : LINE_COLOR_AHEAD;
 
-        const base =
-          ring *
-          VERTS_PER_RING *
-          3;
+        const base = ring * VERTS_PER_RING * 3;
 
-        for (
-          let k = 0;
-          k < VERTS_PER_RING;
-          k++
-        ) {
-          const idx =
-            base +
-            k * 3;
+        for (let k = 0; k < VERTS_PER_RING; k++) {
+          const idx = base + k * 3;
 
-          arr[idx] =
-            color.r;
-
-          arr[idx + 1] =
-            color.g;
-
-          arr[idx + 2] =
-            color.b;
+          arr[idx] = color.r;
+          arr[idx + 1] = color.g;
+          arr[idx + 2] = color.b;
         }
       }
 
-      lineColorAttr.needsUpdate =
-        true;
+      lineColorAttr.needsUpdate = true;
     }
 
     updateLineProgressColor(0);
@@ -995,34 +653,25 @@ export default function Fly() {
        HELICOPTER
     ======================================================== */
 
-    const plane =
-      new THREE.Group();
+    const plane = new THREE.Group();
 
     scene.add(plane);
 
-    const HELICOPTER_MODEL_URL =
-      "/images/low_poly_helicopter.glb";
+    const HELICOPTER_MODEL_URL = "/images/low_poly_helicopter.glb";
 
-    const HELICOPTER_MODEL_SCALE =
-      0.1;
+    const HELICOPTER_MODEL_SCALE = 0.1;
 
-    const HELICOPTER_YAW_OFFSET =
-      Math.PI / 2;
+    const HELICOPTER_YAW_OFFSET = Math.PI / 2;
 
-    const HELICOPTER_LINE_LIFT =
-      -0.4;
+    const HELICOPTER_LINE_LIFT = -0.4;
 
-    const IDLE_ROTOR_TIME_SCALE =
-      0.1;
+    const IDLE_ROTOR_TIME_SCALE = 0.1;
 
-    const MAX_ROTOR_TIME_SCALE =
-      0.72;
+    const MAX_ROTOR_TIME_SCALE = 0.72;
 
-    const ROTOR_RESPONSE =
-      4.5;
+    const ROTOR_RESPONSE = 4.5;
 
-    const gltfLoader =
-      new GLTFLoader();
+    const gltfLoader = new GLTFLoader();
 
     let jetMixer = null;
 
@@ -1030,165 +679,92 @@ export default function Fly() {
       HELICOPTER_MODEL_URL,
 
       (gltf) => {
-        const model =
-          gltf.scene;
+        const model = gltf.scene;
 
-        model.scale.setScalar(
-          HELICOPTER_MODEL_SCALE
-        );
+        model.scale.setScalar(HELICOPTER_MODEL_SCALE);
 
-        model.updateMatrixWorld(
-          true
-        );
+        model.updateMatrixWorld(true);
 
-        model.rotation.y =
-          HELICOPTER_YAW_OFFSET;
+        model.rotation.y = HELICOPTER_YAW_OFFSET;
 
-        model.updateMatrixWorld(
-          true
-        );
+        model.updateMatrixWorld(true);
 
-        const box =
-          new THREE.Box3().setFromObject(
-            model
-          );
+        const box = new THREE.Box3().setFromObject(model);
 
-        const center =
-          box.getCenter(
-            new THREE.Vector3()
-          );
+        const center = box.getCenter(new THREE.Vector3());
 
-        model.position.x -=
-          center.x;
+        model.position.x -= center.x;
 
-        model.position.z -=
-          center.z;
+        model.position.z -= center.z;
 
-        model.updateMatrixWorld(
-          true
-        );
+        model.updateMatrixWorld(true);
 
-        const centeredBox =
-          new THREE.Box3().setFromObject(
-            model
-          );
+        const centeredBox = new THREE.Box3().setFromObject(model);
 
-        model.position.y -=
-          centeredBox.min.y;
+        model.position.y -= centeredBox.min.y;
 
-        model.position.y +=
-          HELICOPTER_LINE_LIFT;
+        model.position.y += HELICOPTER_LINE_LIFT;
 
         const bakedLights = [];
 
-        model.traverse(
-          (child) => {
-            if (child.isLight) {
-              bakedLights.push(
-                child
-              );
-            }
+        model.traverse((child) => {
+          if (child.isLight) {
+            bakedLights.push(child);
           }
-        );
+        });
 
-        bakedLights.forEach(
-          (light) => {
-            if (light.parent) {
-              light.parent.remove(
-                light
-              );
-            }
+        bakedLights.forEach((light) => {
+          if (light.parent) {
+            light.parent.remove(light);
           }
-        );
+        });
 
-        model.traverse(
-          (child) => {
+        model.traverse((child) => {
+          if (!child.isMesh || !child.material) {
+            return;
+          }
+
+          const materials = Array.isArray(child.material)
+            ? child.material
+            : [child.material];
+
+          materials.forEach((material) => {
+            if (material.roughness !== undefined) {
+              material.roughness = Math.max(material.roughness, 0.68);
+            }
+
             if (
-              !child.isMesh ||
-              !child.material
+              material.isGLTFSpecularGlossinessMaterial &&
+              material.glossiness !== undefined
             ) {
-              return;
+              material.glossiness = Math.min(material.glossiness, 0.32);
             }
 
-            const materials =
-              Array.isArray(
-                child.material
-              )
-                ? child.material
-                : [child.material];
-
-            materials.forEach(
-              (material) => {
-                if (
-                  material.roughness !==
-                  undefined
-                ) {
-                  material.roughness =
-                    Math.max(
-                      material.roughness,
-                      0.68
-                    );
-                }
-
-                if (
-                  material.isGLTFSpecularGlossinessMaterial &&
-                  material.glossiness !==
-                    undefined
-                ) {
-                  material.glossiness =
-                    Math.min(
-                      material.glossiness,
-                      0.32
-                    );
-                }
-
-                material.needsUpdate =
-                  true;
-              }
-            );
-          }
-        );
+            material.needsUpdate = true;
+          });
+        });
 
         plane.add(model);
 
-        if (
-          gltf.animations &&
-          gltf.animations.length
-        ) {
-          jetMixer =
-            new THREE.AnimationMixer(
-              model
-            );
+        if (gltf.animations && gltf.animations.length) {
+          jetMixer = new THREE.AnimationMixer(model);
 
-          gltf.animations.forEach(
-            (clip) => {
-              jetMixer
-                .clipAction(clip)
-                .play();
-            }
-          );
+          gltf.animations.forEach((clip) => {
+            jetMixer.clipAction(clip).play();
+          });
 
-          jetMixer.timeScale =
-            IDLE_ROTOR_TIME_SCALE;
+          jetMixer.timeScale = IDLE_ROTOR_TIME_SCALE;
         } else {
           let prop = null;
 
-          model.traverse(
-            (child) => {
-              if (
-                !prop &&
-                /prop|rotor|blade|fan/i.test(
-                  child.name
-                )
-              ) {
-                prop = child;
-              }
+          model.traverse((child) => {
+            if (!prop && /prop|rotor|blade|fan/i.test(child.name)) {
+              prop = child;
             }
-          );
+          });
 
           if (prop) {
-            plane.userData.prop =
-              prop;
+            plane.userData.prop = prop;
           }
         }
       },
@@ -1196,285 +772,175 @@ export default function Fly() {
       undefined,
 
       (error) => {
-        console.error(
-          "Low-poly helicopter failed to load:",
-          error
-        );
+        console.error("Low-poly helicopter failed to load:", error);
       }
     );
 
     /* ========================================================
        WAYPOINT DATA
+       (9 cards — content from the timeline screenshot)
+       Year "TBD" = placeholder, replace with the real year.
     ======================================================== */
 
     const waypointData = [
       {
-        t: 0.09,
-        year: "2015",
-        eyebrow: "Foundation",
-        title: "Inception of the Void",
-        desc:
-          "Lumière Pictures is established with a singular manifesto: content is disposable. Architecture stands.",
-        meta: [
-          "ALT 420ft",
-          "HDG 032°",
-        ],
+        t: 0.07,
+        year: "2016",
+        eyebrow: "",
+        title: "",
+        desc: "Graduates with an MFA in Film Production from NYU Tisch School of the Arts",
+        meta: ["", ""],
       },
 
       {
-        t: 0.24,
-        year: "2017",
-        eyebrow: "Expansion",
-        title: "Crosswind",
-        desc:
-          "Each card marks a point along the same curve the plane flies.",
-        meta: [
-          "ALT 610ft",
-          "HDG 118°",
-        ],
+        t: 0.175,
+        year: "2016",
+        eyebrow: "",
+        title: "",
+        desc: "HEER wins Best Short at the London South Asian Film Festival",
+        meta: ["", ""],
       },
 
       {
-        t: 0.4,
-        year: "2019",
-        eyebrow: "Reframe",
-        title: "Cloud Break",
-        desc:
-          "This is where the old cloud models used to sit — now a card.",
-        meta: [
-          "ALT 780ft",
-          "HDG 205°",
-        ],
+        t: 0.28,
+        year: "[Year]",
+        eyebrow: "",
+        title: "",
+        desc: "Olivia Lee of Shophouse 333 [released or premieres at]",
+        meta: ["", ""],
       },
 
       {
-        t: 0.56,
-        year: "2021",
-        eyebrow: "Night Run",
-        title: "After Dark",
-        desc:
-          "Cards fade in and out as the camera approaches and passes.",
-        meta: [
-          "ALT 690ft",
-          "HDG 291°",
-        ],
+        t: 0.385,
+        year: "[Year]",
+        eyebrow: "",
+        title: "",
+        desc: "Arrange Me [released or premieres at]",
+        meta: ["", ""],
       },
 
       {
-        t: 0.72,
+        t: 0.49,
+        year: "[Year]",
+        eyebrow: "",
+        title: "",
+        desc: "Selected for Torino Film Lab Extended",
+        meta: ["", ""],
+      },
+
+      {
+        t: 0.595,
+        year: "[Year]",
+        eyebrow: "",
+        title: "",
+        desc: "Selected for the NALIP Women in Diverse Media Lab",
+        meta: ["", ""],
+      },
+
+      {
+        t: 0.70,
         year: "2023",
-        eyebrow: "Long Haul",
-        title: "New Coordinates",
-        desc:
-          "Swap eyebrow / title / desc / meta with real content freely.",
-        meta: [
-          "ALT 540ft",
-          "HDG 344°",
-        ],
+        eyebrow: "",
+        title: "",
+        desc: "Happy Baisakhi! selected for the Cine Qua Non Storylines Lab",
+        meta: ["", ""],
       },
 
       {
-        t: 0.88,
-        year: "2025",
-        eyebrow: "Approach",
-        title: "The Next Frame",
-        desc:
-          "Final stretch before the route ends at the last waypoint.",
-        meta: [
-          "ALT 310ft",
-          "HDG 060°",
-        ],
+        t: 0.805,
+        year: "2026",
+        eyebrow: "",
+        title: "",
+        desc: "Honeyverse Productions launches, with the Oh Honey, Honey. Substack.",
+        meta: ["", ""],
       },
+
+      {
+        t: 0.91,
+        year: "2027",
+        eyebrow: "",
+        title: "",
+        desc: "Happy Baisakhi! principal photography (planned)",
+        meta: ["", ""],
+      },
+
     ];
 
     const CARD_THEMES = [
-      {
-        accent: "#ff2e93",
-        corner: "tl",
-        ring:
-          "rgba(255,46,147,0.55)",
-      },
-
-      {
-        accent: "#ffd400",
-        corner: "tr",
-        ring:
-          "rgba(255,212,0,0.55)",
-      },
-
-      {
-        accent: "#37e6c1",
-        corner: "tl",
-        ring:
-          "rgba(55,230,193,0.50)",
-      },
-
-      {
-        accent: "#ff2e93",
-        corner: "tr",
-        ring:
-          "rgba(255,46,147,0.55)",
-      },
-
-      {
-        accent: "#ffd400",
-        corner: "tl",
-        ring:
-          "rgba(255,212,0,0.55)",
-      },
-
-      {
-        accent: "#37e6c1",
-        corner: "tr",
-        ring:
-          "rgba(55,230,193,0.50)",
-      },
+      { accent: "#ff2e93", corner: "tl", ring: "rgba(255,46,147,0.55)" },
+      { accent: "#ffd400", corner: "tr", ring: "rgba(255,212,0,0.55)" },
+      { accent: "#37e6c1", corner: "tl", ring: "rgba(55,230,193,0.50)" },
+      { accent: "#ff2e93", corner: "tr", ring: "rgba(255,46,147,0.55)" },
+      { accent: "#ffd400", corner: "tl", ring: "rgba(255,212,0,0.55)" },
+      { accent: "#37e6c1", corner: "tr", ring: "rgba(55,230,193,0.50)" },
     ];
 
     /* ========================================================
        CARD HELPERS
     ======================================================== */
 
-    function roundRectPath(
-      ctx,
-      x,
-      y,
-      w,
-      h,
-      r
-    ) {
+    function roundRectPath(ctx, x, y, w, h, r) {
       ctx.beginPath();
 
-      ctx.moveTo(
-        x + r,
-        y
-      );
+      ctx.moveTo(x + r, y);
 
-      ctx.arcTo(
-        x + w,
-        y,
-        x + w,
-        y + h,
-        r
-      );
-
-      ctx.arcTo(
-        x + w,
-        y + h,
-        x,
-        y + h,
-        r
-      );
-
-      ctx.arcTo(
-        x,
-        y + h,
-        x,
-        y,
-        r
-      );
-
-      ctx.arcTo(
-        x,
-        y,
-        x + w,
-        y,
-        r
-      );
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
 
       ctx.closePath();
     }
 
-    function wrapCanvasText(
-      ctx,
-      text,
-      x,
-      y,
-      maxWidth,
-      lineHeight
-    ) {
-      const words =
-        text.split(" ");
+    function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight) {
+      const words = text.split(" ");
 
       let line = "";
       let yy = y;
 
-      words.forEach(
-        (word, index) => {
-          const test =
-            line +
-            word +
-            " ";
+      words.forEach((word, index) => {
+        const test = line + word + " ";
 
-          if (
-            ctx.measureText(
-              test
-            ).width >
-              maxWidth &&
-            index > 0
-          ) {
-            ctx.fillText(
-              line,
-              x,
-              yy
-            );
+        if (ctx.measureText(test).width > maxWidth && index > 0) {
+          ctx.fillText(line, x, yy);
 
-            line =
-              word + " ";
+          line = word + " ";
 
-            yy += lineHeight;
-          } else {
-            line = test;
-          }
+          yy += lineHeight;
+        } else {
+          line = test;
         }
-      );
+      });
 
-      ctx.fillText(
-        line,
-        x,
-        yy
-      );
+      ctx.fillText(line, x, yy);
     }
 
     /*
       ============================================================
-      UPDATED CARD TEXTURE — light/pink card with outlined year
-      above it, matching the reference layout (image 1). Opaque
-      panel fill instead of a dark translucent one, so this reads
-      correctly on a white / light page background.
+      CARD TEXTURE — light/pink card with outlined year
+      above it. Opaque panel fill instead of a dark translucent
+      one, so this reads correctly on a white / light page
+      background.
       ============================================================
     */
-    function makeCardTexture(
-      data,
-      index,
-      total
-    ) {
+    function makeCardTexture(data, index, total) {
       const w = 1400;
       const h = 900;
 
-      const cardCanvas =
-        document.createElement(
-          "canvas"
-        );
+      const cardCanvas = document.createElement("canvas");
 
       cardCanvas.width = w;
       cardCanvas.height = h;
 
-      const ctx =
-        cardCanvas.getContext("2d");
+      const ctx = cardCanvas.getContext("2d");
 
       if (!ctx) return null;
 
       const YELLOW = "#ffd400";
-      const DARK_TEXT =
-        "rgba(20,16,20,0.78)";
+      const DARK_TEXT = "rgba(20,16,20,0.78)";
       const CARD_BG = "#fdf0f4";
 
-      const theme =
-        CARD_THEMES[
-          index %
-            CARD_THEMES.length
-        ];
+      const theme = CARD_THEMES[index % CARD_THEMES.length];
 
       const PAD = 64;
 
@@ -1485,36 +951,23 @@ export default function Fly() {
 
       ctx.save();
 
-      ctx.font =
-        '800 130px "Archivo Black", sans-serif';
+      ctx.font = '800 130px "Archivo Black", sans-serif';
 
       ctx.textAlign = "left";
       ctx.lineWidth = 3.5;
       ctx.strokeStyle = theme.accent;
 
-      ctx.strokeText(
-        data.year || "",
-        PAD * 0.4,
-        YEAR_ZONE_H - 20
-      );
+      ctx.strokeText(data.year || "", PAD * 0.4, YEAR_ZONE_H - 20);
 
       ctx.restore();
 
       /* ---- CARD PANEL ---- */
       const cardTop = YEAR_ZONE_H;
-      const cardHeight =
-        h - cardTop - 20;
+      const cardHeight = h - cardTop - 20;
 
       ctx.save();
 
-      roundRectPath(
-        ctx,
-        PAD * 0.4,
-        cardTop,
-        w - PAD * 0.8,
-        cardHeight,
-        22
-      );
+      roundRectPath(ctx, PAD * 0.4, cardTop, w - PAD * 0.8, cardHeight, 22);
 
       ctx.fillStyle = CARD_BG;
       ctx.fill();
@@ -1533,86 +986,45 @@ export default function Fly() {
 
       ctx.textAlign = "right";
 
-      ctx.font =
-        '700 22px "JetBrains Mono", monospace';
+      ctx.font = '700 22px "JetBrains Mono", monospace';
 
-      ctx.fillStyle =
-        "rgba(40,30,35,0.35)";
+      ctx.fillStyle = "rgba(40,30,35,0.35)";
 
       const idxLabel =
-        String(
-          index + 1
-        ).padStart(2, "0") +
+        String(index + 1).padStart(2, "0") +
         " / " +
-        String(total).padStart(
-          2,
-          "0"
-        );
+        String(total).padStart(2, "0");
 
-      ctx.fillText(
-        idxLabel,
-        w - innerPad,
-        cardTop + 46
-      );
+      ctx.fillText(idxLabel, w - innerPad, cardTop + 46);
 
       ctx.restore();
 
       /* eyebrow: crosshair icon + label */
       ctx.save();
 
-      ctx.strokeStyle =
-        theme.accent;
+      ctx.strokeStyle = theme.accent;
 
       ctx.lineWidth = 2.2;
 
       ctx.beginPath();
 
-      ctx.arc(
-        innerPad + 10,
-        y - 8,
-        10,
-        0,
-        Math.PI * 2
-      );
+      ctx.arc(innerPad + 10, y - 8, 10, 0, Math.PI * 2);
 
-      ctx.moveTo(
-        innerPad + 4,
-        y - 8
-      );
+      ctx.moveTo(innerPad + 4, y - 8);
+      ctx.lineTo(innerPad + 16, y - 8);
 
-      ctx.lineTo(
-        innerPad + 16,
-        y - 8
-      );
-
-      ctx.moveTo(
-        innerPad + 10,
-        y - 14
-      );
-
-      ctx.lineTo(
-        innerPad + 10,
-        y - 2
-      );
+      ctx.moveTo(innerPad + 10, y - 14);
+      ctx.lineTo(innerPad + 10, y - 2);
 
       ctx.stroke();
 
-      ctx.font =
-        '700 24px "JetBrains Mono", monospace';
+      ctx.font = '700 24px "JetBrains Mono", monospace';
 
-      ctx.fillStyle =
-        theme.accent;
+      ctx.fillStyle = theme.accent;
 
       ctx.textAlign = "left";
 
-      ctx.fillText(
-        (
-          data.eyebrow ||
-          ""
-        ).toUpperCase(),
-        innerPad + 34,
-        y
-      );
+      ctx.fillText((data.eyebrow || "").toUpperCase(), innerPad + 34, y);
 
       ctx.restore();
 
@@ -1623,59 +1035,31 @@ export default function Fly() {
 
       ctx.fillStyle = YELLOW;
 
-      ctx.font =
-        '900 62px "Archivo Black", sans-serif';
+      ctx.font = '900 62px "Archivo Black", sans-serif';
 
-      const maxWidth =
-        w - innerPad * 2;
+      const maxWidth = w - innerPad * 2;
 
       const lineHeight = 68;
 
-      const words =
-        (
-          data.title ||
-          ""
-        )
-          .toUpperCase()
-          .split(" ");
+      const words = (data.title || "").toUpperCase().split(" ");
 
       let line = "";
 
-      words.forEach(
-        (word, wi) => {
-          const test =
-            line +
-            word +
-            " ";
+      words.forEach((word, wi) => {
+        const test = line + word + " ";
 
-          if (
-            ctx.measureText(
-              test
-            ).width >
-              maxWidth &&
-            wi > 0
-          ) {
-            ctx.fillText(
-              line.trim(),
-              innerPad,
-              y
-            );
+        if (ctx.measureText(test).width > maxWidth && wi > 0) {
+          ctx.fillText(line.trim(), innerPad, y);
 
-            line =
-              word + " ";
+          line = word + " ";
 
-            y += lineHeight;
-          } else {
-            line = test;
-          }
+          y += lineHeight;
+        } else {
+          line = test;
         }
-      );
+      });
 
-      ctx.fillText(
-        line.trim(),
-        innerPad,
-        y
-      );
+      ctx.fillText(line.trim(), innerPad, y);
 
       ctx.restore();
 
@@ -1684,85 +1068,41 @@ export default function Fly() {
       /* description */
       ctx.save();
 
-      ctx.fillStyle =
-        DARK_TEXT;
+      ctx.fillStyle = DARK_TEXT;
 
-      ctx.font =
-        '500 26px "JetBrains Mono", monospace';
+      ctx.font = '500 26px "JetBrains Mono", monospace';
 
-      wrapCanvasText(
-        ctx,
-        data.desc || "",
-        innerPad,
-        y,
-        maxWidth,
-        36
-      );
+      wrapCanvasText(ctx, data.desc || "", innerPad, y, maxWidth, 36);
 
       ctx.restore();
 
       /* bottom dark strip (photo-style placeholder holding meta) */
       const stripH = 150;
-      const stripY =
-        cardTop +
-        cardHeight -
-        stripH -
-        30;
+      const stripY = cardTop + cardHeight - stripH - 30;
 
       ctx.save();
 
-      roundRectPath(
-        ctx,
-        innerPad,
-        stripY,
-        w - innerPad * 2,
-        stripH,
-        14
-      );
+      roundRectPath(ctx, innerPad, stripY, w - innerPad * 2, stripH, 14);
 
-      const stripGrad =
-        ctx.createLinearGradient(
-          0,
-          stripY,
-          0,
-          stripY + stripH
-        );
+      const stripGrad = ctx.createLinearGradient(0, stripY, 0, stripY + stripH);
 
-      stripGrad.addColorStop(
-        0,
-        "rgba(20,10,16,0.92)"
-      );
+      stripGrad.addColorStop(0, "rgba(20,10,16,0.92)");
+      stripGrad.addColorStop(1, "rgba(10,5,10,0.98)");
 
-      stripGrad.addColorStop(
-        1,
-        "rgba(10,5,10,0.98)"
-      );
-
-      ctx.fillStyle =
-        stripGrad;
+      ctx.fillStyle = stripGrad;
 
       ctx.fill();
 
       ctx.clip();
 
-      for (
-        let i = 0;
-        i < 220;
-        i++
-      ) {
-        ctx.fillStyle = `rgba(255,255,255,${(
-          Math.random() * 0.05
-        ).toFixed(3)})`;
+      for (let i = 0; i < 220; i++) {
+        ctx.fillStyle = `rgba(255,255,255,${(Math.random() * 0.05).toFixed(3)})`;
 
         ctx.beginPath();
 
         ctx.arc(
-          innerPad +
-            Math.random() *
-              (w - innerPad * 2),
-          stripY +
-            Math.random() *
-              stripH,
+          innerPad + Math.random() * (w - innerPad * 2),
+          stripY + Math.random() * stripH,
           Math.random() * 1.2,
           0,
           Math.PI * 2
@@ -1775,19 +1115,14 @@ export default function Fly() {
 
       ctx.save();
 
-      ctx.font =
-        '700 22px "JetBrains Mono", monospace';
+      ctx.font = '700 22px "JetBrains Mono", monospace';
 
-      ctx.fillStyle =
-        "rgba(255,212,0,0.9)";
+      ctx.fillStyle = "rgba(255,212,0,0.9)";
 
       ctx.textAlign = "left";
 
       ctx.fillText(
-        (
-          data.meta &&
-          data.meta[0]
-        ) || "",
+        (data.meta && data.meta[0]) || "",
         innerPad + 20,
         stripY + stripH - 24
       );
@@ -1795,25 +1130,18 @@ export default function Fly() {
       ctx.textAlign = "right";
 
       ctx.fillText(
-        (
-          data.meta &&
-          data.meta[1]
-        ) || "",
+        (data.meta && data.meta[1]) || "",
         w - innerPad - 20,
         stripY + stripH - 24
       );
 
       ctx.restore();
 
-      const texture =
-        new THREE.CanvasTexture(
-          cardCanvas
-        );
+      const texture = new THREE.CanvasTexture(cardCanvas);
 
       texture.anisotropy = 8;
 
-      texture.needsUpdate =
-        true;
+      texture.needsUpdate = true;
 
       return texture;
     }
@@ -1822,63 +1150,32 @@ export default function Fly() {
        CARDS
     ======================================================== */
 
-    const cardGroup =
-      new THREE.Group();
+    const cardGroup = new THREE.Group();
 
     scene.add(cardGroup);
 
     const cardMeshes = [];
 
-    const WORLD_UP =
-      new THREE.Vector3(
-        0,
-        1,
-        0
-      );
+    const WORLD_UP = new THREE.Vector3(0, 1, 0);
 
     /* ========================================================
        CURVE FRAME
     ======================================================== */
 
     function getCurveFrame(t) {
-      const safeT =
-        THREE.MathUtils.clamp(
-          t,
-          0,
-          0.999
-        );
+      const safeT = THREE.MathUtils.clamp(t, 0, 0.999);
 
-      const tangent =
-        curve
-          .getTangentAt(
-            safeT
-          )
-          .normalize();
+      const tangent = curve.getTangentAt(safeT).normalize();
 
-      const right =
-        new THREE.Vector3()
-          .crossVectors(
-            tangent,
-            WORLD_UP
-          );
+      const right = new THREE.Vector3().crossVectors(tangent, WORLD_UP);
 
-      if (
-        right.lengthSq() <
-        1e-6
-      ) {
-        right.set(
-          1,
-          0,
-          0
-        );
+      if (right.lengthSq() < 1e-6) {
+        right.set(1, 0, 0);
       } else {
         right.normalize();
       }
 
-      return {
-        tangent,
-        right,
-      };
+      return { tangent, right };
     }
 
     /* ========================================================
@@ -1888,55 +1185,21 @@ export default function Fly() {
     function curveDirectionAt(t) {
       const sample = 0.012;
 
-      const tA =
-        THREE.MathUtils.clamp(
-          t - sample,
-          0,
-          0.999
-        );
+      const tA = THREE.MathUtils.clamp(t - sample, 0, 0.999);
 
-      const tB =
-        THREE.MathUtils.clamp(
-          t + sample,
-          0,
-          0.999
-        );
+      const tB = THREE.MathUtils.clamp(t + sample, 0, 0.999);
 
-      const tanA =
-        curve
-          .getTangentAt(
-            tA
-          )
-          .normalize();
+      const tanA = curve.getTangentAt(tA).normalize();
 
-      const tanB =
-        curve
-          .getTangentAt(
-            tB
-          )
-          .normalize();
+      const tanB = curve.getTangentAt(tB).normalize();
 
-      const headingA =
-        Math.atan2(
-          tanA.x,
-          -tanA.z
-        );
+      const headingA = Math.atan2(tanA.x, -tanA.z);
 
-      const headingB =
-        Math.atan2(
-          tanB.x,
-          -tanB.z
-        );
+      const headingB = Math.atan2(tanB.x, -tanB.z);
 
       return Math.atan2(
-        Math.sin(
-          headingB -
-            headingA
-        ),
-        Math.cos(
-          headingB -
-            headingA
-        )
+        Math.sin(headingB - headingA),
+        Math.cos(headingB - headingA)
       );
     }
 
@@ -1945,200 +1208,111 @@ export default function Fly() {
     ======================================================== */
 
     /*
-      Cards remain close to the line
-      even though the overall path is
-      now extremely wide.
+      Cards remain close to the line even though the overall
+      path is now extremely wide.
     */
-    const CARD_SIDE_DISTANCE =
-      3.2;
+    const CARD_SIDE_DISTANCE = 3.2;
 
-    const CARD_EXTRA_OUTSIDE =
-      0.65;
+    const CARD_EXTRA_OUTSIDE = 0.65;
 
-    const CARD_VERTICAL_OFFSET =
-      0.55;
+    const CARD_VERTICAL_OFFSET = 0.55;
 
-    function anchorForWaypoint(
-      data,
-      index
-    ) {
-      const p =
-        curve.getPointAt(
-          data.t
-        );
+    function anchorForWaypoint(data, index) {
+      const p = curve.getPointAt(data.t);
 
-      const frame =
-        getCurveFrame(
-          data.t
-        );
+      const frame = getCurveFrame(data.t);
 
-      const turn =
-        curveDirectionAt(
-          data.t
-        );
+      const turn = curveDirectionAt(data.t);
 
-      const bendSide =
-        turn > 0
-          ? -1
-          : 1;
+      const bendSide = turn > 0 ? -1 : 1;
 
-      const alternating =
-        index % 2 === 0
-          ? 0.18
-          : -0.18;
+      const alternating = index % 2 === 0 ? 0.18 : -0.18;
 
-      const curvatureStrength =
-        THREE.MathUtils.clamp(
-          Math.abs(turn) * 6,
-          0,
-          CARD_EXTRA_OUTSIDE
-        );
+      const curvatureStrength = THREE.MathUtils.clamp(
+        Math.abs(turn) * 6,
+        0,
+        CARD_EXTRA_OUTSIDE
+      );
 
       const lateral =
-        bendSide *
-          (
-            CARD_SIDE_DISTANCE +
-            curvatureStrength
-          ) +
-        alternating;
+        bendSide * (CARD_SIDE_DISTANCE + curvatureStrength) + alternating;
 
-      const anchor =
-        p.clone();
+      const anchor = p.clone();
 
-      anchor.addScaledVector(
-        frame.right,
-        lateral
-      );
+      anchor.addScaledVector(frame.right, lateral);
 
-      anchor.addScaledVector(
-        WORLD_UP,
-        CARD_VERTICAL_OFFSET
-      );
+      anchor.addScaledVector(WORLD_UP, CARD_VERTICAL_OFFSET);
 
       return anchor;
     }
 
     /*
       ============================================================
-      CARD ORIENTATION — FIXED, MANUAL X TILT
+      CARD ORIENTATION
       ============================================================
-      Cards no longer track the path's tangent OR the camera. Each
-      card is placed at its anchor position and left at a fixed
-      rotation, set once in buildCardMeshes and never touched again
-      in animate(). It just sits there — no dynamic re-orientation
-      at all.
+      Initial X tilt (radians). Cards are re-oriented toward the
+      camera every frame in animate() using lookAt().
 
-      To manually tilt every card on its X axis, change the value
-      below. It's in RADIANS, not degrees:
         radians = degrees * (Math.PI / 180)
-
-      Quick reference:
-        0.1   ≈  5.7°
-        0.2   ≈ 11.5°
-        0.3   ≈ 17.2°
-       -0.2   ≈ -11.5° (tilts the opposite way)
     */
-    const CARD_ROTATION_X =
-      0;
+    const CARD_ROTATION_X = 0;
 
-    const CARD_FADE_START_T =
-      0.075;
+        const CARD_FADE_START_T = 0.075;
 
-    const CARD_ALPHA_RESPONSE =
-      8.5;
+    const CARD_ALPHA_RESPONSE = 8.5;
 
-    const CARD_ENTER_DISTANCE =
-      0.65;
+    const CARD_ENTER_DISTANCE = 0.65;
 
-    const CARD_ENTER_RESPONSE =
-      7.5;
+    const CARD_ENTER_RESPONSE = 7.5;
 
     function buildCardMeshes() {
-      const total =
-        waypointData.length;
+      const total = waypointData.length;
 
-      waypointData.forEach(
-        (data, index) => {
-          const texture =
-            makeCardTexture(
-              data,
-              index,
-              total
-            );
+      waypointData.forEach((data, index) => {
+        const texture = makeCardTexture(data, index, total);
 
-          if (!texture) return;
+        if (!texture) return;
 
-          const geometry =
-            new THREE.PlaneGeometry(
-              5.6,
-              3.6
-            );
+        const geometry = new THREE.PlaneGeometry(5.6, 3.6);
 
-          const material =
-            new THREE.MeshBasicMaterial({
-              map: texture,
-              transparent: true,
-              depthWrite: false,
-              side: THREE.DoubleSide,
-              opacity: 0,
-            });
+        const material = new THREE.MeshBasicMaterial({
+          map: texture,
+          transparent: true,
+          depthWrite: false,
+          side: THREE.DoubleSide,
+          opacity: 0,
+        });
 
-          const mesh =
-            new THREE.Mesh(
-              geometry,
-              material
-            );
+        const mesh = new THREE.Mesh(geometry, material);
 
-          const anchor =
-            anchorForWaypoint(
-              data,
-              index
-            );
+        const anchor = anchorForWaypoint(data, index);
 
-          mesh.position.copy(
-            anchor
-          );
+        mesh.position.copy(anchor);
 
-          mesh.userData.basePos =
-            anchor.clone();
+        mesh.userData.basePos = anchor.clone();
 
-          mesh.userData.t =
-            data.t;
+        mesh.userData.t = data.t;
 
-          mesh.userData.alpha =
-            0;
+        mesh.userData.alpha = 0;
 
-          mesh.userData.enter =
-            0;
+        mesh.userData.enter = 0;
 
-          // Initial rotation. The card is re-oriented toward the
-          // camera in animate() using lookAt().
-          mesh.rotation.set(
-            CARD_ROTATION_X,
-            0,
-            0
-          );
+        // Initial rotation. The card is re-oriented toward the
+        // camera in animate() using lookAt().
+        mesh.rotation.set(CARD_ROTATION_X, 0, 0);
 
-          mesh.scale.setScalar(
-            1
-          );
+        mesh.scale.setScalar(1);
 
-          mesh.visible = false;
+        mesh.visible = false;
 
-          cardGroup.add(mesh);
+        cardGroup.add(mesh);
 
-          cardMeshes.push(mesh);
-        }
-      );
+        cardMeshes.push(mesh);
+      });
     }
 
-    if (
-      document.fonts &&
-      document.fonts.ready
-    ) {
-      document.fonts.ready.then(
-        buildCardMeshes
-      );
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(buildCardMeshes);
     } else {
       buildCardMeshes();
     }
@@ -2155,28 +1329,21 @@ export default function Fly() {
 
     let flightComplete = false;
 
-    const SCROLL_SENSITIVITY =
-      0.000045;
+    const SCROLL_SENSITIVITY = 0.000045;
 
-    const TARGET_RESPONSE =
-      7.5;
+    const TARGET_RESPONSE = 7.5;
 
-    const FLIGHT_RESPONSE =
-      5.5;
+    const FLIGHT_RESPONSE = 5.5;
 
     let revealAlpha = 0;
 
-    const REVEAL_THRESHOLD =
-      0.0005;
+    const REVEAL_THRESHOLD = 0.0005;
 
-    const REVEAL_RESPONSE =
-      5.5;
+    const REVEAL_RESPONSE = 5.5;
 
-    const MAX_WHEEL_DELTA =
-      120;
+    const MAX_WHEEL_DELTA = 120;
 
-    const FLIGHT_COMPLETE_THRESHOLD =
-      0.999;
+    const FLIGHT_COMPLETE_THRESHOLD = 0.999;
 
     function releaseFlightLock() {
       if (flightComplete) {
@@ -2189,46 +1356,26 @@ export default function Fly() {
       targetT = 1;
       currentT = 1;
 
-      section.classList.add(
-        "fly-complete"
-      );
+      section.classList.add("fly-complete");
 
-      section.classList.remove(
-        "fly-active"
-      );
+      section.classList.remove("fly-active");
     }
 
-    function normalizeWheelDelta(
-      event
-    ) {
-      let delta =
-        event.deltaY;
+    function normalizeWheelDelta(event) {
+      let delta = event.deltaY;
 
-      if (
-        event.deltaMode ===
-        1
-      ) {
+      if (event.deltaMode === 1) {
         delta *= 16;
       }
 
-      if (
-        event.deltaMode ===
-        2
-      ) {
-        delta *=
-          window.innerHeight;
+      if (event.deltaMode === 2) {
+        delta *= window.innerHeight;
       }
 
-      return THREE.MathUtils.clamp(
-        delta,
-        -MAX_WHEEL_DELTA,
-        MAX_WHEEL_DELTA
-      );
+      return THREE.MathUtils.clamp(delta, -MAX_WHEEL_DELTA, MAX_WHEEL_DELTA);
     }
 
-    function handleWheel(
-      event
-    ) {
+    function handleWheel(event) {
       if (flightComplete) {
         return;
       }
@@ -2237,31 +1384,14 @@ export default function Fly() {
 
       dismissScrollHint();
 
-      const delta =
-        normalizeWheelDelta(
-          event
-        );
+      const delta = normalizeWheelDelta(event);
 
-      const progress =
-        delta *
-        SCROLL_SENSITIVITY;
+      const progress = delta * SCROLL_SENSITIVITY;
 
-      scrollTargetT =
-        THREE.MathUtils.clamp(
-          scrollTargetT +
-            progress,
-          0,
-          1
-        );
+      scrollTargetT = THREE.MathUtils.clamp(scrollTargetT + progress, 0, 1);
     }
 
-    window.addEventListener(
-      "wheel",
-      handleWheel,
-      {
-        passive: false,
-      }
-    );
+    window.addEventListener("wheel", handleWheel, { passive: false });
 
     /* ========================================================
        SCROLL HINT OVERLAY
@@ -2270,13 +1400,9 @@ export default function Fly() {
        and never shown again for this mount.
     ======================================================== */
 
-    const hintEl =
-      document.createElement(
-        "div"
-      );
+    const hintEl = document.createElement("div");
 
-    hintEl.className =
-      "fly-scroll-hint";
+    hintEl.className = "fly-scroll-hint";
 
     hintEl.innerHTML = `
       <span class="fly-scroll-hint-icon">
@@ -2285,9 +1411,7 @@ export default function Fly() {
       <span class="fly-scroll-hint-text">SCROLL TO EXPLORE</span>
     `;
 
-    section.appendChild(
-      hintEl
-    );
+    section.appendChild(hintEl);
 
     let hintDismissed = false;
 
@@ -2298,25 +1422,16 @@ export default function Fly() {
 
       hintDismissed = true;
 
-      hintEl.classList.add(
-        "fly-scroll-hint-hidden"
-      );
+      hintEl.classList.add("fly-scroll-hint-hidden");
 
-      window.setTimeout(
-        () => {
-          if (hintEl.parentNode) {
-            hintEl.parentNode.removeChild(
-              hintEl
-            );
-          }
-        },
-        600
-      );
+      window.setTimeout(() => {
+        if (hintEl.parentNode) {
+          hintEl.parentNode.removeChild(hintEl);
+        }
+      }, 600);
     }
 
-    function handleHintKeydown(
-      event
-    ) {
+    function handleHintKeydown(event) {
       const scrollKeys = [
         "ArrowDown",
         "ArrowUp",
@@ -2326,19 +1441,12 @@ export default function Fly() {
         "Spacebar",
       ];
 
-      if (
-        scrollKeys.includes(
-          event.key
-        )
-      ) {
+      if (scrollKeys.includes(event.key)) {
         dismissScrollHint();
       }
     }
 
-    window.addEventListener(
-      "keydown",
-      handleHintKeydown
-    );
+    window.addEventListener("keydown", handleHintKeydown);
 
     /* ========================================================
        TOUCH
@@ -2346,61 +1454,37 @@ export default function Fly() {
 
     let touchStartY = null;
 
-    function handleTouchStart(
-      event
-    ) {
-      if (
-        !event.touches ||
-        !event.touches.length
-      ) {
+    function handleTouchStart(event) {
+      if (!event.touches || !event.touches.length) {
         return;
       }
 
-      touchStartY =
-        event.touches[0].clientY;
+      touchStartY = event.touches[0].clientY;
     }
 
-    function handleTouchMove(
-      event
-    ) {
+    function handleTouchMove(event) {
       if (flightComplete) {
         touchStartY = null;
         return;
       }
 
-      if (
-        touchStartY === null ||
-        !event.touches ||
-        !event.touches.length
-      ) {
+      if (touchStartY === null || !event.touches || !event.touches.length) {
         return;
       }
 
       dismissScrollHint();
 
-      const currentY =
-        event.touches[0].clientY;
+      const currentY = event.touches[0].clientY;
 
-      const dy =
-        THREE.MathUtils.clamp(
-          touchStartY -
-            currentY,
-          -120,
-          120
-        );
+      const dy = THREE.MathUtils.clamp(touchStartY - currentY, -120, 120);
 
-      touchStartY =
-        currentY;
+      touchStartY = currentY;
 
-      scrollTargetT =
-        THREE.MathUtils.clamp(
-          scrollTargetT +
-            dy *
-              SCROLL_SENSITIVITY *
-              1.5,
-          0,
-          1
-        );
+      scrollTargetT = THREE.MathUtils.clamp(
+        scrollTargetT + dy * SCROLL_SENSITIVITY * 1.5,
+        0,
+        1
+      );
 
       event.preventDefault();
     }
@@ -2409,48 +1493,31 @@ export default function Fly() {
       touchStartY = null;
     }
 
-    window.addEventListener(
-      "touchstart",
-      handleTouchStart,
-      {
-        passive: true,
-      }
-    );
+    window.addEventListener("touchstart", handleTouchStart, {
+      passive: true,
+    });
 
-    window.addEventListener(
-      "touchmove",
-      handleTouchMove,
-      {
-        passive: false,
-      }
-    );
+    window.addEventListener("touchmove", handleTouchMove, {
+      passive: false,
+    });
 
-    window.addEventListener(
-      "touchend",
-      handleTouchEnd,
-      {
-        passive: true,
-      }
-    );
+    window.addEventListener("touchend", handleTouchEnd, {
+      passive: true,
+    });
 
     /* ========================================================
        ANIMATION
     ======================================================== */
 
-    const clock =
-      new THREE.Clock();
+    const clock = new THREE.Clock();
 
-    const planeQuat =
-      new THREE.Quaternion();
+    const planeQuat = new THREE.Quaternion();
 
-    const cameraQuat =
-      new THREE.Quaternion();
+    const cameraQuat = new THREE.Quaternion();
 
-    const cameraPos =
-      new THREE.Vector3();
+    const cameraPos = new THREE.Vector3();
 
-    const cameraLookTarget =
-      new THREE.Vector3();
+    const cameraLookTarget = new THREE.Vector3();
 
     let previousT = 0;
 
@@ -2460,211 +1527,103 @@ export default function Fly() {
 
     let previousSmoothedVelocity = 0;
 
-    let rotorDrive =
-      IDLE_ROTOR_TIME_SCALE;
+    let rotorDrive = IDLE_ROTOR_TIME_SCALE;
 
-    const CHASE_DISTANCE =
-      2.8;
+    const CHASE_DISTANCE = 2.8;
 
-    const CHASE_HEIGHT =
-      1;
+    const CHASE_HEIGHT = 1;
 
-    const CAMERA_LOOK_AHEAD =
-      3.2;
+    const CAMERA_LOOK_AHEAD = 3.2;
 
-    const CAMERA_ROTATION_RESPONSE =
-      4.8;
+    const CAMERA_ROTATION_RESPONSE = 4.8;
 
-    const tangentPrev =
-      new THREE.Vector3();
+    const tangentPrev = new THREE.Vector3();
 
-    const tangentNext =
-      new THREE.Vector3();
+    const tangentNext = new THREE.Vector3();
 
-    const right =
-      new THREE.Vector3();
+    const right = new THREE.Vector3();
 
-    const flightUp =
-      new THREE.Vector3();
+    const flightUp = new THREE.Vector3();
 
-    const planeRight =
-      new THREE.Vector3();
+    const planeRight = new THREE.Vector3();
 
-    const planeUp =
-      new THREE.Vector3();
+    const planeUp = new THREE.Vector3();
 
-    const basis =
-      new THREE.Matrix4();
+    const basis = new THREE.Matrix4();
 
-    const targetPlaneQuat =
-      new THREE.Quaternion();
+    const targetPlaneQuat = new THREE.Quaternion();
 
-    const pitchQuat =
-      new THREE.Quaternion();
+    const pitchQuat = new THREE.Quaternion();
 
-    const cameraDirection =
-      new THREE.Vector3();
+    const cameraDirection = new THREE.Vector3();
 
-    const cameraRight =
-      new THREE.Vector3();
+    const cameraRight = new THREE.Vector3();
 
-    const cameraUp =
-      new THREE.Vector3();
+    const cameraUp = new THREE.Vector3();
 
-    const desiredCameraMatrix =
-      new THREE.Matrix4();
+    const desiredCameraMatrix = new THREE.Matrix4();
 
-    const desiredCameraQuat =
-      new THREE.Quaternion();
+    const desiredCameraQuat = new THREE.Quaternion();
 
     let smoothBank = 0;
 
     let smoothPitch = 0;
 
     function signedTurnAmount(t) {
-      const sample =
-        THREE.MathUtils.clamp(
-          CHASE_DISTANCE /
-            CURVE_LENGTH,
-          0.006,
-          0.04
-        );
-
-      const ta =
-        THREE.MathUtils.clamp(
-          t - sample,
-          0,
-          0.999
-        );
-
-      const tb =
-        THREE.MathUtils.clamp(
-          t + sample,
-          0,
-          0.999
-        );
-
-      tangentPrev
-        .copy(
-          curve.getTangentAt(
-            ta
-          )
-        )
-        .normalize();
-
-      tangentNext
-        .copy(
-          curve.getTangentAt(
-            tb
-          )
-        )
-        .normalize();
-
-      const a =
-        Math.atan2(
-          tangentPrev.x,
-          -tangentPrev.z
-        );
-
-      const b =
-        Math.atan2(
-          tangentNext.x,
-          -tangentNext.z
-        );
-
-      return Math.atan2(
-        Math.sin(
-          b - a
-        ),
-        Math.cos(
-          b - a
-        )
+      const sample = THREE.MathUtils.clamp(
+        CHASE_DISTANCE / CURVE_LENGTH,
+        0.006,
+        0.04
       );
+
+      const ta = THREE.MathUtils.clamp(t - sample, 0, 0.999);
+
+      const tb = THREE.MathUtils.clamp(t + sample, 0, 0.999);
+
+      tangentPrev.copy(curve.getTangentAt(ta)).normalize();
+
+      tangentNext.copy(curve.getTangentAt(tb)).normalize();
+
+      const a = Math.atan2(tangentPrev.x, -tangentPrev.z);
+
+      const b = Math.atan2(tangentNext.x, -tangentNext.z);
+
+      return Math.atan2(Math.sin(b - a), Math.cos(b - a));
     }
 
     let animationFrame;
 
     function animate() {
-      animationFrame =
-        requestAnimationFrame(
-          animate
-        );
+      animationFrame = requestAnimationFrame(animate);
 
-      const dt =
-        Math.min(
-          clock.getDelta(),
-          0.05
-        );
+      const dt = Math.min(clock.getDelta(), 0.05);
 
       /* ======================================================
          SMOOTH FLIGHT TARGET
       ====================================================== */
 
-      const targetBlend =
-        1 -
-        Math.exp(
-          -TARGET_RESPONSE *
-            dt
-        );
+      const targetBlend = 1 - Math.exp(-TARGET_RESPONSE * dt);
 
-      targetT +=
-        (
-          scrollTargetT -
-          targetT
-        ) *
-        targetBlend;
+      targetT += (scrollTargetT - targetT) * targetBlend;
 
-      const flightBlend =
-        1 -
-        Math.exp(
-          -FLIGHT_RESPONSE *
-            dt
-        );
+      const flightBlend = 1 - Math.exp(-FLIGHT_RESPONSE * dt);
 
-      currentT +=
-        (
-          targetT -
-          currentT
-        ) *
-        flightBlend;
+      currentT += (targetT - currentT) * flightBlend;
 
-      if (
-        Math.abs(
-          currentT -
-            targetT
-        ) <
-        0.00001
-      ) {
-        currentT =
-          targetT;
+      if (Math.abs(currentT - targetT) < 0.00001) {
+        currentT = targetT;
       }
 
-      scrollTargetT =
-        THREE.MathUtils.clamp(
-          scrollTargetT,
-          0,
-          1
-        );
+      scrollTargetT = THREE.MathUtils.clamp(scrollTargetT, 0, 1);
 
-      targetT =
-        THREE.MathUtils.clamp(
-          targetT,
-          0,
-          1
-        );
+      targetT = THREE.MathUtils.clamp(targetT, 0, 1);
 
-      currentT =
-        THREE.MathUtils.clamp(
-          currentT,
-          0,
-          1
-        );
+      currentT = THREE.MathUtils.clamp(currentT, 0, 1);
 
       if (
         scrollTargetT >= 1 &&
         targetT >= 0.998 &&
-        currentT >=
-          FLIGHT_COMPLETE_THRESHOLD
+        currentT >= FLIGHT_COMPLETE_THRESHOLD
       ) {
         scrollTargetT = 1;
         targetT = 1;
@@ -2687,418 +1646,203 @@ export default function Fly() {
          REVEAL
       ====================================================== */
 
-      const revealTarget =
-        scrollTargetT >
-        REVEAL_THRESHOLD
-          ? 1
-          : 0;
+      const revealTarget = scrollTargetT > REVEAL_THRESHOLD ? 1 : 0;
 
       revealAlpha +=
-        (
-          revealTarget -
-          revealAlpha
-        ) *
-        (
-          1 -
-          Math.exp(
-            -REVEAL_RESPONSE *
-              dt
-          )
-        );
+        (revealTarget - revealAlpha) * (1 - Math.exp(-REVEAL_RESPONSE * dt));
 
-      const revealVisible =
-        revealAlpha > 0.01;
+      const revealVisible = revealAlpha > 0.01;
 
-      lineCore.visible =
-        revealVisible;
+      lineCore.visible = revealVisible;
 
-      lineCore.material.opacity =
-        revealAlpha;
+      lineCore.material.opacity = revealAlpha;
 
       /* ======================================================
          PATH VELOCITY
       ====================================================== */
 
-      const rawPathVelocity =
-        (
-          currentT -
-          previousT
-        ) /
-        Math.max(
-          dt,
-          0.001
-        );
+      const rawPathVelocity = (currentT - previousT) / Math.max(dt, 0.001);
 
-      const velocityBlend =
-        1 -
-        Math.exp(
-          -12 * dt
-        );
+      const velocityBlend = 1 - Math.exp(-12 * dt);
 
       smoothedPathVelocity +=
-        (
-          rawPathVelocity -
-          smoothedPathVelocity
-        ) *
-        velocityBlend;
+        (rawPathVelocity - smoothedPathVelocity) * velocityBlend;
 
       const rawAcceleration =
-        (
-          smoothedPathVelocity -
-          previousSmoothedVelocity
-        ) /
-        Math.max(
-          dt,
-          0.001
-        );
+        (smoothedPathVelocity - previousSmoothedVelocity) /
+        Math.max(dt, 0.001);
 
-      const accelerationBlend =
-        1 -
-        Math.exp(
-          -9 * dt
-        );
+      const accelerationBlend = 1 - Math.exp(-9 * dt);
 
       smoothedPathAcceleration +=
-        (
-          rawAcceleration -
-          smoothedPathAcceleration
-        ) *
-        accelerationBlend;
+        (rawAcceleration - smoothedPathAcceleration) * accelerationBlend;
 
-      previousSmoothedVelocity =
-        smoothedPathVelocity;
+      previousSmoothedVelocity = smoothedPathVelocity;
 
-      previousT =
-        currentT;
+      previousT = currentT;
 
-      const pathVelocity =
-        smoothedPathVelocity;
+      const pathVelocity = smoothedPathVelocity;
 
-      const pathAcceleration =
-        smoothedPathAcceleration;
+      const pathAcceleration = smoothedPathAcceleration;
 
-      const speed01 =
-        THREE.MathUtils.clamp(
-          Math.abs(
-            pathVelocity
-          ) / 0.035,
-          0,
-          1
-        );
+      const speed01 = THREE.MathUtils.clamp(
+        Math.abs(pathVelocity) / 0.035,
+        0,
+        1
+      );
 
       /* ======================================================
          ROTOR
       ====================================================== */
 
-      const targetRotorDrive =
-        THREE.MathUtils.lerp(
-          IDLE_ROTOR_TIME_SCALE,
-          MAX_ROTOR_TIME_SCALE,
-          speed01
-        );
+      const targetRotorDrive = THREE.MathUtils.lerp(
+        IDLE_ROTOR_TIME_SCALE,
+        MAX_ROTOR_TIME_SCALE,
+        speed01
+      );
 
       rotorDrive +=
-        (
-          targetRotorDrive -
-          rotorDrive
-        ) *
-        (
-          1 -
-          Math.exp(
-            -ROTOR_RESPONSE *
-              dt
-          )
-        );
+        (targetRotorDrive - rotorDrive) *
+        (1 - Math.exp(-ROTOR_RESPONSE * dt));
 
       if (jetMixer) {
-        jetMixer.timeScale =
-          rotorDrive;
+        jetMixer.timeScale = rotorDrive;
       }
 
       /* ======================================================
          CURRENT PATH POSITION
       ====================================================== */
 
-      const t =
-        THREE.MathUtils.clamp(
-          currentT,
-          0,
-          1
-        );
+      const t = THREE.MathUtils.clamp(currentT, 0, 1);
 
-      const pos =
-        curve.getPointAt(t);
+      const pos = curve.getPointAt(t);
 
-      const tangent =
-        curve
-          .getTangentAt(
-            Math.min(
-              t,
-              0.999
-            )
-          )
-          .normalize();
+      const tangent = curve.getTangentAt(Math.min(t, 0.999)).normalize();
 
-      updateLineProgressColor(
-        t
-      );
+      updateLineProgressColor(t);
 
       /* ======================================================
          BACKGROUND
       ====================================================== */
 
-      const starTravel =
-        t * CURVE_LENGTH;
+      const starTravel = t * CURVE_LENGTH;
 
-      starField.rotation.y +=
-        dt * 0.004;
+      starField.rotation.y += dt * 0.004;
 
-      dustField.rotation.y -=
-        dt * 0.008;
+      dustField.rotation.y -= dt * 0.008;
 
-      upperStarField.rotation.y +=
-        dt * 0.001;
+      upperStarField.rotation.y += dt * 0.001;
 
-      upperStarField.material.uniforms.uTime.value +=
-        dt * 0.8;
+      upperStarField.material.uniforms.uTime.value += dt * 0.8;
 
-      starTrailField.material.uniforms.uTime.value +=
-        dt;
+      starTrailField.material.uniforms.uTime.value += dt;
 
-      upperStarField.position.z =
-        -starTravel * 0.32;
+      upperStarField.position.z = -starTravel * 0.32;
 
-      upperStarField.position.y =
-        16 +
-        Math.sin(
-          t *
-            Math.PI *
-            1.7
-        ) *
-          2.5;
+      upperStarField.position.y = 16 + Math.sin(t * Math.PI * 1.7) * 2.5;
 
-      starTrailField.position.z =
-        -starTravel * 0.52;
+      starTrailField.position.z = -starTravel * 0.52;
 
-      starField.material.uniforms.uTime.value +=
-        dt;
+      starField.material.uniforms.uTime.value += dt;
 
-      dustField.material.uniforms.uTime.value +=
-        dt;
+      dustField.material.uniforms.uTime.value += dt;
 
       /* ======================================================
          HELICOPTER ORIENTATION
       ====================================================== */
 
-      right.crossVectors(
-        WORLD_UP,
-        tangent
-      );
+      right.crossVectors(WORLD_UP, tangent);
 
-      if (
-        right.lengthSq() <
-        1e-6
-      ) {
-        right.set(
-          1,
-          0,
-          0
-        );
+      if (right.lengthSq() < 1e-6) {
+        right.set(1, 0, 0);
       } else {
         right.normalize();
       }
 
-      flightUp
-        .crossVectors(
-          tangent,
-          right
-        )
-        .normalize();
+      flightUp.crossVectors(tangent, right).normalize();
 
-      const turn =
-        signedTurnAmount(t);
+      const turn = signedTurnAmount(t);
 
-      const targetBank =
-        THREE.MathUtils.clamp(
-          -turn * 3.6,
-          -1.05,
-          1.05
-        );
+      const targetBank = THREE.MathUtils.clamp(-turn * 3.6, -1.05, 1.05);
 
-      const bankBlend =
-        1 -
-        Math.exp(
-          -7.5 * dt
-        );
+      const bankBlend = 1 - Math.exp(-7.5 * dt);
 
-      smoothBank +=
-        (
-          targetBank -
-          smoothBank
-        ) *
-        bankBlend;
+      smoothBank += (targetBank - smoothBank) * bankBlend;
 
-      const headingLookAhead =
-        THREE.MathUtils.clamp(
-          2.8 /
-            CURVE_LENGTH,
-          0.004,
-          0.035
-        );
-
-      const headingT =
-        THREE.MathUtils.clamp(
-          t +
-            headingLookAhead *
-              (
-                pathVelocity >=
-                0
-                  ? 1
-                  : -1
-              ),
-          0,
-          0.999
-        );
-
-      tangentNext
-        .copy(
-          curve.getTangentAt(
-            headingT
-          )
-        )
-        .normalize();
-
-      right.crossVectors(
-        WORLD_UP,
-        tangentNext
+      const headingLookAhead = THREE.MathUtils.clamp(
+        2.8 / CURVE_LENGTH,
+        0.004,
+        0.035
       );
 
-      if (
-        right.lengthSq() <
-        1e-6
-      ) {
-        right.set(
-          1,
-          0,
-          0
-        );
+      const headingT = THREE.MathUtils.clamp(
+        t + headingLookAhead * (pathVelocity >= 0 ? 1 : -1),
+        0,
+        0.999
+      );
+
+      tangentNext.copy(curve.getTangentAt(headingT)).normalize();
+
+      right.crossVectors(WORLD_UP, tangentNext);
+
+      if (right.lengthSq() < 1e-6) {
+        right.set(1, 0, 0);
       } else {
         right.normalize();
       }
 
-      flightUp
-        .crossVectors(
-          tangentNext,
-          right
-        )
-        .normalize();
+      flightUp.crossVectors(tangentNext, right).normalize();
 
-      planeRight
-        .copy(right)
-        .applyAxisAngle(
-          tangentNext,
-          smoothBank
-        );
+      planeRight.copy(right).applyAxisAngle(tangentNext, smoothBank);
 
-      planeUp
-        .copy(flightUp)
-        .applyAxisAngle(
-          tangentNext,
-          smoothBank
-        );
+      planeUp.copy(flightUp).applyAxisAngle(tangentNext, smoothBank);
 
-      basis.makeBasis(
-        planeRight,
-        planeUp,
-        tangentNext
-      );
+      basis.makeBasis(planeRight, planeUp, tangentNext);
 
-      targetPlaneQuat
-        .setFromRotationMatrix(
-          basis
-        );
+      targetPlaneQuat.setFromRotationMatrix(basis);
 
       planeQuat.slerp(
         targetPlaneQuat,
-        1 -
-          Math.exp(
-            -(
-              8.5 +
-              speed01 * 3
-            ) *
-              dt
-          )
+        1 - Math.exp(-(8.5 + speed01 * 3) * dt)
       );
 
       /* ======================================================
          PITCH
       ====================================================== */
 
-      const targetPitch =
-        THREE.MathUtils.clamp(
-          -pathAcceleration *
-            0.0025,
-          -0.055,
-          0.055
-        );
+      const targetPitch = THREE.MathUtils.clamp(
+        -pathAcceleration * 0.0025,
+        -0.055,
+        0.055
+      );
 
-      const pitchBlend =
-        1 -
-        Math.exp(
-          -7 * dt
-        );
+      const pitchBlend = 1 - Math.exp(-7 * dt);
 
-      smoothPitch +=
-        (
-          targetPitch -
-          smoothPitch
-        ) *
-        pitchBlend;
+      smoothPitch += (targetPitch - smoothPitch) * pitchBlend;
 
-      if (
-        Math.abs(
-          smoothPitch
-        ) >
-        0.0001
-      ) {
-        pitchQuat.setFromAxisAngle(
-          right,
-          smoothPitch
-        );
+      if (Math.abs(smoothPitch) > 0.0001) {
+        pitchQuat.setFromAxisAngle(right, smoothPitch);
 
-        planeQuat.multiply(
-          pitchQuat
-        );
+        planeQuat.multiply(pitchQuat);
       }
 
       /* ======================================================
          HELICOPTER POSITION
       ====================================================== */
 
-      plane.position.copy(
-        pos
-      );
+      plane.position.copy(pos);
 
-      plane.quaternion.copy(
-        planeQuat
-      );
+      plane.quaternion.copy(planeQuat);
 
-      if (
-        plane.userData.prop
-      ) {
-        plane.userData.prop.rotation.y +=
-          dt *
-          rotorDrive *
-          18;
+      if (plane.userData.prop) {
+        plane.userData.prop.rotation.y += dt * rotorDrive * 18;
       }
 
       if (jetMixer) {
         jetMixer.update(dt);
       }
 
-      planeGlow.position.copy(
-        pos
-      );
+      planeGlow.position.copy(pos);
 
       /* ======================================================
          CHASE CAMERA
@@ -3107,17 +1851,9 @@ export default function Fly() {
       // Camera stays directly behind the helicopter.
       // It follows the helicopter's position, but NEVER inherits
       // the helicopter's pitch or roll. Only horizontal yaw is used.
-      const cameraT =
-        THREE.MathUtils.clamp(
-          t,
-          0,
-          0.999
-        );
+      const cameraT = THREE.MathUtils.clamp(t, 0, 0.999);
 
-      const helicopterTangent =
-        curve
-          .getTangentAt(cameraT)
-          .normalize();
+      const helicopterTangent = curve.getTangentAt(cameraT).normalize();
 
       // Ignore vertical movement so the camera remains level.
       helicopterTangent.y = 0;
@@ -3128,238 +1864,117 @@ export default function Fly() {
         helicopterTangent.normalize();
       }
 
-      const desiredCamPos =
-        pos
-          .clone()
-          .addScaledVector(
-            helicopterTangent,
-            -CHASE_DISTANCE
-          );
+      const desiredCamPos = pos
+        .clone()
+        .addScaledVector(helicopterTangent, -CHASE_DISTANCE);
 
-      desiredCamPos.addScaledVector(
-        WORLD_UP,
-        CHASE_HEIGHT
-      );
+      desiredCamPos.addScaledVector(WORLD_UP, CHASE_HEIGHT);
 
       // Look only at the helicopter's horizontal position.
       // This keeps the camera upright instead of following the
       // helicopter's X/Z rotation or pitch.
-      cameraLookTarget.copy(
-        pos
-      );
+      cameraLookTarget.copy(pos);
 
-      cameraLookTarget.addScaledVector(
-        WORLD_UP,
-        CHASE_HEIGHT *
-          0.55
-      );
+      cameraLookTarget.addScaledVector(WORLD_UP, CHASE_HEIGHT * 0.55);
 
-      cameraDirection
-        .copy(
-          cameraLookTarget
-        )
-        .sub(
-          desiredCamPos
-        )
-        .normalize();
+      cameraDirection.copy(cameraLookTarget).sub(desiredCamPos).normalize();
 
-      cameraRight
-        .crossVectors(
-          WORLD_UP,
-          cameraDirection
-        )
-        .normalize();
+      cameraRight.crossVectors(WORLD_UP, cameraDirection).normalize();
 
-      cameraUp
-        .crossVectors(
-          cameraDirection,
-          cameraRight
-        )
-        .normalize();
+      cameraUp.crossVectors(cameraDirection, cameraRight).normalize();
 
       desiredCameraMatrix.makeBasis(
         cameraRight,
         cameraUp,
-        cameraDirection
-          .clone()
-          .negate()
+        cameraDirection.clone().negate()
       );
 
-      desiredCameraQuat
-        .setFromRotationMatrix(
-          desiredCameraMatrix
-        );
+      desiredCameraQuat.setFromRotationMatrix(desiredCameraMatrix);
 
-      if (
-        !camera.userData.initialized
-      ) {
-        cameraPos.copy(
-          desiredCamPos
-        );
+      if (!camera.userData.initialized) {
+        cameraPos.copy(desiredCamPos);
 
-        cameraQuat.copy(
-          desiredCameraQuat
-        );
+        cameraQuat.copy(desiredCameraQuat);
 
-        camera.userData.initialized =
-          true;
+        camera.userData.initialized = true;
       } else {
-        cameraPos.copy(
-          desiredCamPos
-        );
+        cameraPos.copy(desiredCamPos);
 
         cameraQuat.slerp(
           desiredCameraQuat,
-          1 -
-            Math.exp(
-              -CAMERA_ROTATION_RESPONSE *
-                dt
-            )
+          1 - Math.exp(-CAMERA_ROTATION_RESPONSE * dt)
         );
       }
 
-      camera.position.copy(
-        cameraPos
-      );
+      camera.position.copy(cameraPos);
 
-      camera.quaternion.copy(
-        cameraQuat
-      );
+      camera.quaternion.copy(cameraQuat);
 
-      camera.up.set(
-        0,
-        1,
-        0
-      );
+      camera.up.set(0, 1, 0);
 
       /* ======================================================
          CARDS
       ====================================================== */
 
-      cardMeshes.forEach(
-        (mesh) => {
-          const cardT =
-            mesh.userData.t;
+      cardMeshes.forEach((mesh) => {
+        const cardT = mesh.userData.t;
 
-          const fadeStart =
-            cardT -
-            CARD_FADE_START_T;
+        const fadeStart = cardT - CARD_FADE_START_T;
 
-          const enterTarget =
-            t >= fadeStart
-              ? THREE.MathUtils.clamp(
-                  (
-                    t -
-                    fadeStart
-                  ) /
-                    CARD_FADE_START_T,
-                  0,
-                  1
-                )
-              : 0;
-
-          mesh.userData.enter +=
-            (
-              enterTarget -
-              mesh.userData.enter
-            ) *
-            (
-              1 -
-              Math.exp(
-                -CARD_ENTER_RESPONSE *
-                  dt
+        const enterTarget =
+          t >= fadeStart
+            ? THREE.MathUtils.clamp(
+                (t - fadeStart) / CARD_FADE_START_T,
+                0,
+                1
               )
-            );
+            : 0;
 
-          const enter =
-            mesh.userData.enter;
+        mesh.userData.enter +=
+          (enterTarget - mesh.userData.enter) *
+          (1 - Math.exp(-CARD_ENTER_RESPONSE * dt));
 
-          /*
-            IMPORTANT:
+        const enter = mesh.userData.enter;
 
-            Card uses its own tangent,
-            so the entrance animation
-            stays attached to its own
-            waypoint.
-          */
-          const cardTangent =
-            curve
-              .getTangentAt(
-                THREE.MathUtils.clamp(
-                  cardT,
-                  0,
-                  0.999
-                )
-              )
-              .normalize();
+        /*
+          IMPORTANT:
+          Card uses its own tangent, so the entrance animation
+          stays attached to its own waypoint.
+        */
+        const cardTangent = curve
+          .getTangentAt(THREE.MathUtils.clamp(cardT, 0, 0.999))
+          .normalize();
 
-          mesh.position.copy(
-            mesh.userData.basePos
-          );
+        mesh.position.copy(mesh.userData.basePos);
 
-          mesh.position.addScaledVector(
-            cardTangent,
-            (
-              1 -
-              enter
-            ) *
-              -CARD_ENTER_DISTANCE
-          );
+        mesh.position.addScaledVector(
+          cardTangent,
+          (1 - enter) * -CARD_ENTER_DISTANCE
+        );
 
-          mesh.position.y +=
-            (
-              1 -
-              enter
-            ) *
-            0.3;
+        mesh.position.y += (1 - enter) * 0.3;
 
-          // Make every card look directly at the camera.
-          // lookAt() is used so the card always faces the camera
-          // regardless of where the camera is along the flight line.
-          mesh.lookAt(camera.position);
+        // Make every card look directly at the camera.
+        mesh.lookAt(camera.position);
 
-          mesh.scale.setScalar(
-            THREE.MathUtils.lerp(
-              0.84,
-              1,
-              enter
-            )
-          );
+        mesh.scale.setScalar(THREE.MathUtils.lerp(0.84, 1, enter));
 
-          const targetAlpha =
-            enter;
+        const targetAlpha = enter;
 
-          mesh.userData.alpha +=
-            (
-              targetAlpha -
-              mesh.userData.alpha
-            ) *
-            (
-              1 -
-              Math.exp(
-                -CARD_ALPHA_RESPONSE *
-                  dt
-              )
-            );
+        mesh.userData.alpha +=
+          (targetAlpha - mesh.userData.alpha) *
+          (1 - Math.exp(-CARD_ALPHA_RESPONSE * dt));
 
-          const alpha =
-            mesh.userData.alpha;
+        const alpha = mesh.userData.alpha;
 
-          mesh.visible =
-            alpha > 0.01;
+        mesh.visible = alpha > 0.01;
 
-          mesh.material.opacity =
-            alpha;
+        mesh.material.opacity = alpha;
 
-          mesh.material.depthWrite =
-            alpha > 0.5;
-        }
-      );
+        mesh.material.depthWrite = alpha > 0.5;
+      });
 
-      renderer.render(
-        scene,
-        camera
-      );
+      renderer.render(scene, camera);
     }
 
     /* ========================================================
@@ -3367,38 +1982,22 @@ export default function Fly() {
     ======================================================== */
 
     function handleResize() {
-      camera.aspect =
-        window.innerWidth /
-        window.innerHeight;
+      camera.aspect = window.innerWidth / window.innerHeight;
 
       camera.updateProjectionMatrix();
 
-      renderer.setPixelRatio(
-        Math.min(
-          window.devicePixelRatio ||
-            1,
-          2
-        )
-      );
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 
-      renderer.setSize(
-        window.innerWidth,
-        window.innerHeight
-      );
+      renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
-    window.addEventListener(
-      "resize",
-      handleResize
-    );
+    window.addEventListener("resize", handleResize);
 
     /* ========================================================
        START
     ======================================================== */
 
-    section.classList.add(
-      "fly-active"
-    );
+    section.classList.add("fly-active");
 
     animate();
 
@@ -3407,93 +2006,55 @@ export default function Fly() {
     ======================================================== */
 
     return () => {
-      cancelAnimationFrame(
-        animationFrame
-      );
+      cancelAnimationFrame(animationFrame);
 
-      window.removeEventListener(
-        "resize",
-        handleResize
-      );
+      window.removeEventListener("resize", handleResize);
 
-      window.removeEventListener(
-        "wheel",
-        handleWheel
-      );
+      window.removeEventListener("wheel", handleWheel);
 
-      window.removeEventListener(
-        "keydown",
-        handleHintKeydown
-      );
+      window.removeEventListener("keydown", handleHintKeydown);
 
-      window.removeEventListener(
-        "touchstart",
-        handleTouchStart
-      );
+      window.removeEventListener("touchstart", handleTouchStart);
 
-      window.removeEventListener(
-        "touchmove",
-        handleTouchMove
-      );
+      window.removeEventListener("touchmove", handleTouchMove);
 
-      window.removeEventListener(
-        "touchend",
-        handleTouchEnd
-      );
+      window.removeEventListener("touchend", handleTouchEnd);
 
       if (hintEl.parentNode) {
-        hintEl.parentNode.removeChild(
-          hintEl
-        );
+        hintEl.parentNode.removeChild(hintEl);
       }
 
-      cardMeshes.forEach(
-        (mesh) => {
-          mesh.geometry.dispose();
+      cardMeshes.forEach((mesh) => {
+        mesh.geometry.dispose();
 
-          if (
-            mesh.material.map
-          ) {
-            mesh.material.map.dispose();
-          }
-
-          mesh.material.dispose();
+        if (mesh.material.map) {
+          mesh.material.map.dispose();
         }
-      );
 
-      scene.traverse(
-        (object) => {
-          if (object.geometry) {
-            object.geometry.dispose();
-          }
+        mesh.material.dispose();
+      });
 
-          if (object.material) {
-            const materials =
-              Array.isArray(
-                object.material
-              )
-                ? object.material
-                : [object.material];
-
-            materials.forEach(
-              (material) => {
-                if (
-                  material.map
-                ) {
-                  material.map.dispose();
-                }
-
-                material.dispose();
-              }
-            );
-          }
+      scene.traverse((object) => {
+        if (object.geometry) {
+          object.geometry.dispose();
         }
-      );
 
-      if (
-        scene.background &&
-        scene.background.dispose
-      ) {
+        if (object.material) {
+          const materials = Array.isArray(object.material)
+            ? object.material
+            : [object.material];
+
+          materials.forEach((material) => {
+            if (material.map) {
+              material.map.dispose();
+            }
+
+            material.dispose();
+          });
+        }
+      });
+
+      if (scene.background && scene.background.dispose) {
         scene.background.dispose();
       }
 
@@ -3656,10 +2217,7 @@ export default function Fly() {
         className="fly-section"
         aria-label="Honeyverse flight journey"
       >
-        <canvas
-          ref={canvasRef}
-          className="fly-canvas"
-        />
+        <canvas ref={canvasRef} className="fly-canvas" />
       </section>
     </>
   );

@@ -90,11 +90,11 @@ const Collaborate = () => {
         </Reveal>
 
         <Reveal as="div" direction="up" delay={120} duration={1} className={styles["badge-text"]}>
-          <h3>[ 03 // ALLIANCE ]</h3>
+          <h3>[ 03 // Collaborate ]</h3>
         </Reveal>
 
         <Reveal as="div" direction="up" delay={240} duration={1.2} className={styles["title-wrapper"]}>
-          <h1 className={styles["main-title"]}>COLLABORATE</h1>
+          <h2 className={styles["main-title"]}>Co-productions</h2>
         </Reveal>
       </div>
 
@@ -103,13 +103,16 @@ const Collaborate = () => {
 
         {/* Left: Yellow Protocol Card */}
         <Reveal as="div" direction="left" delay={150} duration={1.2} className={styles["protocol-card"]}>
-          <h2 className={styles["card-title"]}>CO-PRODUCTIONS</h2>
+          <h3 className={styles["card-title"]}>Co-productions</h3>
           <p className={styles["card-desc"]}>
-            We actively seek partnerships with visionary directors, independent producers, and global entities. If the project pushes boundaries and requires a rigorous aesthetic framework, we align forces.
+            We partner with producers, brands and funders
+            who want stories the mainstream keeps missing. If
+            your project centers women and has something
+            honest to say, let's talk.
           </p>
 
-          <a href="#" className={styles["submit-link"]}>
-            <span className={styles["submit-text"]}>SUBMIT PROTOCOL</span>
+          <a href="/contact-us" className={styles["submit-link"]}>
+            <span className={styles["submit-text"]}>Start a conversation</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
                <path d="M5.83301 14H22.1663" stroke="#D9186A" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
                <path d="M14 5.83325L22.1667 13.9999L14 22.1666" stroke="#D9186A" strokeWidth="1.66667" strokeLinecap="round" strokeLinejoin="round"/>
@@ -125,10 +128,10 @@ const Collaborate = () => {
             className={styles["hero-image"]}
           />
           <div className={styles["image-overlay"]}>
-            <span className={styles["target-tag"]}>TARGET: UNCOMPROMISING CINEMA</span>
-            <h3 className={styles["overlay-title"]}>
-              THE ARCHITECTS<br />OF NARRATIVE
-            </h3>
+            <span className={styles["target-tag"]}>Target: Uncompromising Cinema</span>
+            <h4 className={styles["overlay-title"]}>
+              The Architects<br />of Narrative
+            </h4>
           </div>
         </Reveal>
 

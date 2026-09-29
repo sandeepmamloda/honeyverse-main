@@ -64,15 +64,24 @@
   line-height:100%;
 }
 
-/* ── CARDS GRID ── */
+/* ── CARDS GRID ──
+   flexbox + justify-content:center use kiya hai instead of a strict
+   4-column grid, taaki jab cards 4 se kam ho (abhi 3 active hain,
+   Tokyo comment out hai), tab bhi wo row ke center me align hon,
+   left-shifted na dikhein. Jab 4th card uncomment karoge, wo bhi
+   automatically same row me fit ho jaayega. */
 .cards-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1.5rem;
   width: 100%;
 }
 
 .location-card {
+  /* 4 per row on desktop: 25% width minus proportional gap */
+  flex: 0 1 calc(25% - 1.125rem);
+  max-width: calc(25% - 1.125rem);
   aspect-ratio: 1 / 1; /* Makes cards perfect squares */
   background-color: #FDFBF7; /* Light cream/yellowish off-white */
   border: 1px solid #FFCC00;
@@ -253,8 +262,13 @@
 ══════════════════════════════ */
 @media (max-width: 1024px) {
   .cards-grid {
-    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
     gap: 2rem;
+  }
+
+  .location-card {
+    flex: 0 1 calc(50% - 1rem);
+    max-width: calc(50% - 1rem);
   }
   
   .global-container {
@@ -271,17 +285,18 @@
   }
 
   .cards-grid {
-    grid-template-columns: 1fr;
     gap: 1.5rem;
+  }
+
+  .location-card {
+    flex: 0 1 100%;
+    max-width: 100%;
+    aspect-ratio: auto;
+    min-height: 300px;
   }
 
   .global-container {
     padding-inline: 1.5rem;
-  }
-
-  .location-card {
-    aspect-ratio: auto;
-    min-height: 300px;
   }
 }
 

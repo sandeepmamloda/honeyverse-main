@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import styles from "./heroportfolio.module.css";
 
 const headings = [
-  { text: "THE", style: "solid" },
-  { text: "PORTFOLIO", style: "outline" },
+  { text: "The", style: "solid" },
+  { text: "Portfolio", style: "outline" },
 ];
 
 /* ══════════════════════════════
@@ -96,7 +96,7 @@ const Heroportfolio = () => {
             delay={0}
             className={styles["top"]}
           >
-            <h3>[ Our Identity // Vol. 01 ]</h3>
+            <h3>[ The Work ]</h3>
           </Reveal>
 
           <h1 className={styles["heading-row"]}>
@@ -115,6 +115,7 @@ const Heroportfolio = () => {
                 }
               >
                 {heading.text}
+                {index < headings.length - 1 && " "}
               </Reveal>
             ))}
           </h1>
@@ -130,8 +131,7 @@ const Heroportfolio = () => {
           className={styles["bottom-last"]}
         >
           <h2>
-            A curated selection of our original narratives, co-productions,
-            and boundary-pushing digital intellectual properties.
+            Films, series and digital stories about women who stopped waiting for permission.
           </h2>
         </Reveal>
 

@@ -44,6 +44,7 @@
   line-height: 100%;
   font-weight: 400;
   margin: 0;
+  text-transform:uppercase;
 }
 
 .title-wrapper {
@@ -111,6 +112,7 @@
   font-weight: 600;
   letter-spacing: 0.12rem;
   color: rgba(217, 24, 106, 1);
+  text-transform:uppercase;
 }
 
 .submit-arrow {

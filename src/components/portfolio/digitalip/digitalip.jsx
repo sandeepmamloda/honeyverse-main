@@ -2,20 +2,35 @@
 import styles from "./digitalip.module.css";
 
 const ipCards = [
+  // {
+  //   id: 1,
+  //   badge: "TWITCH / WEB",
+  //   type: "INTERACTIVE WEB SERIES",
+  //   title: "GRID/LOCK",
+  //   image: "/images/portfolio/left.jpg", 
+  // },
+  // {
+  //   id: 2,
+  //   badge: "SPOTIFY / APPLE",
+  //   type: "NARRATIVE PODCAST",
+  //   title: "THE ARCHITECT'S JOURNAL",
+  //   image: "/images/portfolio/right.jpg", 
+  // }
+
   {
     id: 1,
-    badge: "TWITCH / WEB",
-    type: "INTERACTIVE WEB SERIES",
-    title: "GRID/LOCK",
-    image: "/images/portfolio/left.jpg", 
+    badge: "TikTok and Instagram",
+    type: "STORY, WOMAN, TEACH, FILM AND GYM, UNFILTERED",
+    title: "THE HONEYVERSE",
+    image: "/images/portfolio/left.jpg",
   },
   {
     id: 2,
-    badge: "SPOTIFY / APPLE",
-    type: "NARRATIVE PODCAST",
-    title: "THE ARCHITECT'S JOURNAL",
-    image: "/images/portfolio/right.jpg", 
-  }
+    badge: "Substack",
+    type: "ESSAYS, LISTS AND A REAL-TIME DIARY OF MAKING A FEATURE",
+    title: "OH HONEY, HONEY.",
+    image: "/images/portfolio/right.jpg",
+  },
 ];
 
 const DigitalIP = () => {
@@ -37,11 +52,11 @@ const DigitalIP = () => {
           </div>
           
           <div className={styles["badge"]}>
-            <span>[ 03 // NEW MEDIA ]</span>
+            <span>[ 03 // Online ]</span>
           </div>
 
           <div className={styles["title-wrapper"]}>
-            <h1 className={styles["main-title"]}>DIGITAL & SOCIAL IP</h1>
+            <h2 className={styles["main-title"]}>Digital and Social</h2>
           </div>
         </div>
 

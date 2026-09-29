@@ -5,32 +5,32 @@ import styles from "./coreteam.module.css";
 const allTeamMembers = [
   {
     id: 1,
-    role: "FOUNDER",
-    name: "HONEY B. SINGH",
-    bio: "A veteran of indie cinema, Honey founded Lumière with a singular vision: to protect the director's voice at all costs. Over 15 years, he has produced award-winning features spanning three continents.",
+    role: "Founder, Writer and Director",
+    name: "Honey B. Singh",
+    bio: "Honey is a writer-director making women-led and South Asian diaspora stories. She holds an MFA in Film Production from NYU Tisch, and her short HEER won Best Short at the London South Asian Film Festival. Her work has been developed through the Cine Qua Non Storylines Lab, Torino Film Lab Extended and the NALIP Women in Diverse Media Lab. She is currently producing her first feature, Happy Baisakhi!, with principal photography planned for 2027. She is also a certified yoga teacher, which comes in handy on set.",
     image: "/images/teams/honey.jpg",
   },
-  {
-    id: 2,
-    role: "HEAD OF DEVELOPMENT",
-    name: "SARAH CHEN",
-    bio: "Formerly a programmer at major European festivals, Sarah has an unparalleled eye for emerging talent and unconventional narratives. She leads our script acquisition and writer incubation programs.",
-    image: "/images/teams/sarahchen.jpg",
-  },
-  {
-    id: 3,
-    role: "CREATIVE DIRECTOR",
-    name: "ALEX MERCER",
-    bio: "Alex brings a wealth of avant-garde visual design experience, crafting the aesthetic language for multi-disciplinary platforms worldwide.",
-    image: "/images/teams/alex.jpg",
-  },
-  {
-    id: 4,
-    role: "TECHNICAL LEAD",
-    name: "PRIYA SHARMA",
-    bio: "Priya bridges the gap between high-end digital design and functional web applications, ensuring architectural solidity across platforms.",
-    image: "/images/teams/priya.jpg",
-  }
+  // {
+  //   id: 2,
+  //   role: "HEAD OF DEVELOPMENT",
+  //   name: "SARAH CHEN",
+  //   bio: "Formerly a programmer at major European festivals, Sarah has an unparalleled eye for emerging talent and unconventional narratives. She leads our script acquisition and writer incubation programs.",
+  //   image: "/images/teams/sarahchen.jpg",
+  // },
+  // {
+  //   id: 3,
+  //   role: "CREATIVE DIRECTOR",
+  //   name: "ALEX MERCER",
+  //   bio: "Alex brings a wealth of avant-garde visual design experience, crafting the aesthetic language for multi-disciplinary platforms worldwide.",
+  //   image: "/images/teams/alex.jpg",
+  // },
+  // {
+  //   id: 4,
+  //   role: "TECHNICAL LEAD",
+  //   name: "PRIYA SHARMA",
+  //   bio: "Priya bridges the gap between high-end digital design and functional web applications, ensuring architectural solidity across platforms.",
+  //   image: "/images/teams/priya.jpg",
+  // }
 ];
 
 /* ══════════════════════════════
@@ -129,7 +129,7 @@ const CoreTeam = () => {
               delay={0}
               className={styles["badge"]}
             >
-              <h3>[ LEADERSHIP // VOL. 1 ]</h3>
+              <h3>[ Leadership ]</h3>
             </Reveal>
 
             <Reveal
@@ -140,8 +140,8 @@ const CoreTeam = () => {
               delay={200}
               className={styles["main-title"]}
             >
-              <span className={styles["text-yellow"]}>THE</span>{" "}
-              <span className={styles["text-outline"]}>CORE</span>
+              <span className={styles["text-yellow"]}>The</span>{" "}
+              <span className={styles["text-outline"]}>Core</span>
             </Reveal>
           </div>
 
@@ -154,8 +154,7 @@ const CoreTeam = () => {
             className={styles["header-right"]}
           >
             <p>
-              OUR VISUAL IDENTITY IS ROOTED IN STRUCTURAL BRUTALISM. STARK,
-              UNCOMPROMISING, AND DESIGNED TO LEAVE A LASTING IMPRESSION.
+              Our visual identity is rooted in structural brutalism. Stark, uncompromising, and designed to leave a lasting impression.
             </p>
           </Reveal>
         </div>

@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import styles from "./homeservices.module.css";
 
 const headings = [
-  { text: "SYSTEM", style: "solid" },
-  { text: "SERVICES", style: "outline" },
+  // { text: "SYSTEM", style: "solid" },
+  { text: "Services", style: "outline" },
 ];
 
 /* ══════════════════════════════
@@ -73,15 +73,15 @@ const Heroservices = () => {
   return (
     <section className={styles["heroservices-main"]}>
       <div className={styles["heroservices-video-wrapper"]}>
-        {/* <video
+        <video
           className={styles["services-video"]}
           autoPlay
           muted
           loop
           playsInline
         >
-          <source src="/videos/awards/awards.mp4" type="video/mp4" />
-        </video> */}
+          <source src="/videos/services/services.mp4" type="video/mp4" />
+        </video>
       </div>
 
       <div className={styles["textual-content"]}>
@@ -95,7 +95,7 @@ const Heroservices = () => {
             delay={0}
             className={styles["top"]}
           >
-            <h3>[ Archive // Vol. 05 ]</h3>
+            <h3>[ What We Do ]</h3>
           </Reveal>
 
           {/* Single h1 — multiple spans (heroawards jaisa pattern) */}
@@ -115,6 +115,7 @@ const Heroservices = () => {
                 }
               >
                 {heading.text}
+                {index < headings.length - 1 && " "}
               </Reveal>
             ))}
           </h1>
@@ -130,8 +131,7 @@ const Heroservices = () => {
           className={styles["bottom-last"]}
         >
           <h2>
-            Our operational capabilities. From high-end cinematic
-            acquisition to turnkey packaging and strategic co-productions.
+            From first draft to final cut, and from film to feed.
           </h2>
         </Reveal>
       </div>

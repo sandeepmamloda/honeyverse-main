@@ -6,46 +6,46 @@ import styles from "./corelist.module.css";
 const coreItems = [
   {
     id: 1,
-    year: "2023",
-    title: "MIDNIGHT SUN",
-    type: "FEATURE FILM",
-    director: "DIR. ALFONSO CUARÓN",
+    year: "2016",
+    title: "HEER",
+    type: "Short film",
+    director: "Dir. Honey B. Singh",
     studio: "A24 / LUMIÈRE",
     videoUrl: "/videos/awards/awards.mp4",
     duration: "12 min.",
-    category: "Feature Film",
-    description: "A visually striking short film exploring the intersection of light and shadow.",
+    category: "Short film",
+    description: "Best Short, London South Asian Film Festival",
   },
   {
     id: 2,
-    year: "2022",
-    title: "STEEL & GLASS",
-    type: "DOCUSERIES",
-    director: "DIR. JANE CAMPION",
+    year: "[Year]",
+    title: "Olivia Lee of Shophouse 333",
+    type: "[Format]",
+    director: "Dir. Honey B. Singh",
     studio: "HBO MAX",
     videoUrl: "/videos/awards/awards.mp4",
     duration: "18 min.",
-    category: "Docuseries",
+    category: "[Format]",
     description: "An unflinching look at ambition, power, and the cost of progress.",
   },
   {
     id: 3,
-    year: "2021",
-    title: "THE SOVEREIGN",
-    type: "FEATURE FILM",
-    director: "DIR. DENIS VILLENEUVE",
+    year: "[Year]",
+    title: "Arrange Me",
+    type: "[Format]",
+    director: "Dir. Honey B. Singh",
     studio: "WARNER BROS.",
     videoUrl: "/videos/awards/awards.mp4",
     duration: "15 min.",
-    category: "Feature Film",
+    category: "[Format]",
     description: "A sweeping visual narrative of power and legacy.",
   },
   {
     id: 4,
-    year: "2020",
-    title: "FRACTURED STATE",
-    type: "LIMITED SERIES",
-    director: "DIR. CARY FUKUNAGA",
+    year: "In development",
+    title: "Happy Baisakhi!",
+    type: "Feature",
+    director: "Dir. Honey B. Singh",
     studio: "NETFLIX",
     videoUrl: "/videos/awards/awards.mp4",
     duration: "20 min.",
@@ -54,10 +54,10 @@ const coreItems = [
   },
   {
     id: 5,
-    year: "2019",
-    title: "BLOOD & GOLD",
-    type: "FEATURE FILM",
-    director: "DIR. AMARA DIALLO",
+    year: "In development",
+    title: "BRIE!",
+    type: "Feature",
+    director: "Dir. Honey B. Singh",
     studio: "LUMIÈRE ORIGINALS",
     videoUrl: "/videos/awards/awards.mp4",
     duration: "14 min.",
@@ -131,14 +131,14 @@ const CoreList = () => {
             <path d="M20.833 3.125H4.16634C3.01575 3.125 2.08301 4.05774 2.08301 5.20833V15.625C2.08301 16.7756 3.01575 17.7083 4.16634 17.7083H20.833C21.9836 17.7083 22.9163 16.7756 22.9163 15.625V5.20833C22.9163 4.05774 21.9836 3.125 20.833 3.125Z" stroke="#C40053" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
           <div className={styles["badge-text"]}>
-            <h3>[ 02 // CO-PRODUCTIONS ]</h3>
+            <h3>[ 02 // Selected Work ]</h3>
           </div>
         </div>
 
         <div className={styles["title-wrapper"]}>
           <h1 className={styles["main-title"]}>
-            <span className={styles["text-solid"]}>THE</span>{" "}
-            <span className={styles["text-outline"]}>CORE</span>
+            <span className={styles["text-solid"]}>The</span>{" "}
+            <span className={styles["text-outline"]}>Core</span>
           </h1>
         </div>
       </div>

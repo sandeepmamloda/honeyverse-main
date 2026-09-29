@@ -74,11 +74,11 @@ const FlagshipCarousel = () => {
           </svg>
 
           <div className={styles["badge-text"]}>
-            <h3>[ 02 // CO-PRODUCTIONS ]</h3>
+            <h3>[ 01 // Films ]</h3>
           </div>
         </div>
         <div className={styles["title-wrapper"]}>
-          <h1 className={styles["main-title"]}>FLAGSHIP</h1>
+          <h1 className={styles["main-title"]}>Flagship</h1>
         </div>
       </div>
 
