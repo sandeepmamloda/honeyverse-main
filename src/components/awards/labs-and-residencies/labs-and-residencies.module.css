@@ -370,7 +370,7 @@
 ══════════════════════════════ */
 @media screen and (max-width: 375px) {
   .labs-title {
-    font-size: clamp(1.9rem, 12vw, 2.8rem);
+    font-size: clamp(1.6rem, 12vw, 2rem);
   }
 
   .labs-card {

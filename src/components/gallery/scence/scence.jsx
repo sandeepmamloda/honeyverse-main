@@ -120,17 +120,17 @@ const Scenes = () => {
     <section className={styles.scenesContainer}>
       <Reveal as="div" direction="right" duration={1.3} className={styles.badgeWrapper}>
         <div className={styles.badge}>
-          <h3>[ 02 // ON_SET ]</h3>
+          <h3>[ 02 // On Set ]</h3>
         </div>
         <ArchiveIcon />
       </Reveal>
 
       <div className={styles.headerGroup}>
         <Reveal as="h2" direction="up" duration={1.4} delay={150} className={styles.title}>
-          SCENES
+          Scenes
         </Reveal>
         <Reveal as="p" direction="up" duration={1.2} delay={400} className={styles.description}>
-          Raw, unfiltered documentation from the trenches. Tactical execution of complex lighting and camera moves.
+          Real set days: the crew, the snacks, the tenth take.
         </Reveal>
       </div>
 

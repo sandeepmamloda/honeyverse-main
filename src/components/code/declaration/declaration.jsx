@@ -81,7 +81,7 @@ const Declaration = () => {
           duration={1}
           className={styles["badge-wrapper"]}
         >
-          <span>[ THE_DECLARATION ]</span>
+          <span>[ The Declaration ]</span>
         </Reveal>
 
         {/*
@@ -97,8 +97,8 @@ const Declaration = () => {
           duration={1.2}
           className={styles["main-title"]}
         >
-          <span className={styles["text-solid"]}>BEYOND</span>
-          <span className={styles["text-outline"]}>CONTENT</span>
+          <span className={styles["text-solid"]}>Beyond</span>
+          <span className={styles["text-outline"]}>Content</span>
         </Reveal>
       </div>
 
@@ -138,16 +138,16 @@ const Declaration = () => {
           </div>
 
           <p className={styles["statement-paragraph"]}>
-            We reject the algorithm. We reject the safe bet. We embrace the
-            void, and we build within it. Every frame is a calculation,
-            every cut is a statement.
+            We make films and we make posts, and we bring
+            the same honesty to both. Whatever the format, it
+            has to be worth your time.
           </p>
 
           <div className={styles["meta-lines"]}>
             <p>
-              WE DO NOT MAKE <span className={styles["strikethrough"]}>ENTERTAINMENT</span>.
+              We don't make women <span className={styles["strikethrough"]}>palatable</span>.
             </p>
-            <p>WE ENGINEER EMOTION.</p>
+            <p>We make them the lead.</p>
           </div>
 
           {/* h4 — a small closing label under the h3 statement above */}

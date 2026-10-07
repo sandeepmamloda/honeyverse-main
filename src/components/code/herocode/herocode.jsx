@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./herocode.module.css";
 
 const headings = [
-  { text: "THE", style: "solid" },
-  { text: "CODE", style: "outline" },
+  { text: "The", style: "solid" },
+  { text: " Code", style: "outline" },
 ];
 
 /* Page-load-timed reveal: short delay after mount (hero is above the fold,
@@ -190,7 +190,7 @@ const Herocode = () => {
         {/* Badge + Heading — saath mein center mein */}
         <div className={styles["headings-group"]}>
           <Reveal as="div" direction="up" delay={0} duration={0.9} className={styles["top"]}>
-            <h3>SYS.DOC.000 // CORE_DIRECTIVE</h3>
+            <h3>[ How We Work ]</h3>
           </Reveal>
 
           <h1 className={styles["heading-row"]} style={{ overflow: "hidden" }}>
@@ -219,7 +219,7 @@ const Herocode = () => {
           className={styles["bottom-last"]}
         >
           <h2>
-            We do not compromise. We build structural integrity into narrative. These are the fundamental laws governing our production architecture.
+            Four rules we don't break, on set or online.
           </h2>
         </Reveal>
 

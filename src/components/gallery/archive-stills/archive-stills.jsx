@@ -3,8 +3,8 @@ import { useState, useRef, useEffect } from "react";
 import styles from "./archive-stills.module.css";
 
 const headings = [
-  { text: "ARCHIVE &", style: "solid" },
-  { text: "STILLS", style: "outline" },
+  { text: "Archive and", style: "solid" },
+  { text: " Stills", style: "outline" },
 ];
 
 const slides = [
@@ -226,7 +226,7 @@ const ArchiveAndStills = () => {
       <Reveal as="div" direction="left" duration={1.4} className={styles["archs-badge-wrapper"]}>
         <ArchiveIcon />
         <div className={styles["archs-badge"]}>
-          <h3>[ 01 // FRAMEWORK ]</h3>
+          <h3>[ 01 // Stills ]</h3>
         </div>
       </Reveal>
 
@@ -241,6 +241,7 @@ const ArchiveAndStills = () => {
             className={heading.style === "outline" ? styles["archs-text-outline"] : styles["archs-text-solid"]}
           >
             {heading.text}
+            {/* {index < headings.length - 1 && " "} */}
           </Reveal>
         ))}
       </h2>

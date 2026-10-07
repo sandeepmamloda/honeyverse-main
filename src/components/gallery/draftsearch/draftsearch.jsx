@@ -9,9 +9,9 @@ import styles from "./draftsearch.module.css";
 const draftsData = [
   {
     id: 1,
-    title: "THE BLUEPRINT",
+    title: "The Blueprint",
     description:
-      "Scripts, storyboards, and structural planning. The foundation of narrative architecture.",
+      "Scripts, beat sheets and storyboards. Where every film starts.",
     src: "/images/gallery/draftsearch/draft-1.jpg",
     alt: "The Blueprint",
     variant: "icon",
@@ -19,9 +19,9 @@ const draftsData = [
   },
   {
     id: 2,
-    title: "MOODBOARDS",
+    title: "Moodboards",
     description:
-      "Aesthetic compilation. Finding the exact frequency before a single frame is shot.",
+      "Color, wardrobe and reference, pinned long before we shoot.",
     src: "/images/gallery/draftsearch/draft-2.jpg",
     alt: "Moodboards",
     variant: "line",
@@ -199,17 +199,18 @@ const DraftsResearch = () => {
       <Reveal as="div" direction="left" duration={1.3} className={styles.badgeWrapper}>
         <SectionBadgeIcon />
         <div className={styles.badge}>
-          <h3>[ 03 // CONCEPTION ]</h3>
+          <h3>[ 03 // Before the Camera ]</h3>
         </div>
       </Reveal>
 
       <div className={styles.headerGroup}>
         <h2 className={styles.title}>
           <Reveal as="span" variant="fade" duration={1.1} delay={150} className={styles.titleFilled}>
-            DRAFTS &amp;
+            Drafts and
           </Reveal>
+
           <Reveal as="span" variant="fade" duration={1.1} delay={350} className={styles.titleOutline}>
-            RESEARCH
+             {" "} Research
           </Reveal>
         </h2>
       </div>

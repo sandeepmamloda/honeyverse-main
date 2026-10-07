@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import styles from "./herogallery.module.css";
 
 const headings = [
-  { text: "THE", style: "solid" },
-  { text: "GALLERY", style: "outline" },
+  { text: "The", style: "solid" },
+  { text: "Gallery", style: "outline" },
 ];
 
 /* ══════════════════════════════
@@ -95,7 +95,7 @@ const Herovisuals = () => {
             delay={0}
             className={styles["top"]}
           >
-            <h3>[ Our Identity // Vol. 01 ]</h3>
+            <h3>[ Behind the Scenes ]</h3>
           </Reveal>
 
           <h1 className={styles["heading-row"]}>
@@ -114,6 +114,7 @@ const Herovisuals = () => {
                 }
               >
                 {heading.text}
+                {index < headings.length - 1 && " "}
               </Reveal>
             ))}
           </h1>
@@ -129,7 +130,7 @@ const Herovisuals = () => {
           className={styles["bottom-last"]}
         >
           <h2>
-            Defining the optical vocabulary. A meticulous exploration of color science, structural framing, and raw cinematic texture.
+            Stills, set days and the messy middle of making things.
           </h2>
         </Reveal>
 

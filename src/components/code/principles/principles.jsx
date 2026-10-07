@@ -6,30 +6,30 @@ const principlesItems = [
   {
     id: 1,
     number: "01",
-    title: "Brutal Honesty",
+    title: "Tell the Truth",
     description:
-      "No artificial sweetener. No manufactured sentiment. We strip away the unnecessary to reveal the raw structural beams of the narrative. If it doesn't serve the core truth of the story, it is excised.",
+      "No stereotypes, no trauma for the sake of it, no women who only exist to support a man's arc. If it doesn't feel true to the women we know, it doesn't make the cut.",
   },
   {
     id: 2,
     number: "02",
-    title: "Technical Precision",
+    title: "Specific Is Universal",
     description:
-      "Art without discipline is chaos. We treat cameras as scientific instruments and lights as surgical tools. Every frame is calculated, measured, and executed with absolute systemic rigor.",
+      "The more specific the story, the further it travels. Brampton, a tailor's basement, a Baisakhi weekend. That's where the universal lives.",
   },
   {
     id: 3,
     number: "03",
-    title: "Friction over Comfort",
+    title: "Funny Is Serious",
     description:
-      "Comfort is the enemy of progress. We actively seek out visual and narrative friction. We use high contrast, jarring edits, and challenging subject matter to force the audience into an active state of engagement.",
+      "Comedy is how our communities survive. We make you laugh so you'll stay long enough to feel something.",
   },
   {
     id: 4,
     number: "04",
-    title: "Data Integrity",
+    title: "Take Care of the Room",
     description:
-      "A film is a dataset. From the initial DIT offload to the final color grade, we maintain absolute strictness over our pipeline. No lost frames. No corrupted proxies. No degraded master files.",
+      "Safe, respectful, well-fed sets. People do their best work when they're not scared or hungry.",
   },
 ];
 

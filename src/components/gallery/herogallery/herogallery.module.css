@@ -70,6 +70,7 @@
   font-size: clamp(3rem, 9vw, 10rem);
   font-weight: 400;
   line-height: 140%;
+  text-transform:uppercase;
 }
 
 .text-solid {

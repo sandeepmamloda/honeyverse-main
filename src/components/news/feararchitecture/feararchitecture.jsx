@@ -128,11 +128,11 @@ const RevealLetters = ({ text, delay = 0, step = 20, className = "" }) => {
 };
 
 const FearArchitecture = ({
-  badgeLabel = "FEATURED_TRANSMISSION",
-  date = "OCT. 2025",
+  badgeLabel = "· Announcement",
+  date = "[Month 2026]",
   publication = "CINEASTE QUARTERLY",
-  title = "THE ARCHITECTURE OF FEAR",
-  quote = "How HONEYVERSE Pictures is restructuring the modern thriller by completely abandoning traditional three-act structures in favor of spatial geometry.",
+  title = "Happy Baisakhi! enters pre-production",
+  quote = "Honeyverse's first feature, a comedy about four childhood best friends reuniting for Baisakhi weekend in Brampton, is targeting principal photography in 2027.",
   image = "/images/news/feararchitecture.jpg",
   content = [
     {

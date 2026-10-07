@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import styles from "./heronews.module.css";
 
 const headings = [
-  { text: "THE", style: "solid" },
-  { text: "NEWS", style: "outline" },
+  { text: "The", style: "solid" },
+  { text: " News", style: "outline" },
 ];
 
 /* Page-load-timed reveal: short delay after mount (hero is above the fold,
@@ -114,7 +114,7 @@ const Heronews = () => {
         {/* Badge + Heading — saath mein center mein */}
         <div className={styles["headings-group"]}>
           <Reveal as="div" direction="up" delay={0} duration={0.9} className={styles["top"]}>
-            <h3>[ SYS.DOC.000 // CORE_DIRECTIVE ]</h3>
+            <h3>[ Updates ]</h3>
           </Reveal>
 
           <h1 className={styles["heading-row"]} style={{ overflow: "hidden" }}>
@@ -143,7 +143,7 @@ const Heronews = () => {
           className={styles["bottom-last"]}
         >
           <h2>
-            Interviews, press releases, and editorial profiles. The public facing documentation of our internal architecture.
+            Announcements, press and what we're working on right now.
           </h2>
         </Reveal>
 

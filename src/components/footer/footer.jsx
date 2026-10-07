@@ -17,7 +17,7 @@ const footerLinks = [
   [
     { label: "PORTFOLIO", href: "/portfolio" },
     { label: "SERVICES", href: "/services" },
-    { label: "VISUAL", href: "/visuals" },
+    { label: "VISUALS", href: "/visuals" },
     { label: "GALLERY", href: "/gallery" },
   ],
   [
@@ -530,8 +530,7 @@ const Footer = function () {
             delay={120}
           >
             <p>
-              SHAPING NARRATIVES THAT LINGER LONG AFTER
-              THE CREDITS ROLL.
+              Women-led stories. South Asian diaspora. Impossible to ignore.
             </p>
           </Reveal>
 
@@ -614,7 +613,7 @@ const Footer = function () {
           delay={100}
         >
           <span>
-            © 2026 LUMIÈRE PICTURES. ALL RIGHTS RESERVED.
+            © 2026 Honeyverse Productions. All rights reserved.
           </span>
 
           <div
@@ -622,8 +621,8 @@ const Footer = function () {
               styles["footer-bottom-links"]
             }
           >
-            <a href="/privacy-policy">PRIVACY</a>
-            <a href="/privacy-policy">TERMS</a>
+            <a href="/privacy-policy">Privacy</a>
+            <a href="/privacy-policy">Terms</a>
           </div>
         </Reveal>
       </footer>

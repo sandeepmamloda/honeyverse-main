@@ -164,47 +164,47 @@ const newsItems = [
   {
     id: 1,
     number: "01",
-    category: "INTERVIEW",
+    category: "Announcement",
     icon: "mic",
-    date: "AUG. 2025",
-    title: "SOUND AS STRUCTURE",
+    date: "[Month 2026]",
+    title: "Honeyverse Productions launches",
     excerpt:
-      "The directors sit down to discuss how replacing musical scores with industrial room tones fundamentally changes the viewer's psychological state.",
+      "Filmmaker Honey B. Singh brings her film, social and editorial work under one roof.",
     image: "/images/news/newsgrid-1.jpg",
   },
   {
     id: 2,
     number: "02",
-    category: "PRESS RELEASE",
+    category: "Announcement",
     icon: "press",
-    date: "JUN. 2025",
-    title: "ACQUISITION PROTOCOL INITIATED",
+    date: "[Month 2026]",
+    title: "Oh Honey, Honey. launches on Substack",
     excerpt:
-      "Announcing the acquisition of the rights to 'The Saffron Protocol', a brutalist sci-fi property previously deemed unadaptable.",
+      "with weekly essays and a real-time diary of making a feature.",
     image: "/images/news/newsgrid-2.jpg",
   },
-  {
-    id: 3,
-    number: "03",
-    category: "INTERVIEW",
-    icon: "mic",
-    date: "AUG. 2025",
-    title: "SOUND AS STRUCTURE",
-    excerpt:
-      "The directors sit down to discuss how replacing musical scores with industrial room tones fundamentally changes the viewer's psychological state.",
-    image: "/images/news/newsgrid-1.jpg",
-  },
-  {
-    id: 4,
-    number: "04",
-    category: "PRESS RELEASE",
-    icon: "press",
-    date: "JUN. 2025",
-    title: "ACQUISITION PROTOCOL INITIATED",
-    excerpt:
-      "Announcing the acquisition of the rights to 'The Saffron Protocol', a brutalist sci-fi property previously deemed unadaptable.",
-    image: "/images/news/newsgrid-2.jpg",
-  },
+  // {
+  //   id: 3,
+  //   number: "03",
+  //   category: "INTERVIEW",
+  //   icon: "mic",
+  //   date: "AUG. 2025",
+  //   title: "SOUND AS STRUCTURE",
+  //   excerpt:
+  //     "The directors sit down to discuss how replacing musical scores with industrial room tones fundamentally changes the viewer's psychological state.",
+  //   image: "/images/news/newsgrid-1.jpg",
+  // },
+  // {
+  //   id: 4,
+  //   number: "04",
+  //   category: "PRESS RELEASE",
+  //   icon: "press",
+  //   date: "JUN. 2025",
+  //   title: "ACQUISITION PROTOCOL INITIATED",
+  //   excerpt:
+  //     "Announcing the acquisition of the rights to 'The Saffron Protocol', a brutalist sci-fi property previously deemed unadaptable.",
+  //   image: "/images/news/newsgrid-2.jpg",
+  // },
 ];
 
 // viewport ke hisab se decide karta hai ek time me kitne cards dikhne chahiye:

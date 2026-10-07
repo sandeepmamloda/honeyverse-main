@@ -8,41 +8,41 @@ const stepsData = [
     id: 1,
     num: "01",
     numColor: "pink",
-    title: "IDEATION & SCRIPTING",
+    title: "Writing",
     description:
-      "Forging the core narrative framework. Stress-testing concepts against structural integrity.",
+      "Finding the story and the women at the center of it.",
   },
   {
     id: 2,
     num: "02",
     numColor: "yellow",
-    title: "PRE-VISUALIZATION",
+    title: "Pre-production",
     description:
-      "Moodboards, storyboards, and technical scouting. Designing the optical strategy.",
+      "Casting, locations, wardrobe and looks.",
   },
   {
     id: 3,
     num: "03",
     numColor: "pink",
-    title: "PRINCIPAL PHOTOGRAPHY",
+    title: "The shoot",
     description:
-      "Execution in the trenches. Heavy machinery, focused lighting, capturing the raw data.",
+      "Where the plan meets real life, and real life usually wins.",
   },
   {
     id: 4,
     num: "04",
     numColor: "yellow",
-    title: "THE EDIT",
+    title: "The edit",
     description:
-      "Assembling the timeline. Trimming the fat, finding the rhythm and structural pacing.",
+      "Finding the rhythm and cutting what doesn't earn its place.",
   },
   {
     id: 6,
     num: "05",
     numColor: "pink",
-    title: "COLOR & FINISH",
+    title: "Color and finish",
     description:
-      "The final grade. Applying the brutalist, high-contrast aesthetic. Mastering for delivery.",
+      "Warming it up, polishing it, sending it out into the world.",
   },
 ];
 
@@ -193,17 +193,17 @@ const CreativeProcess = () => {
       <Reveal as="div" direction="up" duration={1.2} className={styles.badgeWrapper}>
         <ArchiveIcon />
         <div className={styles.badge}>
-          <h3>[ 03 // CONCEPTION ]</h3>
+          <h3>[ 04 // Process ]</h3>
         </div>
       </Reveal>
 
       <div className={styles.headerGroup}>
         <h2 className={styles.title}>
           <Reveal as="span" variant="fade" duration={1.1} delay={150} className={styles.titleFilled}>
-            CREATIVE
+            Creative
           </Reveal>
           <Reveal as="span" variant="fade" duration={1.1} delay={350} className={styles.titleOutline}>
-            PROCESS
+            {" "}Process
           </Reveal>
         </h2>
       </div>

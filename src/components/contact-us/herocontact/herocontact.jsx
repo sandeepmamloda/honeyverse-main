@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./herocontact.module.css";
 
 const headings = [
-  { text: "CONTACT", style: "solid" },
-  { text: "US", style: "outline" },
+  { text: "Contact", style: "solid" },
+  { text: " Us", style: "outline" },
 ];
 
 /* Page-load-timed reveal: waits 3s after mount (hero is above the fold on
@@ -109,7 +109,7 @@ const Herocontact = () => {
         <div className={styles["headings-group"]}>
           <Reveal direction="up" delay={0} duration={1.4}>
             <div className={styles["top"]}>
-              <h3>[ SYS.DOC.000 // CORE_DIRECTIVE ]</h3>
+              <h3>[ Say Hello ]</h3>
             </div>
           </Reveal>
 
@@ -134,7 +134,7 @@ const Herocontact = () => {
         <div className={styles["bottom-last"]}>
           <Reveal direction="up" delay={1100} duration={1.8}>
             <h2>
-              Interviews, press releases, and editorial profiles. The public facing documentation of our internal architecture.
+              Projects, press, brand work or just a very good idea. We read everything.
             </h2>
           </Reveal>
         </div>

@@ -107,8 +107,11 @@ const Contact = () => {
         <div className={styles["left-col"]} style={{ minWidth: 0, maxWidth: "100%" }}>
           <div className={styles["text-block"]}>
             <Reveal as="h2" className={styles["intro-text"]} direction="left" delay={0}>
-              We are actively seeking uncompromising filmmakers. We do not
-              evaluate standard scripts without visual context.
+              We're always looking for collaborators, especially
+              women and South Asian creatives with stories that
+              haven't been told yet. For project pitches, please
+              include a logline and a short treatment, lookbook or
+              reel.
             </Reveal>
 
             <div className={styles["contact-row"]} style={{ maxWidth: "100%" }}>
@@ -119,8 +122,8 @@ const Contact = () => {
                 delay={200}
               >
                 <span className={styles["contact-label"]}>DIRECT LINE /</span>
-                <a href="mailto:pitch@lumiere.co">PITCH@LUMIERE.CO</a>
-                <a href="mailto:press@lumiere.co">PRESS@LUMIERE.CO</a>
+                <a href="mailto:hello@yourdomain">hello@ yourdomain</a>
+                <a href="mailto:press@yourdomain">press@yourdomain</a>
                 <a href="tel:+493012345678">+49 30 1234 5678</a>
               </Reveal>
 
@@ -167,7 +170,7 @@ const Contact = () => {
                 id="filmmaker-name"
                 type="text"
                 className={styles["field-input"]}
-                placeholder="ENTER DESIGNATION"
+                placeholder="Your name"
                 value={form.name}
                 onChange={handleChange("name")}
                 required
@@ -183,7 +186,7 @@ const Contact = () => {
                 id="return-vector"
                 type="email"
                 className={styles["field-input"]}
-                placeholder="EMAIL ADDRESS"
+                placeholder="Email"
                 value={form.email}
                 onChange={handleChange("email")}
                 required
@@ -203,7 +206,7 @@ const Contact = () => {
               <textarea
                 id="project-synopsis"
                 className={`${styles["field-input"]} ${styles["field-textarea"]}`}
-                placeholder="TRANSMIT CONCEPT"
+                placeholder="What's it about? (Project, press, brand partnership, other)"
                 rows={3}
                 value={form.synopsis}
                 onChange={handleChange("synopsis")}
@@ -218,7 +221,7 @@ const Contact = () => {
                 style={{ position: "relative", overflow: "hidden" }}
                 onClick={spawnRipple}
               >
-                <span>SUBMIT DOSSIER</span>
+                <span>Send</span>
                 <ArrowIcon />
                 {ripples.map((r) => (
                   <span

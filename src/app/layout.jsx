@@ -9,6 +9,7 @@ import Loader from "@/components/loader/loader";
 import Footer from "@/components/footer/footer";
 import Saturnbackground from "@/components/satturn/satturnbackground";
 
+
 export default function RootLayout({ children }) {
   const pathname = usePathname();
 

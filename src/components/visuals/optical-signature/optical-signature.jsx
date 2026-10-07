@@ -168,7 +168,7 @@ const OpticalSignature = () => {
             direction="up"
             baseDelay={100}
             step={90}
-          />
+          />{" "}
           <RevealWords
             as="span"
             text="Signature"
