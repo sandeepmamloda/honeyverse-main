@@ -252,7 +252,7 @@ const navLinks = [
   { label: "Teams", href: "/teams" },
   { label: "Portfolio", href: "/portfolio" },
   { label: "Services", href: "/services" },
-  { label: "Visual", href: "/visuals" },
+  { label: "Visuals", href: "/visuals" },
   { label: "Gallery", href: "/gallery" },
   { label: "Code", href: "/code" },
   { label: "News", href: "/news" },

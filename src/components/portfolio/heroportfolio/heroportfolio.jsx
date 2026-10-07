@@ -5,7 +5,7 @@ import styles from "./heroportfolio.module.css";
 
 const headings = [
   { text: "The", style: "solid" },
-  { text: "Portfolio", style: "outline" },
+  { text: " Portfolio", style: "outline" },
 ];
 
 /* ══════════════════════════════
